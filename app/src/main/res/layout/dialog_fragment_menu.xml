@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padding10">
+
+    <ImageView
+        android:id="@+id/actionHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/padding10"
+        android:paddingEnd="@dimen/padding10"
+        android:src="@drawable/ic_action_home_selector"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <ImageView
+        android:id="@+id/actionForward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/padding10"
+        android:paddingEnd="@dimen/padding10"
+        android:src="@drawable/ic_action_forward_selector"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/actionHome" />
+
+    <ImageView
+        android:id="@+id/actionBookmark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/padding10"
+        android:paddingEnd="@dimen/padding10"
+        android:src="@drawable/ic_action_bookmark"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/actionForward" />
+
+    <ImageView
+        android:id="@+id/actionReload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/padding10"
+        android:paddingEnd="@dimen/padding10"
+        android:src="@drawable/ic_action_reload"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/actionBookmark" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/overflowMenuRecycler"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/padding10"
+        android:paddingStart="@dimen/padding10"
+        android:paddingEnd="@dimen/padding10"
+        app:layout_constraintTop_toBottomOf="@+id/actionHome"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="actionBookmarks" type="id" />
+    <item name="actionDesktopSite" type="id" />
+    <item name="actionHtml5" type="id" />
+</resources>

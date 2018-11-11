@@ -1,0 +1,23 @@
+package com.siziksu.browser.ui.view.bookmarks;
+
+import android.support.v7.widget.RecyclerView;
+
+import com.siziksu.browser.common.function.Consumer;
+import com.siziksu.browser.presenter.model.Bookmark;
+
+import java.util.List;
+
+interface BookmarksAdapterContract {
+
+    void init(Consumer<Bookmark> itemClick, Consumer<Bookmark> delete);
+
+    RecyclerView.LayoutManager getLayoutManager();
+
+    RecyclerView.Adapter getAdapter();
+
+    void notifyDataSetChanged();
+
+    void addItems(List<Bookmark> list);
+
+    void deleteItem(Bookmark bookmark);
+}
