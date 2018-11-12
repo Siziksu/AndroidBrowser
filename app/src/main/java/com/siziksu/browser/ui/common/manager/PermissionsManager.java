@@ -1,4 +1,4 @@
-package com.siziksu.browser.ui.manager;
+package com.siziksu.browser.ui.common.manager;
 
 import android.app.Activity;
 import android.support.v4.app.ActivityCompat;

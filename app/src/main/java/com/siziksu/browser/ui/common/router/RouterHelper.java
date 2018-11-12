@@ -1,4 +1,4 @@
-package com.siziksu.browser.ui.router;
+package com.siziksu.browser.ui.common.router;
 
 import android.app.Activity;
 import android.app.ActivityOptions;

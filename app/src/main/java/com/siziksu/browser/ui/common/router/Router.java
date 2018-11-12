@@ -1,5 +1,6 @@
-package com.siziksu.browser.ui.router;
+package com.siziksu.browser.ui.common.router;
 
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import com.siziksu.browser.R;
@@ -15,6 +16,11 @@ public final class Router implements RouterContract {
 
     public Router(RouterHelper routerHelper) {
         this.routerHelper = routerHelper;
+    }
+
+    @Override
+    public void loadFragment(AppCompatActivity activity, int container, Fragment fragment) {
+        activity.getSupportFragmentManager().beginTransaction().add(container, fragment).commit();
     }
 
     @Override

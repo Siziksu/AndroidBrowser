@@ -5,12 +5,17 @@ import android.net.http.SslError;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.presenter.model.Bookmark;
+
+import java.util.Map;
 
 public class MainWebViewClient extends WebViewClient {
 
@@ -48,6 +53,22 @@ public class MainWebViewClient extends WebViewClient {
             current.url = view.getOriginalUrl();
         }
         onPageFinished(current);
+    }
+
+    @Override
+    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+        Log.e(Constants.TAG, "Internet connection error, error code: " + error.getErrorCode() + ", description: " + error.getDescription());
+        super.onReceivedError(view, request, error);
+    }
+
+    @Override
+    public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+        Log.e(Constants.TAG, "Http error, status code: " + errorResponse.getStatusCode());
+        Map<String, String> headers = errorResponse.getResponseHeaders();
+        for (String key : headers.keySet()) {
+            Log.e(Constants.TAG, key + " -> " + headers.get(key));
+        }
+        super.onReceivedHttpError(view, request, errorResponse);
     }
 
     public void setListeners(Consumer<String> onPageStarted, Consumer<String> onPageFinished, Consumer<String> urlVisited) {

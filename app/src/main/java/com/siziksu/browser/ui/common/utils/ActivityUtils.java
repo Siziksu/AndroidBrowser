@@ -1,4 +1,4 @@
-package com.siziksu.browser.ui.utils;
+package com.siziksu.browser.ui.common.utils;
 
 import android.app.Activity;
 import android.graphics.Color;

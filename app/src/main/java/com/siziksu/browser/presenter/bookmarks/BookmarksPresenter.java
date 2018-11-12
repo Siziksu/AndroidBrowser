@@ -12,8 +12,8 @@ import com.siziksu.browser.domain.bookmarks.BookmarksDomainContract;
 import com.siziksu.browser.presenter.BaseViewContract;
 import com.siziksu.browser.presenter.mapper.BookmarkMapper;
 import com.siziksu.browser.presenter.model.Bookmark;
-import com.siziksu.browser.ui.manager.PermissionsManager;
-import com.siziksu.browser.ui.dialog.DialogYesNo;
+import com.siziksu.browser.ui.common.dialog.DialogYesNo;
+import com.siziksu.browser.ui.common.manager.PermissionsManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,9 +66,9 @@ public final class BookmarksPresenter implements BookmarksPresenterContract<Base
         if (view == null) { return; }
         DialogYesNo fragment = new DialogYesNo();
         fragment.setAcceptCallback(() -> domain.deleteBookmark(new BookmarkMapper().unMap(bookmark), () -> {
-                                       if (view == null) { return; }
-                                       result.execute();
-                                   })
+                    if (view == null) { return; }
+                    result.execute();
+                })
         ).setMessage(view.getAppCompatActivity().getString(R.string.are_you_sure));
         fragment.show(view.getAppCompatActivity().getSupportFragmentManager(), Constants.YES_NO_DIALOG_FRAGMENT_TAG);
     }

@@ -10,8 +10,10 @@ import com.siziksu.browser.data.client.PreferencesClient;
 import com.siziksu.browser.domain.bookmarks.BookmarksDomain;
 import com.siziksu.browser.domain.main.MainDomain;
 import com.siziksu.browser.presenter.bookmarks.BookmarksPresenter;
+import com.siziksu.browser.presenter.main.BrowserPresenter;
 import com.siziksu.browser.presenter.main.MainPresenter;
 import com.siziksu.browser.ui.view.bookmarks.BookmarksActivity;
+import com.siziksu.browser.ui.view.main.BrowserFragment;
 import com.siziksu.browser.ui.view.main.MainActivity;
 
 import javax.inject.Singleton;
@@ -31,11 +33,11 @@ public interface ApplicationComponent {
 
     void inject(App target);
 
-    void inject(MainPresenter target);
+    void inject(BrowserFragment target);
+
+    void inject(BrowserPresenter target);
 
     void inject(Repository target);
-
-    void inject(MainActivity target);
 
     void inject(MainDomain target);
 
@@ -46,4 +48,8 @@ public interface ApplicationComponent {
     void inject(BookmarksDomain target);
 
     void inject(BookmarksPresenter target);
+
+    void inject(MainPresenter target);
+
+    void inject(MainActivity target);
 }

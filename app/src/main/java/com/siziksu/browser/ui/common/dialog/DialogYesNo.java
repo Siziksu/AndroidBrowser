@@ -1,4 +1,4 @@
-package com.siziksu.browser.ui.dialog;
+package com.siziksu.browser.ui.common.dialog;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

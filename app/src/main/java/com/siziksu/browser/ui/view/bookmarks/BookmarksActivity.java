@@ -16,7 +16,7 @@ import com.siziksu.browser.R;
 import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.presenter.BaseViewContract;
 import com.siziksu.browser.presenter.bookmarks.BookmarksPresenterContract;
-import com.siziksu.browser.ui.utils.ActivityUtils;
+import com.siziksu.browser.ui.common.utils.ActivityUtils;
 
 import javax.inject.Inject;
 

@@ -3,9 +3,9 @@ package com.siziksu.browser.dagger.module;
 import android.content.Context;
 
 import com.siziksu.browser.App;
-import com.siziksu.browser.ui.router.Router;
-import com.siziksu.browser.ui.router.RouterContract;
-import com.siziksu.browser.ui.router.RouterHelper;
+import com.siziksu.browser.ui.common.router.Router;
+import com.siziksu.browser.ui.common.router.RouterContract;
+import com.siziksu.browser.ui.common.router.RouterHelper;
 
 import javax.inject.Singleton;
 
