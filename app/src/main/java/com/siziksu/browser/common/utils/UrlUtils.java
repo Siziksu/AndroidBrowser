@@ -36,7 +36,7 @@ public class UrlUtils {
             try {
                 return googleSearch(URLEncoder.encode(string, "UTF-8"));
             } catch (UnsupportedEncodingException unsupported) {
-                Log.e(Constants.TAG, unsupported.getMessage(), unsupported);
+                Print.error(unsupported.getMessage(), unsupported);
                 return null;
             }
         }

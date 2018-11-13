@@ -2,15 +2,15 @@ package com.siziksu.browser.domain.main;
 
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.domain.BaseDomainContract;
-import com.siziksu.browser.domain.model.BookmarkDomain;
+import com.siziksu.browser.domain.model.PageDomain;
 
 public interface MainDomainContract extends BaseDomainContract {
 
-    void setUrlVisited(String url);
+    void setPageVisited(String url);
 
-    void getLastVisited(Consumer<String> result);
+    void getLastPageVisited(Consumer<String> result);
 
-    void manageBookmark(BookmarkDomain bookmark);
+    void manageBookmark(PageDomain bookmark);
 
-    void checkIfItIsBookmarked(String url, Consumer<Boolean> result);
+    void isUrlBookmarked(String url, Consumer<Boolean> result);
 }

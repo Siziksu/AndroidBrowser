@@ -1,15 +1,15 @@
-package com.siziksu.browser.presenter.model;
+package com.siziksu.browser.ui.common.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Bookmark implements Parcelable {
+public class Page implements Parcelable {
 
     public String titleToShow;
     public String title;
     public String url;
 
-    public Bookmark() {}
+    public Page() {}
 
     @Override
     public String toString() {
@@ -18,10 +18,10 @@ public class Bookmark implements Parcelable {
 
     @Override
     public boolean equals(Object obj) {
-        if (title == null || url == null || !(obj instanceof Bookmark)) {
+        if (title == null || url == null || !(obj instanceof Page)) {
             return false;
         }
-        return title.equals(((Bookmark) obj).title) && url.equals(((Bookmark) obj).url);
+        return title.equals(((Page) obj).title) && url.equals(((Page) obj).url);
     }
 
     @Override
@@ -39,17 +39,17 @@ public class Bookmark implements Parcelable {
         dest.writeString(this.url);
     }
 
-    protected Bookmark(Parcel in) {
+    protected Page(Parcel in) {
         this.titleToShow = in.readString();
         this.title = in.readString();
         this.url = in.readString();
     }
 
-    public static final Parcelable.Creator<Bookmark> CREATOR = new Parcelable.Creator<Bookmark>() {
+    public static final Parcelable.Creator<Page> CREATOR = new Parcelable.Creator<Page>() {
         @Override
-        public Bookmark createFromParcel(Parcel source) {return new Bookmark(source);}
+        public Page createFromParcel(Parcel source) {return new Page(source);}
 
         @Override
-        public Bookmark[] newArray(int size) {return new Bookmark[size];}
+        public Page[] newArray(int size) {return new Page[size];}
     };
 }

@@ -1,14 +1,12 @@
 package com.siziksu.browser.domain.main;
 
-import android.util.Log;
-
 import com.siziksu.browser.App;
-import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.common.function.Consumer;
+import com.siziksu.browser.common.utils.Print;
 import com.siziksu.browser.data.RepositoryContract;
-import com.siziksu.browser.data.model.BookmarkData;
-import com.siziksu.browser.domain.mapper.BookmarkMapper;
-import com.siziksu.browser.domain.model.BookmarkDomain;
+import com.siziksu.browser.data.model.PageData;
+import com.siziksu.browser.domain.mapper.PageMapper;
+import com.siziksu.browser.domain.model.PageDomain;
 
 import javax.inject.Inject;
 
@@ -38,56 +36,57 @@ public final class MainDomain implements MainDomainContract {
     }
 
     @Override
-    public void setUrlVisited(String url) {
+    public void setPageVisited(String url) {
         if (repository == null) { return; }
-        addDisposable(0, repository.setUrlVisited(url)
+        addDisposable(0, repository.setPageVisited(url)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
+                .subscribe(() -> {}, throwable -> Print.error("Error setting a visited page: " + throwable.getMessage(), throwable))
         );
     }
 
     @Override
-    public void getLastVisited(Consumer<String> result) {
+    public void getLastPageVisited(Consumer<String> result) {
         if (repository == null) { return; }
-        addDisposable(1, repository.getLastVisited()
+        addDisposable(1, repository.getLastPageVisited()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         result::accept,
-                        throwable -> Log.e(Constants.TAG, throwable.getMessage(), throwable)
+                        throwable -> Print.error("Error getting last visited page: " + throwable.getMessage(), throwable)
                 )
         );
     }
 
     @Override
-    public void manageBookmark(BookmarkDomain bookmark) {
+    public void manageBookmark(PageDomain bookmark) {
         if (repository == null) { return; }
-        addDisposable(2, repository.manageBookmark(new BookmarkMapper().unMap(bookmark))
+        addDisposable(2, repository.manageBookmark(new PageMapper().unMap(bookmark))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
+                .subscribe(() -> {}, throwable -> Print.error("Error managing a bookmark: " + throwable.getMessage(), throwable))
         );
     }
 
     @Override
-    public void checkIfItIsBookmarked(String url, Consumer<Boolean> result) {
+    public void isUrlBookmarked(String url, Consumer<Boolean> result) {
         if (repository == null) { return; }
         addDisposable(3, repository.getBookmarks()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bookmarks -> {
                     boolean isBookmarked = false;
-                    for (BookmarkData bookmark : bookmarks) {
+                    for (PageData bookmark : bookmarks) {
                         if (bookmark.url.equals(url)) {
                             isBookmarked = true;
                             break;
                         }
                     }
                     result.accept(isBookmarked);
-                })
+                }, throwable -> Print.error("Error checking if a url is bookmarked: " + throwable.getMessage(), throwable))
         );
     }
+
 
     private void addDisposable(int index, Disposable disposable) {
         dispose(index);

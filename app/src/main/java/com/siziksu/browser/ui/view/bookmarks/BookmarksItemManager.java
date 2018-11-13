@@ -1,31 +1,31 @@
 package com.siziksu.browser.ui.view.bookmarks;
 
-import com.siziksu.browser.presenter.model.Bookmark;
+import com.siziksu.browser.ui.common.model.Page;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class BookmarksItemManager implements BookmarksItemManagerContract {
 
-    private List<Bookmark> items = new ArrayList<>();
+    private List<Page> items = new ArrayList<>();
 
     BookmarksItemManager() {}
 
     @Override
-    public void showItems(BookmarksAdapterContract adapter, List<Bookmark> list) {
+    public void showItems(BookmarksAdapterContract adapter, List<Page> list) {
         items.clear();
         items.addAll(list);
         adapter.notifyDataSetChanged();
     }
 
     @Override
-    public List<Bookmark> getItems() {
+    public List<Page> getItems() {
         return items;
     }
 
     @Override
-    public void deleteItem(BookmarksAdapter adapter, Bookmark bookmark) {
-        int index = items.indexOf(bookmark);
+    public void deleteItem(BookmarksAdapter adapter, Page page) {
+        int index = items.indexOf(page);
         items.remove(index);
         adapter.notifyItemRemoved(index);
     }

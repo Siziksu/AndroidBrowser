@@ -9,9 +9,9 @@ import com.siziksu.browser.App;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.domain.main.MainDomainContract;
 import com.siziksu.browser.presenter.BaseViewContract;
-import com.siziksu.browser.presenter.mapper.BookmarkMapper;
-import com.siziksu.browser.presenter.model.Bookmark;
 import com.siziksu.browser.ui.common.manager.DownloaderManager;
+import com.siziksu.browser.ui.common.mapper.PageMapper;
+import com.siziksu.browser.ui.common.model.Page;
 import com.siziksu.browser.ui.common.router.RouterContract;
 
 import javax.inject.Inject;
@@ -49,15 +49,15 @@ public final class BrowserPresenter implements BrowserPresenterContract<BaseView
     }
 
     @Override
-    public void setUrlVisited(String url) {
+    public void setPageVisited(String url) {
         if (domain == null) { return; }
-        domain.setUrlVisited(url);
+        domain.setPageVisited(url);
     }
 
     @Override
-    public void getLastVisited(Consumer<String> result) {
+    public void getLastPageVisited(Consumer<String> result) {
         if (domain == null) { return; }
-        domain.getLastVisited(lastVisited -> {
+        domain.getLastPageVisited(lastVisited -> {
             if (view == null) { return; }
             result.accept(lastVisited);
         });
@@ -70,15 +70,15 @@ public final class BrowserPresenter implements BrowserPresenterContract<BaseView
     }
 
     @Override
-    public void manageBookmark(Bookmark bookmark) {
+    public void manageBookmark(Page page) {
         if (domain == null) { return; }
-        domain.manageBookmark(new BookmarkMapper().unMap(bookmark));
+        domain.manageBookmark(new PageMapper().unMap(page));
     }
 
     @Override
-    public void checkIfItIsBookmarked(String url, Consumer<Boolean> result) {
+    public void isUrlBookmarked(String url, Consumer<Boolean> result) {
         if (domain == null) { return; }
-        domain.checkIfItIsBookmarked(url, isBookmarked -> {
+        domain.isUrlBookmarked(url, isBookmarked -> {
             if (view == null) { return; }
             result.accept(isBookmarked);
         });
@@ -93,7 +93,7 @@ public final class BrowserPresenter implements BrowserPresenterContract<BaseView
     }
 
     @Override
-    public void onBookmarksClick() {
+    public void onBookmarksButtonClick() {
         if (view == null) { return; }
         router.goToBookmarks(view.getAppCompatActivity());
     }

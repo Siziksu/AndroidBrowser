@@ -3,7 +3,7 @@ package com.siziksu.browser.data.client.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class BookmarkClient {
+public class PageClient {
 
     @SerializedName("titleToShow")
     @Expose
@@ -15,14 +15,14 @@ public class BookmarkClient {
     @Expose
     public String url;
 
-    public BookmarkClient() {}
+    public PageClient() {}
 
     @Override
     public boolean equals(Object obj) {
-        if (title == null || url == null || !(obj instanceof BookmarkClient)) {
+        if (title == null || url == null || !(obj instanceof PageClient)) {
             return false;
         }
-        return title.equals(((BookmarkClient) obj).title) && url.equals(((BookmarkClient) obj).url);
+        return title.equals(((PageClient) obj).title) && url.equals(((PageClient) obj).url);
     }
 
     @Override

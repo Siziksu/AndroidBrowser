@@ -1,19 +1,19 @@
 package com.siziksu.browser.domain.model;
 
-public class BookmarkDomain {
+public class PageDomain {
 
     public String titleToShow;
     public String title;
     public String url;
 
-    public BookmarkDomain() {}
+    public PageDomain() {}
 
     @Override
     public boolean equals(Object obj) {
-        if (title == null || url == null || !(obj instanceof BookmarkDomain)) {
+        if (title == null || url == null || !(obj instanceof PageDomain)) {
             return false;
         }
-        return title.equals(((BookmarkDomain) obj).title) && url.equals(((BookmarkDomain) obj).url);
+        return title.equals(((PageDomain) obj).title) && url.equals(((PageDomain) obj).url);
     }
 
     @Override

@@ -1,14 +1,11 @@
 package com.siziksu.browser.domain.bookmarks;
 
-import android.util.Log;
-
 import com.siziksu.browser.App;
-import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.common.function.Action;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.data.RepositoryContract;
-import com.siziksu.browser.domain.mapper.BookmarkMapper;
-import com.siziksu.browser.domain.model.BookmarkDomain;
+import com.siziksu.browser.domain.mapper.PageMapper;
+import com.siziksu.browser.domain.model.PageDomain;
 
 import java.util.List;
 
@@ -40,19 +37,19 @@ public final class BookmarksDomain implements BookmarksDomainContract {
     }
 
     @Override
-    public void getBookmarks(Consumer<List<BookmarkDomain>> result) {
+    public void getBookmarks(Consumer<List<PageDomain>> result) {
         if (repository == null) { return; }
         addDisposable(0, repository.getBookmarks()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(bookmarks -> result.accept(new BookmarkMapper().map(bookmarks)))
+                .subscribe(bookmarks -> result.accept(new PageMapper().map(bookmarks)))
         );
     }
 
     @Override
-    public void deleteBookmark(BookmarkDomain bookmark, Action action) {
+    public void deleteBookmark(PageDomain bookmark, Action action) {
         if (repository == null) { return; }
-        addDisposable(1, repository.deleteBookmark(new BookmarkMapper().unMap(bookmark))
+        addDisposable(1, repository.deleteBookmark(new PageMapper().unMap(bookmark))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(action::execute)

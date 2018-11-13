@@ -1,6 +1,6 @@
 package com.siziksu.browser.data.client;
 
-import com.siziksu.browser.data.client.model.BookmarkClient;
+import com.siziksu.browser.data.client.model.PageClient;
 
 import java.util.List;
 
@@ -11,11 +11,11 @@ public interface PreferencesClientContract {
 
     Single<String> getLastVisited();
 
-    Completable manageBookmark(BookmarkClient bookmark);
+    Completable manageBookmark(PageClient bookmark);
 
-    Single<List<BookmarkClient>> getBookmarks();
+    Single<List<PageClient>> getBookmarks();
 
-    Completable setUrlVisited(String url);
+    Completable setPageVisited(String url);
 
-    Completable deleteBookmark(BookmarkClient bookmark);
+    Completable deleteBookmark(PageClient bookmark);
 }

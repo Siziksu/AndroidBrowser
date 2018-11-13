@@ -11,15 +11,15 @@ import android.view.ViewGroup;
 import com.siziksu.browser.R;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.common.utils.UrlUtils;
-import com.siziksu.browser.presenter.model.Bookmark;
+import com.siziksu.browser.ui.common.model.Page;
 
 import java.util.List;
 
 class BookmarksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements BookmarksAdapterContract {
 
     private Context context;
-    private Consumer<Bookmark> itemClick;
-    private Consumer<Bookmark> deleteClick;
+    private Consumer<Page> itemClick;
+    private Consumer<Page> deleteClick;
     private LinearLayoutManager layoutManager;
     private BookmarksItemManagerContract manager;
 
@@ -28,7 +28,7 @@ class BookmarksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
         this.manager = manager;
     }
 
-    public void init(Consumer<Bookmark> itemClick, Consumer<Bookmark> deleteClick) {
+    public void init(Consumer<Page> itemClick, Consumer<Page> deleteClick) {
         this.itemClick = itemClick;
         this.deleteClick = deleteClick;
         layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
@@ -57,7 +57,7 @@ class BookmarksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof BookmarksViewHolder) {
             BookmarksViewHolder localHolder = (BookmarksViewHolder) holder;
-            Bookmark item = manager.getItems().get(position);
+            Page item = manager.getItems().get(position);
             localHolder.bookmarksTitle.setText(item.titleToShow);
             localHolder.bookmarksUrl.setText(UrlUtils.getUrlToShowForBookmarks(item.url));
         }
@@ -79,12 +79,12 @@ class BookmarksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
     }
 
     @Override
-    public void addItems(List<Bookmark> list) {
+    public void addItems(List<Page> list) {
         manager.showItems(this, list);
     }
 
     @Override
-    public void deleteItem(Bookmark bookmark) {
-        manager.deleteItem(this, bookmark);
+    public void deleteItem(Page page) {
+        manager.deleteItem(this, page);
     }
 }

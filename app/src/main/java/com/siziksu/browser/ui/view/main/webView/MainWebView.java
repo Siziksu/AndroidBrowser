@@ -3,7 +3,6 @@ package com.siziksu.browser.ui.view.main.webView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -11,7 +10,7 @@ import android.webkit.WebView;
 import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.common.utils.UrlUtils;
-import com.siziksu.browser.presenter.model.Bookmark;
+import com.siziksu.browser.ui.common.model.Page;
 import com.siziksu.browser.ui.view.main.webView.clients.MainWebChromeClient;
 import com.siziksu.browser.ui.view.main.webView.clients.MainWebViewClient;
 
@@ -58,17 +57,12 @@ public class MainWebView extends WebView {
 
     public void toggleDesktopSite() {
         enabled = !enabled;
-        Log.i(Constants.TAG, "Current User Agent: " + getSettings().getUserAgentString());
-        String userAgent = getSettings().getUserAgentString();
         String newUserAgent;
-        String substring = getSettings().getUserAgentString().substring(userAgent.indexOf("("), userAgent.indexOf(")") + 1);
         if (enabled) {
-            newUserAgent = getSettings().getUserAgentString().replace(substring, "(X11; Linux x86_64)");
+            newUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36";
         } else {
-            newUserAgent = getSettings().getUserAgentString().replace(substring, "(Linux; Android 6.0.1; D6603 Build/23.5.A.1.291; wv)");
+            newUserAgent = null;
         }
-        clearCache(true);
-        Log.i(Constants.TAG, "New User Agent: " + getSettings().getUserAgentString());
         getSettings().setSupportZoom(enabled);
         getSettings().setBuiltInZoomControls(enabled);
         getSettings().setDisplayZoomControls(false);
@@ -78,14 +72,14 @@ public class MainWebView extends WebView {
         reload();
     }
 
-    public void setListeners(Consumer<String> onPageStarted, Consumer<String> onPageFinished, Consumer<String> urlVisited, Consumer<Integer> progress) {
+    public void setListeners(Consumer<String> onPageStarted, Consumer<String> onPageFinished, Consumer<String> pageVisited, Consumer<Integer> progress) {
         mainWebViewClient.setListeners(
                 url -> {
                     urlValidated = url;
                     onPageStarted.accept(url);
                 },
                 onPageFinished,
-                urlVisited);
+                pageVisited);
         mainWebViewChromeClient.setListeners(progress);
     }
 
@@ -119,7 +113,7 @@ public class MainWebView extends WebView {
         return urlValidated;
     }
 
-    public Bookmark getCurrentPage() {
+    public Page getCurrentPage() {
         return mainWebViewClient.getCurrentPage();
     }
 }

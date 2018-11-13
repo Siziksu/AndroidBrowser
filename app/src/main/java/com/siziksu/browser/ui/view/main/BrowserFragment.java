@@ -28,7 +28,7 @@ import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.common.utils.UrlUtils;
 import com.siziksu.browser.presenter.BaseViewContract;
 import com.siziksu.browser.presenter.main.BrowserPresenterContract;
-import com.siziksu.browser.presenter.model.Bookmark;
+import com.siziksu.browser.ui.common.model.Page;
 import com.siziksu.browser.ui.common.utils.ActivityUtils;
 import com.siziksu.browser.ui.view.main.menu.ImageMenu;
 import com.siziksu.browser.ui.view.main.menu.LinkMenu;
@@ -112,7 +112,7 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
                 if (url != null) {
                     loadUrl(url.toString());
                 } else {
-                    presenter.getLastVisited(this::loadUrl);
+                    presenter.getLastPageVisited(this::loadUrl);
                 }
             }
         }
@@ -136,7 +136,7 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
 
     @OnClick(R.id.actionMore)
     public void onActionMoreClick() {
-        presenter.checkIfItIsBookmarked(
+        presenter.isUrlBookmarked(
                 webViewHelper.getUrlValidated(),
                 isBookmarked -> overflowMenu
                         .setIsHome(webViewHelper.isHome())
@@ -171,8 +171,8 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
         if (requestCode == Constants.REQUEST_CODE_BOOKMARKS) {
             switch (resultCode) {
                 case Activity.RESULT_OK:
-                    Bookmark bookmark = data.getParcelableExtra(Constants.EXTRA_KEY_BOOKMARK);
-                    loadUrl(bookmark.url);
+                    Page page = data.getParcelableExtra(Constants.EXTRA_KEY_BOOKMARK);
+                    loadUrl(page.url);
                     break;
                 default:
                     break;
@@ -196,7 +196,7 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
                     swipeRefreshLayout.setRefreshing(false);
                     webViewProgressBar.setVisibility(View.GONE);
                 },
-                url -> presenter.setUrlVisited(url),
+                url -> presenter.setPageVisited(url),
                 progress -> {
                     webViewProgressBar.setProgress(progress);
                     if (progress >= MAX_SWIPE_REFRESH_PROGRESS_VALUE && swipeRefreshLayout.isRefreshing()) {
@@ -251,7 +251,7 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
                 webViewHelper.reload();
                 break;
             case R.id.actionBookmarks:
-                presenter.onBookmarksClick();
+                presenter.onBookmarksButtonClick();
                 break;
             case R.id.actionHtml5:
                 loadUrl(Constants.URL_HTML5_TEST);

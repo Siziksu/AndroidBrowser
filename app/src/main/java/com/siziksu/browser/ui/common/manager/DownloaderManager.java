@@ -10,14 +10,13 @@ import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Base64;
-import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.MimeTypeMap;
 import android.webkit.URLUtil;
 import android.widget.Toast;
 
-import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.common.function.Consumer;
+import com.siziksu.browser.common.utils.Print;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -33,7 +32,7 @@ public class DownloaderManager {
     private DownloaderManager() {}
 
     public static void download(Context context, String url, Consumer<Boolean> listener) {
-        Log.i(Constants.TAG, "URL to download: " + url);
+        Print.info("URL to download: " + url);
         if (url.startsWith("data:")) {
             createAndSaveFileFromBase64Url(context, url);
         }

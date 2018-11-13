@@ -10,8 +10,8 @@ import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.common.utils.CollectionsUtils;
 import com.siziksu.browser.domain.bookmarks.BookmarksDomainContract;
 import com.siziksu.browser.presenter.BaseViewContract;
-import com.siziksu.browser.presenter.mapper.BookmarkMapper;
-import com.siziksu.browser.presenter.model.Bookmark;
+import com.siziksu.browser.ui.common.mapper.PageMapper;
+import com.siziksu.browser.ui.common.model.Page;
 import com.siziksu.browser.ui.common.dialog.DialogYesNo;
 import com.siziksu.browser.ui.common.manager.PermissionsManager;
 
@@ -50,22 +50,22 @@ public final class BookmarksPresenter implements BookmarksPresenterContract<Base
     }
 
     @Override
-    public void getBookmarks(Consumer<List<Bookmark>> result) {
+    public void getBookmarks(Consumer<List<Page>> result) {
         if (domain == null) { return; }
         domain.getBookmarks(bookmarks -> {
             if (view == null) { return; }
-            List<Bookmark> list = new ArrayList<>(new BookmarkMapper().map(bookmarks));
+            List<Page> list = new ArrayList<>(new PageMapper().map(bookmarks));
             CollectionsUtils.sortUsersByName(list);
             result.accept(list);
         });
     }
 
     @Override
-    public void deleteBookmark(Bookmark bookmark, Action result) {
+    public void deleteBookmark(Page page, Action result) {
         if (domain == null) { return; }
         if (view == null) { return; }
         DialogYesNo fragment = new DialogYesNo();
-        fragment.setAcceptCallback(() -> domain.deleteBookmark(new BookmarkMapper().unMap(bookmark), () -> {
+        fragment.setAcceptCallback(() -> domain.deleteBookmark(new PageMapper().unMap(page), () -> {
                     if (view == null) { return; }
                     result.execute();
                 })

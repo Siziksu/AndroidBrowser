@@ -3,7 +3,7 @@ package com.siziksu.browser.ui.view.main.menu.dialog;
 import android.support.v7.widget.RecyclerView;
 
 import com.siziksu.browser.common.function.Consumer;
-import com.siziksu.browser.presenter.model.OverflowMenuItem;
+import com.siziksu.browser.ui.common.model.OverflowMenuItem;
 
 import java.util.List;
 

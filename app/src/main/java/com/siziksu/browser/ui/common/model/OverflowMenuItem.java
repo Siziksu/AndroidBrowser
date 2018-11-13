@@ -1,4 +1,4 @@
-package com.siziksu.browser.presenter.model;
+package com.siziksu.browser.ui.common.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

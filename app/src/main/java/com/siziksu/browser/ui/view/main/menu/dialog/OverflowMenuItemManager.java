@@ -1,6 +1,6 @@
 package com.siziksu.browser.ui.view.main.menu.dialog;
 
-import com.siziksu.browser.presenter.model.OverflowMenuItem;
+import com.siziksu.browser.ui.common.model.OverflowMenuItem;
 
 import java.util.ArrayList;
 import java.util.List;

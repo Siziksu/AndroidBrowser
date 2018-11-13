@@ -7,7 +7,7 @@ import android.webkit.DownloadListener;
 import android.webkit.WebView;
 
 import com.siziksu.browser.common.function.Consumer;
-import com.siziksu.browser.presenter.model.Bookmark;
+import com.siziksu.browser.ui.common.model.Page;
 
 public class WebViewHelper {
 
@@ -34,8 +34,8 @@ public class WebViewHelper {
         webView.init(context);
     }
 
-    public void setListeners(Consumer<String> onPageStarted, Consumer<String> onPageFinished, Consumer<String> urlVisited, Consumer<Integer> progress) {
-        webView.setListeners(onPageStarted, onPageFinished, urlVisited, progress);
+    public void setListeners(Consumer<String> onPageStarted, Consumer<String> onPageFinished, Consumer<String> pageVisited, Consumer<Integer> progress) {
+        webView.setListeners(onPageStarted, onPageFinished, pageVisited, progress);
     }
 
     public void setDownloadListener(DownloadListener listener) {
@@ -67,7 +67,7 @@ public class WebViewHelper {
         return webView.getUrlValidated();
     }
 
-    public Bookmark getCurrentPage() {
+    public Page getCurrentPage() {
         return webView.getCurrentPage();
     }
 

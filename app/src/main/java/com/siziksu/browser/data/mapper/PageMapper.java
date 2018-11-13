@@ -1,14 +1,14 @@
 package com.siziksu.browser.data.mapper;
 
 import com.siziksu.browser.common.mapper.Mapper;
-import com.siziksu.browser.data.client.model.BookmarkClient;
-import com.siziksu.browser.data.model.BookmarkData;
+import com.siziksu.browser.data.client.model.PageClient;
+import com.siziksu.browser.data.model.PageData;
 
-public final class BookmarkMapper extends Mapper<BookmarkClient, BookmarkData> {
+public final class PageMapper extends Mapper<PageClient, PageData> {
 
     @Override
-    public BookmarkData map(BookmarkClient unmapped) {
-        BookmarkData mapped = new BookmarkData();
+    public PageData map(PageClient unmapped) {
+        PageData mapped = new PageData();
         mapped.titleToShow = unmapped.titleToShow;
         mapped.title = unmapped.title;
         mapped.url = unmapped.url;
@@ -16,8 +16,8 @@ public final class BookmarkMapper extends Mapper<BookmarkClient, BookmarkData> {
     }
 
     @Override
-    public BookmarkClient unMap(BookmarkData mapped) {
-        BookmarkClient unmapped = new BookmarkClient();
+    public PageClient unMap(PageData mapped) {
+        PageClient unmapped = new PageClient();
         unmapped.titleToShow = mapped.titleToShow;
         unmapped.title = mapped.title;
         unmapped.url = mapped.url;

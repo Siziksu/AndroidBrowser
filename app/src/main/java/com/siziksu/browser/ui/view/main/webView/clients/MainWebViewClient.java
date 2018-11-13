@@ -2,8 +2,6 @@ package com.siziksu.browser.ui.view.main.webView.clients;
 
 import android.graphics.Bitmap;
 import android.net.http.SslError;
-import android.support.annotation.NonNull;
-import android.util.Log;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -13,7 +11,8 @@ import android.webkit.WebViewClient;
 
 import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.common.function.Consumer;
-import com.siziksu.browser.presenter.model.Bookmark;
+import com.siziksu.browser.common.utils.Print;
+import com.siziksu.browser.ui.common.model.Page;
 
 import java.util.Map;
 
@@ -21,9 +20,9 @@ public class MainWebViewClient extends WebViewClient {
 
     private Consumer<String> onPageStarted;
     private Consumer<String> onPageFinished;
-    private Consumer<String> urlVisited;
+    private Consumer<String> pageVisited;
     private boolean clearStack;
-    private Bookmark current = new Bookmark();
+    private Page page = new Page();
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -33,79 +32,83 @@ public class MainWebViewClient extends WebViewClient {
 
     @Override
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-        Log.e(Constants.TAG, "SSL Error");
+        Print.error("SSL Error");
         handler.proceed();
     }
 
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
-        onPageStarted(url);
+        page.title = view.getUrl();
+        page.url = view.getUrl();
+        onPageStarted();
     }
 
     @Override
     public void onPageFinished(WebView view, String url) {
         if (clearStack) {
             clearStack = false;
-            current = getHomePage();
+            setHomePage();
             view.clearHistory();
         } else {
-            current.title = view.getTitle();
-            current.url = view.getOriginalUrl();
+            page.title = view.getTitle();
+            page.url = view.getUrl();
         }
-        onPageFinished(current);
+        onPageFinished();
     }
 
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-        Log.e(Constants.TAG, "Internet connection error, error code: " + error.getErrorCode() + ", description: " + error.getDescription());
+        Print.error("Internet connection error, error code: " + error.getErrorCode() + ", description: " + error.getDescription());
         super.onReceivedError(view, request, error);
     }
 
     @Override
     public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-        Log.e(Constants.TAG, "Http error, status code: " + errorResponse.getStatusCode());
+        Print.error("Http error, status code: " + errorResponse.getStatusCode());
         Map<String, String> headers = errorResponse.getResponseHeaders();
         for (String key : headers.keySet()) {
-            Log.e(Constants.TAG, key + " -> " + headers.get(key));
+            Print.error(key + " -> " + headers.get(key));
         }
         super.onReceivedHttpError(view, request, errorResponse);
     }
 
-    public void setListeners(Consumer<String> onPageStarted, Consumer<String> onPageFinished, Consumer<String> urlVisited) {
+    public void setListeners(Consumer<String> onPageStarted, Consumer<String> onPageFinished, Consumer<String> pageVisited) {
         this.onPageStarted = onPageStarted;
         this.onPageFinished = onPageFinished;
-        this.urlVisited = urlVisited;
+        this.pageVisited = pageVisited;
     }
 
     public void clearStack() {
         clearStack = true;
-        onPageFinished(getHomePage());
+        onPageFinished();
     }
 
-    public Bookmark getCurrentPage() {
-        return current;
+    public Page getCurrentPage() {
+        return page;
     }
 
-    private void onPageStarted(String url) {
+    private void onPageStarted() {
         if (onPageStarted != null) {
-            onPageStarted.accept(url);
+            onPageStarted.accept(page.url);
         }
+        pageVisited();
     }
 
-    private void onPageFinished(Bookmark bookmark) {
+    private void onPageFinished() {
         if (onPageFinished != null) {
-            onPageFinished.accept(bookmark.url);
+            onPageFinished.accept(page.url);
         }
-        if (urlVisited != null) {
-            urlVisited.accept(bookmark.url);
+        pageVisited();
+    }
+
+    private void pageVisited() {
+        if (pageVisited != null) {
+            pageVisited.accept(page.url);
         }
     }
 
-    @NonNull
-    private Bookmark getHomePage() {
-        Bookmark home = new Bookmark();
-        home.title = Constants.URL_HOME_TITLE;
-        home.url = Constants.URL_HOME;
-        return home;
+    private void setHomePage() {
+        page.title = Constants.URL_HOME_TITLE;
+        page.url = Constants.URL_HOME;
     }
 }

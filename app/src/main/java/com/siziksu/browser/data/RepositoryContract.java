@@ -1,6 +1,6 @@
 package com.siziksu.browser.data;
 
-import com.siziksu.browser.data.model.BookmarkData;
+import com.siziksu.browser.data.model.PageData;
 
 import java.util.List;
 
@@ -9,13 +9,13 @@ import io.reactivex.Single;
 
 public interface RepositoryContract {
 
-    Single<String> getLastVisited();
+    Single<String> getLastPageVisited();
 
-    Completable manageBookmark(BookmarkData bookmark);
+    Completable manageBookmark(PageData bookmark);
 
-    Single<List<BookmarkData>> getBookmarks();
+    Single<List<PageData>> getBookmarks();
 
-    Completable setUrlVisited(String url);
+    Completable setPageVisited(String url);
 
-    Completable deleteBookmark(BookmarkData bookmark);
+    Completable deleteBookmark(PageData bookmark);
 }

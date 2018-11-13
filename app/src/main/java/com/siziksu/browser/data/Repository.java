@@ -2,8 +2,8 @@ package com.siziksu.browser.data;
 
 import com.siziksu.browser.App;
 import com.siziksu.browser.data.client.PreferencesClientContract;
-import com.siziksu.browser.data.mapper.BookmarkMapper;
-import com.siziksu.browser.data.model.BookmarkData;
+import com.siziksu.browser.data.mapper.PageMapper;
+import com.siziksu.browser.data.model.PageData;
 
 import java.util.List;
 
@@ -22,27 +22,27 @@ public final class Repository implements RepositoryContract {
     }
 
     @Override
-    public Single<String> getLastVisited() {
+    public Single<String> getLastPageVisited() {
         return preferencesClient.getLastVisited();
     }
 
     @Override
-    public Completable manageBookmark(BookmarkData bookmark) {
-        return preferencesClient.manageBookmark(new BookmarkMapper().unMap(bookmark));
+    public Completable manageBookmark(PageData bookmark) {
+        return preferencesClient.manageBookmark(new PageMapper().unMap(bookmark));
     }
 
     @Override
-    public Single<List<BookmarkData>> getBookmarks() {
-        return preferencesClient.getBookmarks().map(bookmarks -> new BookmarkMapper().map(bookmarks));
+    public Single<List<PageData>> getBookmarks() {
+        return preferencesClient.getBookmarks().map(bookmarks -> new PageMapper().map(bookmarks));
     }
 
     @Override
-    public Completable setUrlVisited(String url) {
-        return preferencesClient.setUrlVisited(url);
+    public Completable setPageVisited(String url) {
+        return preferencesClient.setPageVisited(url);
     }
 
     @Override
-    public Completable deleteBookmark(BookmarkData bookmark) {
-        return preferencesClient.deleteBookmark(new BookmarkMapper().unMap(bookmark));
+    public Completable deleteBookmark(PageData bookmark) {
+        return preferencesClient.deleteBookmark(new PageMapper().unMap(bookmark));
     }
 }

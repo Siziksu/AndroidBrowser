@@ -1,19 +1,19 @@
 package com.siziksu.browser.data.model;
 
-public class BookmarkData {
+public class PageData {
 
     public String titleToShow;
     public String title;
     public String url;
 
-    public BookmarkData() {}
+    public PageData() {}
 
     @Override
     public boolean equals(Object obj) {
-        if (title == null || url == null || !(obj instanceof BookmarkData)) {
+        if (title == null || url == null || !(obj instanceof PageData)) {
             return false;
         }
-        return title.equals(((BookmarkData) obj).title) && url.equals(((BookmarkData) obj).url);
+        return title.equals(((PageData) obj).title) && url.equals(((PageData) obj).url);
     }
 
     @Override

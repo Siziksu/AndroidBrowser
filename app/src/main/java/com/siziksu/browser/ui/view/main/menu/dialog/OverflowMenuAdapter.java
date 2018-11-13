@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.siziksu.browser.R;
 import com.siziksu.browser.common.function.Consumer;
-import com.siziksu.browser.presenter.model.OverflowMenuItem;
+import com.siziksu.browser.ui.common.model.OverflowMenuItem;
 
 import java.util.List;
 

@@ -10,20 +10,20 @@ import java.util.List;
 public abstract class Mapper<O, M> implements BaseMapper<O, M> {
 
     @Override
-    public List<M> map(List<O> objectList) {
+    public List<M> map(List<O> unmappedList) {
         List<M> mappedList = new ArrayList<>();
-        for (O object : objectList) {
-            mappedList.add(map(object));
+        for (O unmapped : unmappedList) {
+            mappedList.add(map(unmapped));
         }
         return mappedList;
     }
 
     @Override
-    public List<O> unMap(List<M> mapped) {
-        List<O> objectList = new ArrayList<>();
-        for (M object : mapped) {
-            objectList.add(unMap(object));
+    public List<O> unMap(List<M> mappedList) {
+        List<O> unmappedList = new ArrayList<>();
+        for (M mapped : mappedList) {
+            unmappedList.add(unMap(mapped));
         }
-        return objectList;
+        return unmappedList;
     }
 }
