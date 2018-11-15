@@ -4,7 +4,7 @@ import android.content.Intent;
 
 public interface BrowserFragmentContract {
 
-    boolean onBackPressed();
+    boolean caNotGoBack();
 
     void onActivityResult(int requestCode, int resultCode, Intent data);
 }

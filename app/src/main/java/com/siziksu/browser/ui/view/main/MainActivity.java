@@ -53,7 +53,7 @@ public final class MainActivity extends AppCompatActivity implements BaseViewCon
     @Override
     public void onBackPressed() {
         if (fragment != null) {
-            if (fragment.onBackPressed()) {
+            if (fragment.caNotGoBack()) {
                 super.onBackPressed();
             }
         } else {

@@ -129,7 +129,7 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
     }
 
     @Override
-    public boolean onBackPressed() {
+    public boolean caNotGoBack() {
         return webViewHelper.canNotGoBack();
     }
 
@@ -212,10 +212,10 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         swipeRefreshLayout.setOnRefreshListener(() -> webViewHelper.reload());
         List<OverflowMenuItem> items = Arrays.asList(
-                new OverflowMenuItem(R.id.actionBookmarks, "Bookmarks", OverflowMenuItem.DEFAULT),
-                new OverflowMenuItem(R.id.actionDesktopSite, "Desktop site", OverflowMenuItem.CHECKBOX),
-                new OverflowMenuItem(R.id.actionGoogle, "Google", OverflowMenuItem.DEFAULT),
-                new OverflowMenuItem(R.id.actionHtml5, "Html5 check", OverflowMenuItem.DEFAULT));
+                new OverflowMenuItem(R.id.actionBookmarks, getString(R.string.bookmarks), OverflowMenuItem.DEFAULT),
+                new OverflowMenuItem(R.id.actionDesktopSite, getString(R.string.desktop_site), OverflowMenuItem.CHECKBOX),
+                new OverflowMenuItem(R.id.actionGoogle, getString(R.string.google), OverflowMenuItem.DEFAULT),
+                new OverflowMenuItem(R.id.actionHtml5, getString(R.string.html5_check), OverflowMenuItem.DEFAULT));
         overflowMenu = new OverflowMenu.Builder()
                 .setActivity(getAppCompatActivity())
                 .setSourceView(actionMore)
