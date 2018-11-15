@@ -10,6 +10,7 @@ public final class Constants {
 
     public static final String ASSETS_URL_PREFIX = "file:///android_asset/www/";
 
+    public static final String URL_GOOGLE = "https://www.google.com/";
     public static final String URL_GOOGLE_SEARCH = "www.google.com/search";
     public static final String GOOGLE_SAFE_SEARCH = "&safe=strict";
     public static final String URL_HTML5_TEST = "http://beta.html5test.com/";

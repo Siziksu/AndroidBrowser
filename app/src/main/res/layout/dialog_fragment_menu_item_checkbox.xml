@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/overflowMenuItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/padding10"
+    android:paddingBottom="@dimen/padding10"
+    android:paddingStart="@dimen/padding5"
+    android:paddingEnd="0dp"
+    tools:ignore="MissingPrefix">
+
+    <TextView
+        fontPath="fonts/Montserrat-Light.ttf"
+        android:id="@+id/overflowMenuItemName"
+        android:layout_toStartOf="@+id/overflowMenuItemCheckBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="@string/app_name"
+        android:textColor="@color/darkerGrey"
+        android:textSize="@dimen/textSize13" />
+
+    <CheckBox
+        android:id="@+id/overflowMenuItemCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true" />
+</RelativeLayout>

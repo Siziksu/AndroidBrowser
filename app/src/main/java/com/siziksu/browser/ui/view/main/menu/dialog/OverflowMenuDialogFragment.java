@@ -21,7 +21,7 @@ import com.siziksu.browser.R;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.ui.common.model.OverflowMenuItem;
 
-import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +39,7 @@ public class OverflowMenuDialogFragment extends DialogFragment {
     RecyclerView recyclerView;
 
     private View source;
+    private List<OverflowMenuItem> items;
     private Consumer<Integer> listener;
     private boolean isHome;
     private boolean canGoForward;
@@ -82,6 +83,10 @@ public class OverflowMenuDialogFragment extends DialogFragment {
         this.source = source;
     }
 
+    public void setItems(List<OverflowMenuItem> items) {
+        this.items = items;
+    }
+
     public void setListener(Consumer<Integer> listener) {
         this.listener = listener;
     }
@@ -112,11 +117,7 @@ public class OverflowMenuDialogFragment extends DialogFragment {
                     }
                 }
         );
-        adapter.addItems(Arrays.asList(
-                new OverflowMenuItem(R.id.actionBookmarks, "Bookmarks"),
-                new OverflowMenuItem(R.id.actionDesktopSite, "Toggle desktop site"),
-                new OverflowMenuItem(R.id.actionHtml5, "Html5 Test"))
-        );
+        adapter.addItems(items);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter.getAdapter());
         recyclerView.setItemAnimator(new DefaultItemAnimator());

@@ -34,21 +34,47 @@ class OverflowMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_fragment_menu_item, parent, false);
-        return new OverflowMenuViewHolder(view, position -> {
-            if (listener != null) {
-                listener.accept(manager.getItems().get(position).id);
-            }
-        });
+        View view;
+        switch (viewType) {
+            case OverflowMenuItem.CHECKBOX:
+                view = LayoutInflater.from(context).inflate(R.layout.dialog_fragment_menu_item_checkbox, parent, false);
+                return new OverflowMenuViewHolderWithCheckBox(view, position -> {
+                    if (listener != null) {
+                        listener.accept(manager.getItem(position).id);
+                    }
+                });
+            case OverflowMenuItem.DEFAULT:
+            default:
+                view = LayoutInflater.from(context).inflate(R.layout.dialog_fragment_menu_item, parent, false);
+                return new OverflowMenuViewHolder(view, position -> {
+                    if (listener != null) {
+                        listener.accept(manager.getItem(position).id);
+                    }
+                });
+        }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof OverflowMenuViewHolder) {
-            OverflowMenuViewHolder localHolder = (OverflowMenuViewHolder) holder;
-            OverflowMenuItem item = manager.getItems().get(position);
-            localHolder.overflowMenuItemName.setText(item.name);
+        final OverflowMenuItem item = manager.getItem(position);
+        switch (holder.getItemViewType()) {
+            case OverflowMenuItem.CHECKBOX:
+                OverflowMenuViewHolderWithCheckBox checkboxHolder = (OverflowMenuViewHolderWithCheckBox) holder;
+                checkboxHolder.overflowMenuItemName.setText(item.name);
+                checkboxHolder.overflowMenuItemCheckBox.setChecked(item.isChecked);
+                checkboxHolder.overflowMenuItemCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> item.isChecked = isChecked);
+                break;
+            case OverflowMenuItem.DEFAULT:
+            default:
+                OverflowMenuViewHolder defaultHolder = (OverflowMenuViewHolder) holder;
+                defaultHolder.overflowMenuItemName.setText(item.name);
+                break;
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return manager.getItem(position).type;
     }
 
     @Override

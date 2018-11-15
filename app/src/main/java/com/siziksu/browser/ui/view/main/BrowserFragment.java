@@ -28,6 +28,7 @@ import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.common.utils.UrlUtils;
 import com.siziksu.browser.presenter.BaseViewContract;
 import com.siziksu.browser.presenter.main.BrowserPresenterContract;
+import com.siziksu.browser.ui.common.model.OverflowMenuItem;
 import com.siziksu.browser.ui.common.model.Page;
 import com.siziksu.browser.ui.common.utils.ActivityUtils;
 import com.siziksu.browser.ui.view.main.menu.ImageMenu;
@@ -35,6 +36,9 @@ import com.siziksu.browser.ui.view.main.menu.LinkMenu;
 import com.siziksu.browser.ui.view.main.menu.OverflowMenu;
 import com.siziksu.browser.ui.view.main.webView.MainWebView;
 import com.siziksu.browser.ui.view.main.webView.WebViewHelper;
+
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -207,11 +211,17 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
         webViewHelper.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> presenter.download(url));
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         swipeRefreshLayout.setOnRefreshListener(() -> webViewHelper.reload());
+        List<OverflowMenuItem> items = Arrays.asList(
+                new OverflowMenuItem(R.id.actionBookmarks, "Bookmarks", OverflowMenuItem.DEFAULT),
+                new OverflowMenuItem(R.id.actionDesktopSite, "Desktop site", OverflowMenuItem.CHECKBOX),
+                new OverflowMenuItem(R.id.actionGoogle, "Google", OverflowMenuItem.DEFAULT),
+                new OverflowMenuItem(R.id.actionHtml5, "Html5 check", OverflowMenuItem.DEFAULT));
         overflowMenu = new OverflowMenu.Builder()
                 .setActivity(getAppCompatActivity())
                 .setSourceView(actionMore)
                 .setListener(this::onOverflowMenuClick)
                 .setCancelable(true)
+                .setItems(items)
                 .create();
         urlEditText.setOnEditorActionListener(
                 (v, actionId, event) -> {
@@ -246,6 +256,9 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
                 break;
             case R.id.actionDesktopSite:
                 webViewHelper.toggleDesktopSite();
+                break;
+            case R.id.actionGoogle:
+                webViewHelper.loadUrl(Constants.URL_GOOGLE);
                 break;
             case R.id.actionReload:
                 webViewHelper.reload();

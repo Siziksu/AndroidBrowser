@@ -9,4 +9,6 @@ interface OverflowMenuItemManagerContract {
     void showItems(OverflowMenuAdapterContract adapter, List<OverflowMenuItem> list);
 
     List<OverflowMenuItem> getItems();
+
+    OverflowMenuItem getItem(int position);
 }

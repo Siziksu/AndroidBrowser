@@ -22,4 +22,9 @@ class OverflowMenuItemManager implements OverflowMenuItemManagerContract {
     public List<OverflowMenuItem> getItems() {
         return items;
     }
+
+    @Override
+    public OverflowMenuItem getItem(int position) {
+        return items.get(position);
+    }
 }
