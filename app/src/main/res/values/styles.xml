@@ -18,4 +18,9 @@
         <item name="windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
+
+    <style name="AppTheme.DialogScaleDiagonalAnimation">
+        <item name="android:windowEnterAnimation">@anim/scale_up_diagonal</item>
+        <item name="android:windowExitAnimation">@anim/scale_down_diagonal</item>
+    </style>
 </resources>

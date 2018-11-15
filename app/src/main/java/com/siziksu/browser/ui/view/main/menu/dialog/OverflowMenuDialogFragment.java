@@ -49,6 +49,15 @@ public class OverflowMenuDialogFragment extends DialogFragment {
         setRetainInstance(true);
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Window window = getDialog().getWindow();
+        if (window != null) {
+            window.getAttributes().windowAnimations = R.style.AppTheme_DialogScaleDiagonalAnimation;
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -134,8 +143,8 @@ public class OverflowMenuDialogFragment extends DialogFragment {
             if (window == null) { return; }
             window.setGravity(Gravity.TOP | Gravity.START);
             WindowManager.LayoutParams params = window.getAttributes();
-            params.x = sourceX - dpToPx(60);
-            params.y = sourceY - dpToPx(50);
+            params.x = sourceX - dpToPx(0);
+            params.y = sourceY - dpToPx(15);
             window.setAttributes(params);
         }
     }
