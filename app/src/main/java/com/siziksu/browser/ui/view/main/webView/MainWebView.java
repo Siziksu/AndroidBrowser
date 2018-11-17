@@ -16,6 +16,8 @@ import com.siziksu.browser.ui.view.main.webView.clients.MainWebViewClient;
 
 public class MainWebView extends WebView {
 
+    private static final String DESKTOP_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36";
+
     private MainWebChromeClient mainWebViewChromeClient;
     private MainWebViewClient mainWebViewClient;
 
@@ -37,38 +39,34 @@ public class MainWebView extends WebView {
     @SuppressLint("SetJavaScriptEnabled")
     public void init(Context context) {
         mainWebViewChromeClient = new MainWebChromeClient();
-        setWebChromeClient(mainWebViewChromeClient);
         mainWebViewClient = new MainWebViewClient();
+
+        setWebChromeClient(mainWebViewChromeClient);
         setWebViewClient(mainWebViewClient);
         setSaveEnabled(true);
+
         getSettings().setJavaScriptEnabled(true);
         getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
-        getSettings().setAppCacheEnabled(true);
         getSettings().setAppCachePath(context.getCacheDir().getPath());
+        getSettings().setAppCacheEnabled(true);
+        getSettings().setDatabaseEnabled(true);
         getSettings().setDomStorageEnabled(true);
-        getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         getSettings().setSupportMultipleWindows(true);
         getSettings().setSaveFormData(false);
-        getSettings().setDatabaseEnabled(true);
-        getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
+        getSettings().setSupportZoom(true);
+        getSettings().setBuiltInZoomControls(true);
+        getSettings().setDisplayZoomControls(false);
+
         CookieManager.getInstance().setAcceptThirdPartyCookies(this, true);
     }
 
     public void toggleDesktopSite() {
         enabled = !enabled;
-        String newUserAgent;
-        if (enabled) {
-            newUserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36";
-        } else {
-            newUserAgent = null;
-        }
-        getSettings().setSupportZoom(enabled);
-        getSettings().setBuiltInZoomControls(enabled);
-        getSettings().setDisplayZoomControls(false);
-        getSettings().setUserAgentString(newUserAgent);
         getSettings().setLoadWithOverviewMode(enabled);
         getSettings().setUseWideViewPort(enabled);
+        getSettings().setUserAgentString(enabled ? DESKTOP_AGENT : null);
         reload();
     }
 
