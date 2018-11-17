@@ -54,17 +54,6 @@
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
-    <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
-        android:id="@+id/webViewProgressBar"
-        android:layout_below="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/padding2"
-        android:padding="0dp"
-        android:progressDrawable="@drawable/custom_progress_bar"
-        android:max="100"
-        android:progress="0" />
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/webSwipeRefreshLayout"
         android:layout_below="@+id/toolbar"
@@ -76,4 +65,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:id="@+id/webViewProgressBar"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding2"
+        android:padding="0dp"
+        android:progressDrawable="@drawable/custom_progress_bar"
+        android:max="100"
+        android:progress="0" />
 </RelativeLayout>

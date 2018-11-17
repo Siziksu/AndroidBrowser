@@ -72,14 +72,18 @@ public class MainWebView extends WebView {
         reload();
     }
 
-    public void setListeners(Consumer<String> onPageStarted, Consumer<String> onPageFinished, Consumer<String> pageVisited, Consumer<Integer> progress) {
-        mainWebViewClient.setListeners(
+    public void setPageListeners(Consumer<String> onPageStarted, Consumer<String> onPageFinished, Consumer<String> pageVisited) {
+        mainWebViewClient.setPageListeners(
                 url -> {
                     urlValidated = url;
                     onPageStarted.accept(url);
                 },
                 onPageFinished,
-                pageVisited);
+                pageVisited
+        );
+    }
+
+    public void setProgressListener(Consumer<Integer> progress) {
         mainWebViewChromeClient.setListeners(progress);
     }
 

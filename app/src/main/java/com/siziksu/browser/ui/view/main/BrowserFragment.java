@@ -189,7 +189,7 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
         getAppCompatActivity().setSupportActionBar(toolbar);
         webViewHelper = new WebViewHelper(webView);
         webViewHelper.init(getActivity());
-        webViewHelper.setListeners(
+        webViewHelper.setPageListeners(
                 url -> {
                     urlEditText.setText(UrlUtils.getUrlToShow(url));
                     swipeRefreshLayout.setRefreshing(true);
@@ -200,7 +200,9 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
                     swipeRefreshLayout.setRefreshing(false);
                     webViewProgressBar.setVisibility(View.GONE);
                 },
-                url -> presenter.setPageVisited(url),
+                url -> presenter.setPageVisited(url)
+        );
+        webViewHelper.setProgressListener(
                 progress -> {
                     webViewProgressBar.setProgress(progress);
                     if (progress >= MAX_SWIPE_REFRESH_PROGRESS_VALUE && swipeRefreshLayout.isRefreshing()) {

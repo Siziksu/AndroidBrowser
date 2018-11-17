@@ -72,7 +72,7 @@ public class MainWebViewClient extends WebViewClient {
         super.onReceivedHttpError(view, request, errorResponse);
     }
 
-    public void setListeners(Consumer<String> onPageStarted, Consumer<String> onPageFinished, Consumer<String> pageVisited) {
+    public void setPageListeners(Consumer<String> onPageStarted, Consumer<String> onPageFinished, Consumer<String> pageVisited) {
         this.onPageStarted = onPageStarted;
         this.onPageFinished = onPageFinished;
         this.pageVisited = pageVisited;
