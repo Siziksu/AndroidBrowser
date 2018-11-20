@@ -14,14 +14,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public final class MainDomain implements MainDomainContract {
+public final class BrowserDomain implements BrowserDomainContract {
 
     @Inject
     RepositoryContract repository;
 
     private Disposable[] disposables;
 
-    public MainDomain() {
+    public BrowserDomain() {
         App.get().getApplicationComponent().inject(this);
     }
 
@@ -53,7 +53,7 @@ public final class MainDomain implements MainDomainContract {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         result::accept,
-                        throwable -> Print.error("Error getting last visited page: " + throwable.getMessage(), throwable)
+                        throwable -> Print.error("Error getting the last visited page: " + throwable.getMessage(), throwable)
                 )
         );
     }

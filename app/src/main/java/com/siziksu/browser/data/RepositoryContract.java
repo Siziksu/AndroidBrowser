@@ -9,13 +9,13 @@ import io.reactivex.Single;
 
 public interface RepositoryContract {
 
+    Completable setPageVisited(String url);
+
     Single<String> getLastPageVisited();
 
     Completable manageBookmark(PageData bookmark);
 
-    Single<List<PageData>> getBookmarks();
-
-    Completable setPageVisited(String url);
-
     Completable deleteBookmark(PageData bookmark);
+
+    Single<List<PageData>> getBookmarks();
 }

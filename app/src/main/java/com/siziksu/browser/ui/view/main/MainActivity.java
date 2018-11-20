@@ -30,6 +30,7 @@ public final class MainActivity extends AppCompatActivity implements BaseViewCon
         ActivityUtils.setWhiteStatusBar(getWindow());
         App.get().getApplicationComponent().inject(this);
         setContentView(R.layout.activity_main);
+        presenter.onCreate(this);
         initializeViews();
     }
 
@@ -85,6 +86,5 @@ public final class MainActivity extends AppCompatActivity implements BaseViewCon
 
     private void initializeViews() {
         ButterKnife.bind(this);
-        presenter.onCreate(this);
     }
 }

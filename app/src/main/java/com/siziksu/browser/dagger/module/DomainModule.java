@@ -2,8 +2,8 @@ package com.siziksu.browser.dagger.module;
 
 import com.siziksu.browser.domain.bookmarks.BookmarksDomain;
 import com.siziksu.browser.domain.bookmarks.BookmarksDomainContract;
-import com.siziksu.browser.domain.main.MainDomain;
-import com.siziksu.browser.domain.main.MainDomainContract;
+import com.siziksu.browser.domain.main.BrowserDomain;
+import com.siziksu.browser.domain.main.BrowserDomainContract;
 
 import dagger.Module;
 import dagger.Provides;
@@ -12,8 +12,8 @@ import dagger.Provides;
 public final class DomainModule {
 
     @Provides
-    MainDomainContract providesMainDomain() {
-        return new MainDomain();
+    BrowserDomainContract providesBrowserDomain() {
+        return new BrowserDomain();
     }
 
     @Provides

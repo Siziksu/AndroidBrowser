@@ -24,6 +24,8 @@ public class MainWebViewClient extends WebViewClient {
     private boolean clearStack;
     private Page page = new Page();
 
+    public MainWebViewClient() {}
+
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         view.loadUrl(url);
@@ -32,28 +34,18 @@ public class MainWebViewClient extends WebViewClient {
 
     @Override
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-        Print.error("SSL Error");
+        Print.error("SSL error for the url: " + error.getUrl());
         handler.proceed();
     }
 
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
-        page.title = view.getUrl();
-        page.url = view.getUrl();
-        onPageStarted();
+        onPageStarted(view);
     }
 
     @Override
     public void onPageFinished(WebView view, String url) {
-        if (clearStack) {
-            clearStack = false;
-            setHomePage();
-            view.clearHistory();
-        } else {
-            page.title = view.getTitle();
-            page.url = view.getUrl();
-        }
-        onPageFinished();
+        onPageFinished(view);
     }
 
     @Override
@@ -64,11 +56,8 @@ public class MainWebViewClient extends WebViewClient {
 
     @Override
     public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-        Print.error("Http error, status code: " + errorResponse.getStatusCode());
-        Map<String, String> headers = errorResponse.getResponseHeaders();
-        for (String key : headers.keySet()) {
-            Print.error(key + " -> " + headers.get(key));
-        }
+        Print.error("Http error, status code: " + errorResponse.getStatusCode() + ", url: " + view.getUrl());
+        printErrorHeaders(errorResponse);
         super.onReceivedHttpError(view, request, errorResponse);
     }
 
@@ -80,21 +69,30 @@ public class MainWebViewClient extends WebViewClient {
 
     public void clearStack() {
         clearStack = true;
-        onPageFinished();
     }
 
     public Page getCurrentPage() {
         return page;
     }
 
-    private void onPageStarted() {
+    private void onPageStarted(WebView view) {
+        page.title = view.getUrl();
+        page.url = view.getUrl();
         if (onPageStarted != null) {
             onPageStarted.accept(page.url);
         }
         pageVisited();
     }
 
-    private void onPageFinished() {
+    private void onPageFinished(WebView view) {
+        if (clearStack) {
+            clearStack = false;
+            setHomePage();
+            view.clearHistory();
+        } else {
+            page.title = view.getTitle();
+            page.url = view.getUrl();
+        }
         if (onPageFinished != null) {
             onPageFinished.accept(page.url);
         }
@@ -110,5 +108,16 @@ public class MainWebViewClient extends WebViewClient {
     private void setHomePage() {
         page.title = Constants.URL_HOME_TITLE;
         page.url = Constants.URL_HOME;
+    }
+
+    private void printErrorHeaders(WebResourceResponse errorResponse) {
+        Map<String, String> headers = errorResponse.getResponseHeaders();
+        StringBuilder builder = new StringBuilder();
+        builder.append("Error headers:\n{\n");
+        for (String key : headers.keySet()) {
+            builder.append("  ").append(key).append(" : ").append(headers.get(key)).append(",\n");
+        }
+        builder.append("}");
+        Print.error(builder.toString());
     }
 }

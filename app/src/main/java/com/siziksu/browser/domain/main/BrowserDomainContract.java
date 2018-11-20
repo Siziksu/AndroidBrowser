@@ -4,7 +4,7 @@ import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.domain.BaseDomainContract;
 import com.siziksu.browser.domain.model.PageDomain;
 
-public interface MainDomainContract extends BaseDomainContract {
+public interface BrowserDomainContract extends BaseDomainContract {
 
     void setPageVisited(String url);
 

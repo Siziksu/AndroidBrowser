@@ -15,8 +15,8 @@ import io.reactivex.Single;
 
 public final class PreferencesClient implements PreferencesClientContract {
 
-    private static final String BOOKMARKS = "bookmarks";
-    private static final String LAST_PAGE_VISITED = "last_page_visited";
+    private static final String BOOKMARKS_KEY = "bookmarks";
+    private static final String LAST_PAGE_VISITED_KEY = "last_page_visited";
 
     @Inject
     PreferencesService service;
@@ -27,19 +27,19 @@ public final class PreferencesClient implements PreferencesClientContract {
 
     @Override
     public Single<String> getLastVisited() {
-        return Single.create(e -> {
+        return Single.create(emitter -> {
             try {
-                String string = service.useDefaultSharedPreferences().getValue(LAST_PAGE_VISITED, "");
-                e.onSuccess(string);
+                String string = service.useDefaultSharedPreferences().getValue(LAST_PAGE_VISITED_KEY, "");
+                emitter.onSuccess(string);
             } catch (Exception exception) {
-                e.onError(exception);
+                emitter.onError(exception);
             }
         });
     }
 
     @Override
     public Completable manageBookmark(PageClient bookmark) {
-        return Completable.create(e -> {
+        return Completable.create(emitter -> {
             List<PageClient> bookmarks = getBookmarkList();
             if (!bookmarks.contains(bookmark)) {
                 bookmark.titleToShow = bookmark.title;
@@ -48,44 +48,44 @@ public final class PreferencesClient implements PreferencesClientContract {
                 bookmarks.remove(bookmark);
             }
             String json = new Gson().toJson(bookmarks);
-            service.useDefaultSharedPreferences().applyValue(BOOKMARKS, json);
-            e.onComplete();
+            service.useDefaultSharedPreferences().applyValue(BOOKMARKS_KEY, json);
+            emitter.onComplete();
         });
     }
 
     @Override
     public Single<List<PageClient>> getBookmarks() {
-        return Single.create(e -> {
+        return Single.create(emitter -> {
             try {
                 List<PageClient> bookmarks = getBookmarkList();
-                e.onSuccess(bookmarks);
+                emitter.onSuccess(bookmarks);
             } catch (Exception exception) {
-                e.onError(exception);
+                emitter.onError(exception);
             }
         });
     }
 
     @Override
     public Completable setPageVisited(String url) {
-        return Completable.create(e -> {
-            service.useDefaultSharedPreferences().applyValue(LAST_PAGE_VISITED, url);
-            e.onComplete();
+        return Completable.create(emitter -> {
+            service.useDefaultSharedPreferences().applyValue(LAST_PAGE_VISITED_KEY, url);
+            emitter.onComplete();
         });
     }
 
     @Override
     public Completable deleteBookmark(PageClient bookmark) {
-        return Completable.create(e -> {
+        return Completable.create(emitter -> {
             List<PageClient> bookmarks = getBookmarkList();
             bookmarks.remove(bookmark);
             String json = new Gson().toJson(bookmarks);
-            service.useDefaultSharedPreferences().applyValue(BOOKMARKS, json);
-            e.onComplete();
+            service.useDefaultSharedPreferences().applyValue(BOOKMARKS_KEY, json);
+            emitter.onComplete();
         });
     }
 
     private List<PageClient> getBookmarkList() {
-        String json = service.useDefaultSharedPreferences().getValue(BOOKMARKS, "[]");
+        String json = service.useDefaultSharedPreferences().getValue(BOOKMARKS_KEY, "[]");
         return new Gson().fromJson(json, new TypeToken<List<PageClient>>() {}.getType());
     }
 }

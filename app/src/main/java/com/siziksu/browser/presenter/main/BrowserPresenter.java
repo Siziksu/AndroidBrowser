@@ -7,7 +7,7 @@ import android.content.Context;
 
 import com.siziksu.browser.App;
 import com.siziksu.browser.common.function.Consumer;
-import com.siziksu.browser.domain.main.MainDomainContract;
+import com.siziksu.browser.domain.main.BrowserDomainContract;
 import com.siziksu.browser.presenter.BaseViewContract;
 import com.siziksu.browser.ui.common.manager.DownloaderManager;
 import com.siziksu.browser.ui.common.mapper.PageMapper;
@@ -21,7 +21,7 @@ public final class BrowserPresenter implements BrowserPresenterContract<BaseView
     @Inject
     RouterContract router;
     @Inject
-    MainDomainContract domain;
+    BrowserDomainContract domain;
 
     private BaseViewContract view;
     private ClipboardManager clipboard;

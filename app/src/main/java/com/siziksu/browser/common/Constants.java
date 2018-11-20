@@ -22,6 +22,5 @@ public final class Constants {
 
     public static final String TITLE_ACTIVITY_BOOKMARKS = "Bookmarks";
 
-
     private Constants() {}
 }

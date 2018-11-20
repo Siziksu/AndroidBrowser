@@ -22,6 +22,11 @@ public final class Repository implements RepositoryContract {
     }
 
     @Override
+    public Completable setPageVisited(String url) {
+        return preferencesClient.setPageVisited(url);
+    }
+
+    @Override
     public Single<String> getLastPageVisited() {
         return preferencesClient.getLastVisited();
     }
@@ -32,17 +37,12 @@ public final class Repository implements RepositoryContract {
     }
 
     @Override
-    public Single<List<PageData>> getBookmarks() {
-        return preferencesClient.getBookmarks().map(bookmarks -> new PageMapper().map(bookmarks));
-    }
-
-    @Override
-    public Completable setPageVisited(String url) {
-        return preferencesClient.setPageVisited(url);
-    }
-
-    @Override
     public Completable deleteBookmark(PageData bookmark) {
         return preferencesClient.deleteBookmark(new PageMapper().unMap(bookmark));
+    }
+
+    @Override
+    public Single<List<PageData>> getBookmarks() {
+        return preferencesClient.getBookmarks().map(bookmarks -> new PageMapper().map(bookmarks));
     }
 }

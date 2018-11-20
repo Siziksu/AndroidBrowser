@@ -6,6 +6,8 @@ import com.siziksu.browser.common.Constants;
 
 public class Print {
 
+    private Print() {}
+
     public static void info(String string) {
         Log.i(Constants.TAG, string);
     }

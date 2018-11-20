@@ -8,7 +8,7 @@ import com.siziksu.browser.dagger.module.PresenterModule;
 import com.siziksu.browser.data.Repository;
 import com.siziksu.browser.data.client.PreferencesClient;
 import com.siziksu.browser.domain.bookmarks.BookmarksDomain;
-import com.siziksu.browser.domain.main.MainDomain;
+import com.siziksu.browser.domain.main.BrowserDomain;
 import com.siziksu.browser.presenter.bookmarks.BookmarksPresenter;
 import com.siziksu.browser.presenter.main.BrowserPresenter;
 import com.siziksu.browser.presenter.main.MainPresenter;
@@ -39,7 +39,7 @@ public interface ApplicationComponent {
 
     void inject(Repository target);
 
-    void inject(MainDomain target);
+    void inject(BrowserDomain target);
 
     void inject(PreferencesClient target);
 
