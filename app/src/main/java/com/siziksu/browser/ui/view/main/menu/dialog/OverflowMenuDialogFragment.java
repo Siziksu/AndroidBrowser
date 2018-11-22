@@ -1,6 +1,7 @@
 package com.siziksu.browser.ui.view.main.menu.dialog;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.siziksu.browser.R;
+import com.siziksu.browser.common.function.Action;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.ui.common.model.OverflowMenuItem;
 
@@ -35,15 +37,18 @@ public class OverflowMenuDialogFragment extends DialogFragment {
     ImageView actionForward;
     @BindView(R.id.actionBookmark)
     ImageView actionBookmark;
+    @BindView(R.id.actionReload)
+    ImageView actionReload;
     @BindView(R.id.overflowMenuRecycler)
     RecyclerView recyclerView;
 
     private View source;
     private List<OverflowMenuItem> items;
     private Consumer<Integer> listener;
-    private boolean isHome;
     private boolean canGoForward;
     private boolean isBookmarked;
+    private Action dismissListener;
+    private boolean canBeBookmarked;
 
     public OverflowMenuDialogFragment() {
         setRetainInstance(true);
@@ -81,6 +86,14 @@ public class OverflowMenuDialogFragment extends DialogFragment {
         super.onDestroyView();
     }
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (dismissListener != null) {
+            dismissListener.execute();
+        }
+    }
+
     @OnClick({R.id.actionHome, R.id.actionForward, R.id.actionBookmark, R.id.actionReload})
     public void onItemClick(View view) {
         if (listener == null) { return; }
@@ -100,8 +113,8 @@ public class OverflowMenuDialogFragment extends DialogFragment {
         this.listener = listener;
     }
 
-    public void setIsHome(boolean isHome) {
-        this.isHome = isHome;
+    public void setOnDismissListener(Action dismissListener) {
+        this.dismissListener = dismissListener;
     }
 
     public void setCanGoForward(boolean canGoForward) {
@@ -112,11 +125,19 @@ public class OverflowMenuDialogFragment extends DialogFragment {
         this.isBookmarked = isBookmarked;
     }
 
+    public void setCanBeBookmarked(boolean canBeBookmarked) {
+        this.canBeBookmarked = canBeBookmarked;
+    }
+
     private void initializeViews(View inflatedView) {
         ButterKnife.bind(this, inflatedView);
-        actionHome.setEnabled(!isHome);
+        actionHome.setEnabled(canBeBookmarked);
         actionForward.setEnabled(canGoForward);
-        actionBookmark.setImageResource(isBookmarked ? R.drawable.ic_action_bookmarked : R.drawable.ic_action_bookmark);
+        actionBookmark.setEnabled(canBeBookmarked);
+        actionReload.setEnabled(canBeBookmarked);
+        if (canBeBookmarked) {
+            actionBookmark.setImageResource(isBookmarked ? R.drawable.ic_action_bookmarked : R.drawable.ic_action_bookmark);
+        }
         OverflowMenuAdapterContract adapter = new OverflowMenuAdapter(getActivity(), new OverflowMenuItemManager());
         adapter.init(
                 resource -> {

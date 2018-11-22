@@ -1,7 +1,5 @@
 package com.siziksu.browser.common.utils;
 
-import android.util.Log;
-
 import com.siziksu.browser.common.Constants;
 
 import java.io.UnsupportedEncodingException;
@@ -14,11 +12,11 @@ public class UrlUtils {
     private UrlUtils() {}
 
     public static String getUrlToShow(String url) {
-        return Constants.URL_HOME.equals(url) ? "" : url;
+        return url;
     }
 
     public static String getUrlToShowForBookmarks(String url) {
-        return Constants.URL_HOME.equals(url) ? "Home page" : url;
+        return url;
     }
 
     public static String validateUrl(String string) {

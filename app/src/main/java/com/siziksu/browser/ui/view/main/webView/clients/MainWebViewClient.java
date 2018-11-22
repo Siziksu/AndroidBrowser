@@ -9,7 +9,6 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.common.utils.Print;
 import com.siziksu.browser.ui.common.model.Page;
@@ -21,7 +20,6 @@ public class MainWebViewClient extends WebViewClient {
     private Consumer<String> onPageStarted;
     private Consumer<String> onPageFinished;
     private Consumer<String> pageVisited;
-    private boolean clearStack;
     private Page page = new Page();
 
     public MainWebViewClient() {}
@@ -67,10 +65,6 @@ public class MainWebViewClient extends WebViewClient {
         this.pageVisited = pageVisited;
     }
 
-    public void clearStack() {
-        clearStack = true;
-    }
-
     public Page getCurrentPage() {
         return page;
     }
@@ -85,14 +79,8 @@ public class MainWebViewClient extends WebViewClient {
     }
 
     private void onPageFinished(WebView view) {
-        if (clearStack) {
-            clearStack = false;
-            setHomePage();
-            view.clearHistory();
-        } else {
-            page.title = view.getTitle();
-            page.url = view.getUrl();
-        }
+        page.title = view.getTitle();
+        page.url = view.getUrl();
         if (onPageFinished != null) {
             onPageFinished.accept(page.url);
         }
@@ -103,11 +91,6 @@ public class MainWebViewClient extends WebViewClient {
         if (pageVisited != null) {
             pageVisited.accept(page.url);
         }
-    }
-
-    private void setHomePage() {
-        page.title = Constants.URL_HOME_TITLE;
-        page.url = Constants.URL_HOME;
     }
 
     private void printErrorHeaders(WebResourceResponse errorResponse) {

@@ -13,6 +13,8 @@ public interface RepositoryContract {
 
     Single<String> getLastPageVisited();
 
+    void clearLastPageVisited();
+
     Completable manageBookmark(PageData bookmark);
 
     Completable deleteBookmark(PageData bookmark);

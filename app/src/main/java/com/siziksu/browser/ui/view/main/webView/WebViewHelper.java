@@ -46,18 +46,6 @@ public class WebViewHelper {
         webView.setDownloadListener(listener);
     }
 
-    public void clearStack() {
-        webView.clearStack();
-    }
-
-    public boolean isHome() {
-        return webView.isHome();
-    }
-
-    public boolean isHomeElement(String url) {
-        return webView.isHomeElement(url);
-    }
-
     public void reload() {
         webView.reload();
     }
@@ -89,13 +77,13 @@ public class WebViewHelper {
         }
     }
 
-    public boolean canNotGoBack() {
+    public boolean webViewCanGoBack() {
+        webView.stopLoading();
         if (webView.canGoBack()) {
-            webView.stopLoading();
             webView.goBack();
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     public void toggleDesktopSite() {

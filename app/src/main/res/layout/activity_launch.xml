@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:ignore="Autofill,MissingPrefix">
+
+    <EditText
+        fontPath="fonts/Montserrat-Light.ttf"
+        android:id="@+id/urlEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:selectAllOnFocus="true"
+        android:background="@drawable/search_box"
+        android:layout_marginStart="@dimen/padding25"
+        android:layout_marginEnd="@dimen/padding25"
+        android:paddingTop="@dimen/padding8"
+        android:paddingBottom="@dimen/padding8"
+        android:paddingStart="@dimen/padding10"
+        android:paddingEnd="@dimen/padding10"
+        android:gravity="center_vertical"
+        android:inputType="textWebEditText|textUri"
+        android:imeOptions="actionGo"
+        android:textSize="@dimen/textSize14"
+        android:textColor="@color/grey"
+        android:hint="@string/search_url"
+        android:transitionName="@string/simple_activity_transition" />
+</RelativeLayout>

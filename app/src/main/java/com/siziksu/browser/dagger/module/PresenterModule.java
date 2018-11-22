@@ -1,12 +1,14 @@
 package com.siziksu.browser.dagger.module;
 
-import com.siziksu.browser.presenter.BasePresenterContract;
 import com.siziksu.browser.presenter.BaseViewContract;
 import com.siziksu.browser.presenter.bookmarks.BookmarksPresenter;
 import com.siziksu.browser.presenter.bookmarks.BookmarksPresenterContract;
+import com.siziksu.browser.presenter.launch.LaunchPresenter;
+import com.siziksu.browser.presenter.launch.LaunchPresenterContract;
 import com.siziksu.browser.presenter.main.BrowserPresenter;
 import com.siziksu.browser.presenter.main.BrowserPresenterContract;
 import com.siziksu.browser.presenter.main.MainPresenter;
+import com.siziksu.browser.presenter.main.MainPresenterContract;
 
 import javax.inject.Singleton;
 
@@ -18,7 +20,13 @@ public final class PresenterModule {
 
     @Singleton
     @Provides
-    BasePresenterContract<BaseViewContract> providesMainPresenter() {
+    LaunchPresenterContract<BaseViewContract> providesLaunchPresenter() {
+        return new LaunchPresenter();
+    }
+
+    @Singleton
+    @Provides
+    MainPresenterContract<BaseViewContract> providesMainPresenter() {
         return new MainPresenter();
     }
 

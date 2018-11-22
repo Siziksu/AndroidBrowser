@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/padding10"
         android:paddingEnd="@dimen/padding10"
-        android:src="@drawable/ic_action_bookmark"
+        android:src="@drawable/ic_action_bookmark_selector"
         android:contentDescription="@string/app_name"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/actionForward" />
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/padding10"
         android:paddingEnd="@dimen/padding10"
-        android:src="@drawable/ic_action_reload"
+        android:src="@drawable/ic_action_reload_selector"
         android:contentDescription="@string/app_name"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/actionBookmark" />

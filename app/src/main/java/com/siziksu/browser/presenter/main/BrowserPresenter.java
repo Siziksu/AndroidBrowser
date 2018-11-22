@@ -31,15 +31,16 @@ public final class BrowserPresenter implements BrowserPresenterContract<BaseView
     }
 
     @Override
-    public void onCreate(Activity activity) {}
+    public void onCreate(Activity activity) {
+        clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+    }
 
     @Override
     public void onResume(BaseViewContract view) {
         this.view = view;
-        if (view != null) {
-            clipboard = (ClipboardManager) view.getAppCompatActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        if (domain != null) {
+            domain.register();
         }
-        domain.register();
     }
 
     @Override
@@ -51,7 +52,11 @@ public final class BrowserPresenter implements BrowserPresenterContract<BaseView
     @Override
     public void setPageVisited(String url) {
         if (domain == null) { return; }
-        domain.setPageVisited(url);
+        getLastPageVisited(last -> {
+            if (last == null || !last.equals(url)) {
+                domain.setPageVisited(url);
+            }
+        });
     }
 
     @Override
@@ -61,6 +66,13 @@ public final class BrowserPresenter implements BrowserPresenterContract<BaseView
             if (view == null) { return; }
             result.accept(lastVisited);
         });
+    }
+
+    @Override
+    public void clearLastPageVisited() {
+        if (domain != null) {
+            domain.clearLastPageVisited();
+        }
     }
 
     @Override

@@ -10,6 +10,8 @@ public interface BrowserDomainContract extends BaseDomainContract {
 
     void getLastPageVisited(Consumer<String> result);
 
+    void clearLastPageVisited();
+
     void manageBookmark(PageDomain bookmark);
 
     void isUrlBookmarked(String url, Consumer<Boolean> result);

@@ -28,7 +28,12 @@ public final class Repository implements RepositoryContract {
 
     @Override
     public Single<String> getLastPageVisited() {
-        return preferencesClient.getLastVisited();
+        return preferencesClient.getLastPageVisited();
+    }
+
+    @Override
+    public void clearLastPageVisited() {
+        preferencesClient.clearLastPageVisited();
     }
 
     @Override

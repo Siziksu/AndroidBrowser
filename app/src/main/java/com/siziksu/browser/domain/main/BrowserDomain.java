@@ -1,6 +1,7 @@
 package com.siziksu.browser.domain.main;
 
 import com.siziksu.browser.App;
+import com.siziksu.browser.common.DisposablesManager;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.common.utils.Print;
 import com.siziksu.browser.data.RepositoryContract;
@@ -11,7 +12,6 @@ import com.siziksu.browser.domain.model.PageDomain;
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public final class BrowserDomain implements BrowserDomainContract {
@@ -19,7 +19,7 @@ public final class BrowserDomain implements BrowserDomainContract {
     @Inject
     RepositoryContract repository;
 
-    private Disposable[] disposables;
+    private DisposablesManager disposablesManager;
 
     public BrowserDomain() {
         App.get().getApplicationComponent().inject(this);
@@ -27,18 +27,18 @@ public final class BrowserDomain implements BrowserDomainContract {
 
     @Override
     public void register() {
-        disposables = new Disposable[4];
+        disposablesManager = new DisposablesManager(7);
     }
 
     @Override
     public void unregister() {
-        dispose();
+        disposablesManager.dispose();
     }
 
     @Override
     public void setPageVisited(String url) {
         if (repository == null) { return; }
-        addDisposable(0, repository.setPageVisited(url)
+        disposablesManager.add(0, repository.setPageVisited(url)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {}, throwable -> Print.error("Error setting a visited page: " + throwable.getMessage(), throwable))
@@ -48,7 +48,7 @@ public final class BrowserDomain implements BrowserDomainContract {
     @Override
     public void getLastPageVisited(Consumer<String> result) {
         if (repository == null) { return; }
-        addDisposable(1, repository.getLastPageVisited()
+        disposablesManager.add(1, repository.getLastPageVisited()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -59,9 +59,15 @@ public final class BrowserDomain implements BrowserDomainContract {
     }
 
     @Override
+    public void clearLastPageVisited() {
+        if (repository == null) { return; }
+        repository.clearLastPageVisited();
+    }
+
+    @Override
     public void manageBookmark(PageDomain bookmark) {
         if (repository == null) { return; }
-        addDisposable(2, repository.manageBookmark(new PageMapper().unMap(bookmark))
+        disposablesManager.add(2, repository.manageBookmark(new PageMapper().unMap(bookmark))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {}, throwable -> Print.error("Error managing a bookmark: " + throwable.getMessage(), throwable))
@@ -71,15 +77,17 @@ public final class BrowserDomain implements BrowserDomainContract {
     @Override
     public void isUrlBookmarked(String url, Consumer<Boolean> result) {
         if (repository == null) { return; }
-        addDisposable(3, repository.getBookmarks()
+        disposablesManager.add(3, repository.getBookmarks()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bookmarks -> {
                     boolean isBookmarked = false;
-                    for (PageData bookmark : bookmarks) {
-                        if (bookmark.url.equals(url)) {
-                            isBookmarked = true;
-                            break;
+                    if (url != null) {
+                        for (PageData bookmark : bookmarks) {
+                            if (bookmark.url.equals(url)) {
+                                isBookmarked = true;
+                                break;
+                            }
                         }
                     }
                     result.accept(isBookmarked);
@@ -87,29 +95,4 @@ public final class BrowserDomain implements BrowserDomainContract {
         );
     }
 
-
-    private void addDisposable(int index, Disposable disposable) {
-        dispose(index);
-        if (disposables != null && disposables[index] != null) {
-            disposables[index] = disposable;
-        }
-    }
-
-    private void dispose() {
-        if (disposables != null) {
-            for (Disposable disposable : disposables) {
-                if (disposable != null) {
-                    disposable.dispose();
-                }
-            }
-            disposables = null;
-        }
-    }
-
-    private void dispose(int index) {
-        if (disposables != null && disposables[index] != null) {
-            disposables[index].dispose();
-            disposables[index] = null;
-        }
-    }
 }

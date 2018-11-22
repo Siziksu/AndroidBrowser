@@ -26,7 +26,7 @@ public final class PreferencesClient implements PreferencesClientContract {
     }
 
     @Override
-    public Single<String> getLastVisited() {
+    public Single<String> getLastPageVisited() {
         return Single.create(emitter -> {
             try {
                 String string = service.useDefaultSharedPreferences().getValue(LAST_PAGE_VISITED_KEY, "");
@@ -35,6 +35,19 @@ public final class PreferencesClient implements PreferencesClientContract {
                 emitter.onError(exception);
             }
         });
+    }
+
+    @Override
+    public Completable setPageVisited(String url) {
+        return Completable.create(emitter -> {
+            service.useDefaultSharedPreferences().applyValue(LAST_PAGE_VISITED_KEY, url);
+            emitter.onComplete();
+        });
+    }
+
+    @Override
+    public void clearLastPageVisited() {
+        service.useDefaultSharedPreferences().applyValue(LAST_PAGE_VISITED_KEY, "");
     }
 
     @Override
@@ -62,14 +75,6 @@ public final class PreferencesClient implements PreferencesClientContract {
             } catch (Exception exception) {
                 emitter.onError(exception);
             }
-        });
-    }
-
-    @Override
-    public Completable setPageVisited(String url) {
-        return Completable.create(emitter -> {
-            service.useDefaultSharedPreferences().applyValue(LAST_PAGE_VISITED_KEY, url);
-            emitter.onComplete();
         });
     }
 

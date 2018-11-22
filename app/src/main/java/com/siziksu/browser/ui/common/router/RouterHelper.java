@@ -51,7 +51,7 @@ public final class RouterHelper {
             return;
         }
         Intent intent = new Intent(activity, clazz);
-        go(activity, intent);
+        go(activity, intent, null);
     }
 
     void route(Activity activity, String action) {
@@ -61,7 +61,7 @@ public final class RouterHelper {
             return;
         }
         Intent intent = new Intent(action);
-        go(activity, intent);
+        go(activity, intent, null);
     }
 
     void route(Activity activity, String action, Uri uri) {
@@ -71,7 +71,17 @@ public final class RouterHelper {
             return;
         }
         Intent intent = new Intent(action, uri);
-        go(activity, intent);
+        go(activity, intent, null);
+    }
+
+    void route(Activity activity, Class<?> clazz, Bundle options) {
+        if (activity == null || clazz == null) {
+            Log.e(TAG, "No valid activity or destination class");
+            reset();
+            return;
+        }
+        Intent intent = new Intent(activity, clazz);
+        go(activity, intent, options);
     }
 
     RouterHelper sendBroadcast() {
@@ -612,7 +622,7 @@ public final class RouterHelper {
         return this;
     }
 
-    private void go(Activity activity, Intent intent) {
+    private void go(Activity activity, Intent intent, Bundle options) {
         if (intent == null) {
             return;
         }
@@ -651,7 +661,11 @@ public final class RouterHelper {
             code = 0;
             forResult = false;
         } else {
-            activity.startActivity(intent);
+            if (options != null) {
+                activity.startActivity(intent, options);
+            } else {
+                activity.startActivity(intent);
+            }
             animate(activity);
         }
         if (finishingCurrent) {

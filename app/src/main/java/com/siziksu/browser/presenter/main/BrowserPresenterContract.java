@@ -11,6 +11,8 @@ public interface BrowserPresenterContract<V extends BaseViewContract> extends Ba
 
     void getLastPageVisited(Consumer<String> lastVisited);
 
+    void clearLastPageVisited();
+
     void download(String url);
 
     void manageBookmark(Page page);

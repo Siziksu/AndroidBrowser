@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -18,18 +17,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.WebView;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.siziksu.browser.App;
 import com.siziksu.browser.R;
 import com.siziksu.browser.common.Constants;
+import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.common.utils.UrlUtils;
 import com.siziksu.browser.presenter.BaseViewContract;
 import com.siziksu.browser.presenter.main.BrowserPresenterContract;
 import com.siziksu.browser.ui.common.model.OverflowMenuItem;
 import com.siziksu.browser.ui.common.model.Page;
+import com.siziksu.browser.ui.common.model.WebViewBack;
 import com.siziksu.browser.ui.common.utils.ActivityUtils;
 import com.siziksu.browser.ui.view.main.menu.ImageMenu;
 import com.siziksu.browser.ui.view.main.menu.LinkMenu;
@@ -44,19 +43,12 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class BrowserFragment extends Fragment implements BaseViewContract, BrowserFragmentContract {
 
     private static final String URL = "url";
     private static final Integer MAX_SWIPE_REFRESH_PROGRESS_VALUE = 60;
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.urlEditText)
-    EditText urlEditText;
-    @BindView(R.id.actionMore)
-    ImageView actionMore;
     @BindView(R.id.webViewProgressBar)
     ProgressBar webViewProgressBar;
     @BindView(R.id.webSwipeRefreshLayout)
@@ -74,12 +66,13 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
     private LinkMenu linkMenu;
     private WebViewHelper webViewHelper;
     private BrowserActivityContract browserActivity;
+    private boolean isExternalLink;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof MainActivity) {
-            browserActivity = (MainActivity) context;
+            browserActivity = (BrowserActivityContract) context;
             browserActivity.onAttach(this);
         }
     }
@@ -114,6 +107,7 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
             if (getActivity() != null) {
                 Uri url = getActivity().getIntent().getData();
                 if (url != null) {
+                    isExternalLink = true;
                     loadUrl(url.toString());
                 } else {
                     presenter.getLastPageVisited(this::loadUrl);
@@ -128,46 +122,30 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
         presenter.onDestroy();
     }
 
+    WebViewBack webViewBack = new WebViewBack();
+
     @Override
-    public boolean caNotGoBack() {
-        return webViewHelper.canNotGoBack();
+    public void webViewCanGoBack(Consumer<WebViewBack> callback) {
+        webViewBack.webViewCanGoBack = webViewHelper.webViewCanGoBack();
+        webViewBack.isExternalLink = isExternalLink;
+        callback.accept(webViewBack);
     }
 
     @Override
-    public AppCompatActivity getAppCompatActivity() {
-        return browserActivity.getActivity();
-    }
-
-    @OnClick(R.id.actionMore)
     public void onActionMoreClick() {
+        String url = webViewHelper.getUrlValidated();
         presenter.isUrlBookmarked(
-                webViewHelper.getUrlValidated(),
-                isBookmarked -> overflowMenu
-                        .setIsHome(webViewHelper.isHome())
-                        .setCanGoForward(webViewHelper.canGoForward())
-                        .setIsBookmarked(isBookmarked)
-                        .show()
-        );
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-        super.onCreateContextMenu(contextMenu, view, contextMenuInfo);
-        WebView.HitTestResult hitTestResult = webViewHelper.getHitTestResult();
-        itemUrl = hitTestResult.getExtra();
-        if (webViewHelper.isHomeElement(itemUrl)) { return; }
-        switch (hitTestResult.getType()) {
-            case WebView.HitTestResult.IMAGE_TYPE:
-            case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE:
-                if (!UrlUtils.isDataImage(itemUrl)) {
-                    imageMenu.setTouchPosition(webViewHelper.getX(), webViewHelper.getY()).show();
+                url,
+                isBookmarked -> {
+                    browserActivity.onMenuShow();
+                    overflowMenu
+                            .setUrlValidated(url)
+                            .setOnDismissListener(() -> browserActivity.onMenuDismiss())
+                            .setCanGoForward(webViewHelper.canGoForward())
+                            .setIsBookmarked(isBookmarked)
+                            .show();
                 }
-                break;
-            case WebView.HitTestResult.SRC_ANCHOR_TYPE:
-                linkMenu.setTouchPosition(webViewHelper.getX(), webViewHelper.getY()).show();
-            default:
-                break;
-        }
+        );
     }
 
     @Override
@@ -184,19 +162,45 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
         }
     }
 
+    @Override
+    public AppCompatActivity getAppCompatActivity() {
+        return browserActivity.getActivity();
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+        super.onCreateContextMenu(contextMenu, view, contextMenuInfo);
+        WebView.HitTestResult hitTestResult = webViewHelper.getHitTestResult();
+        itemUrl = hitTestResult.getExtra();
+        switch (hitTestResult.getType()) {
+            case WebView.HitTestResult.IMAGE_TYPE:
+            case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE:
+                if (!UrlUtils.isDataImage(itemUrl)) {
+                    imageMenu.setTouchPosition(webViewHelper.getX(), webViewHelper.getY()).show();
+                }
+                break;
+            case WebView.HitTestResult.SRC_ANCHOR_TYPE:
+                linkMenu.setTouchPosition(webViewHelper.getX(), webViewHelper.getY()).show();
+            default:
+                break;
+        }
+    }
+
     private void initializeViews() {
         registerForContextMenu(webView);
-        getAppCompatActivity().setSupportActionBar(toolbar);
         webViewHelper = new WebViewHelper(webView);
         webViewHelper.init(getActivity());
         webViewHelper.setPageListeners(
                 url -> {
-                    urlEditText.setText(UrlUtils.getUrlToShow(url));
+                    browserActivity.getEditTed().setText(UrlUtils.getUrlToShow(url));
                     swipeRefreshLayout.setRefreshing(true);
                     webViewProgressBar.setVisibility(View.VISIBLE);
                 },
                 url -> {
-                    urlEditText.setText(UrlUtils.getUrlToShow(url));
+                    if (getActivity() != null) {
+                        ActivityUtils.hideKeyboard(getActivity());
+                    }
+                    browserActivity.getEditTed().setText(UrlUtils.getUrlToShow(url));
                     swipeRefreshLayout.setRefreshing(false);
                     webViewProgressBar.setVisibility(View.GONE);
                 },
@@ -212,20 +216,25 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
         );
         webViewHelper.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> presenter.download(url));
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
-        swipeRefreshLayout.setOnRefreshListener(() -> webViewHelper.reload());
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            if (TextUtils.isEmpty(webViewHelper.getUrlValidated())) {
+                swipeRefreshLayout.setRefreshing(false);
+            } else {
+                webViewHelper.reload();
+            }
+        });
         List<OverflowMenuItem> items = Arrays.asList(
                 new OverflowMenuItem(R.id.actionBookmarks, getString(R.string.bookmarks), OverflowMenuItem.DEFAULT),
                 new OverflowMenuItem(R.id.actionDesktopSite, getString(R.string.desktop_site), OverflowMenuItem.CHECKBOX),
-                new OverflowMenuItem(R.id.actionGoogle, getString(R.string.google), OverflowMenuItem.DEFAULT),
-                new OverflowMenuItem(R.id.actionHtml5, getString(R.string.html5_check), OverflowMenuItem.DEFAULT));
+                new OverflowMenuItem(R.id.actionGoogle, getString(R.string.google), OverflowMenuItem.DEFAULT));
         overflowMenu = new OverflowMenu.Builder()
                 .setActivity(getAppCompatActivity())
-                .setSourceView(actionMore)
+                .setSourceView(browserActivity.getActionMoreView())
                 .setListener(this::onOverflowMenuClick)
                 .setCancelable(true)
                 .setItems(items)
                 .create();
-        urlEditText.setOnEditorActionListener(
+        browserActivity.getEditTed().setOnEditorActionListener(
                 (v, actionId, event) -> {
                     if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO || actionId == EditorInfo.IME_ACTION_SEARCH) {
                         loadUrl();
@@ -248,7 +257,7 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
     private void onOverflowMenuClick(int id) {
         switch (id) {
             case R.id.actionHome:
-                loadUrl(Constants.URL_HOME);
+
                 break;
             case R.id.actionBookmark:
                 presenter.manageBookmark(webViewHelper.getCurrentPage());
@@ -267,9 +276,6 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
                 break;
             case R.id.actionBookmarks:
                 presenter.onBookmarksButtonClick();
-                break;
-            case R.id.actionHtml5:
-                loadUrl(Constants.URL_HTML5_TEST);
                 break;
             default:
                 break;
@@ -309,15 +315,12 @@ public class BrowserFragment extends Fragment implements BaseViewContract, Brows
         if (getActivity() != null) {
             ActivityUtils.hideKeyboard(getActivity());
         }
-        loadUrl(urlEditText.getText().toString());
+        loadUrl(browserActivity.getEditTed().getText().toString());
     }
 
     private void loadUrl(String url) {
         if (TextUtils.isEmpty(url)) {
-            url = Constants.URL_HOME;
-        }
-        if (Constants.URL_HOME.equals(url)) {
-            webViewHelper.clearStack();
+            return;
         }
         webViewHelper.loadUrl(url);
     }

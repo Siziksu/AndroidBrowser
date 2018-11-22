@@ -9,13 +9,15 @@ import io.reactivex.Single;
 
 public interface PreferencesClientContract {
 
-    Single<String> getLastVisited();
+    Single<String> getLastPageVisited();
+
+    Completable setPageVisited(String url);
+
+    void clearLastPageVisited();
 
     Completable manageBookmark(PageClient bookmark);
 
     Single<List<PageClient>> getBookmarks();
-
-    Completable setPageVisited(String url);
 
     Completable deleteBookmark(PageClient bookmark);
 }

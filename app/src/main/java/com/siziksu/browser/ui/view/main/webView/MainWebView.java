@@ -58,6 +58,8 @@ public class MainWebView extends WebView {
         getSettings().setSupportZoom(true);
         getSettings().setBuiltInZoomControls(true);
         getSettings().setDisplayZoomControls(false);
+        getSettings().setAllowFileAccessFromFileURLs(true);
+        getSettings().setAllowUniversalAccessFromFileURLs(true);
 
         CookieManager.getInstance().setAcceptThirdPartyCookies(this, true);
     }
@@ -83,19 +85,6 @@ public class MainWebView extends WebView {
 
     public void setProgressListener(Consumer<Integer> progress) {
         mainWebViewChromeClient.setListeners(progress);
-    }
-
-    public void clearStack() {
-        urlValidated = Constants.URL_HOME;
-        mainWebViewClient.clearStack();
-    }
-
-    public boolean isHome() {
-        return Constants.URL_HOME.equals(urlValidated);
-    }
-
-    public boolean isHomeElement(String url) {
-        return url == null || url.contains(Constants.ASSETS_URL_PREFIX);
     }
 
     @Override

@@ -19,13 +19,17 @@
         android:hardwareAccelerated="true"
         tools:ignore="AllowBackup">
         <activity
-            android:name=".ui.view.main.MainActivity"
+            android:name=".ui.view.launch.LaunchActivity"
             android:windowSoftInputMode="stateHidden"
             android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.view.main.MainActivity"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
