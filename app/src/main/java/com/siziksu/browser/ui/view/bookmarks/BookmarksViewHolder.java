@@ -11,7 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-class BookmarksViewHolder extends RecyclerView.ViewHolder {
+final class BookmarksViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.bookmarksTitle)
     TextView bookmarksTitle;

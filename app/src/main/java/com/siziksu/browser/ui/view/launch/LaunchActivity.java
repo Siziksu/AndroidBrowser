@@ -5,11 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.siziksu.browser.App;
 import com.siziksu.browser.R;
-import com.siziksu.browser.presenter.BaseViewContract;
 import com.siziksu.browser.presenter.launch.LaunchPresenterContract;
+import com.siziksu.browser.presenter.launch.LaunchViewContract;
 import com.siziksu.browser.ui.common.utils.ActivityUtils;
 
 import javax.inject.Inject;
@@ -19,15 +20,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public final class LaunchActivity extends AppCompatActivity implements BaseViewContract {
+public final class LaunchActivity extends AppCompatActivity implements LaunchViewContract {
 
     @BindView(R.id.urlEditText)
     EditText urlEditText;
+    @BindView(R.id.versionTextView)
+    TextView versionTextView;
 
     @Inject
-    LaunchPresenterContract<BaseViewContract> presenter;
-
-    private boolean alreadyStarted;
+    LaunchPresenterContract<LaunchViewContract> presenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,13 +46,16 @@ public final class LaunchActivity extends AppCompatActivity implements BaseViewC
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        urlEditText.setText("");
+        presenter.clearLastPageVisited();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         presenter.onResume(this);
-        if (!alreadyStarted) {
-            alreadyStarted = true;
-            presenter.init();
-        }
     }
 
     @Override
@@ -65,12 +69,17 @@ public final class LaunchActivity extends AppCompatActivity implements BaseViewC
         presenter.onUrlEditTextClick(urlEditText);
     }
 
-    private void initializeViews() {
-        ButterKnife.bind(this);
-    }
-
     @Override
     public AppCompatActivity getAppCompatActivity() {
         return this;
+    }
+
+    @Override
+    public void setVersionText(String version) {
+        versionTextView.setText(version);
+    }
+
+    private void initializeViews() {
+        ButterKnife.bind(this);
     }
 }

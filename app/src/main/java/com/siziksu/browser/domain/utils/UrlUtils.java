@@ -1,25 +1,33 @@
-package com.siziksu.browser.common.utils;
+package com.siziksu.browser.domain.utils;
+
+import android.annotation.SuppressLint;
 
 import com.siziksu.browser.common.Constants;
+import com.siziksu.browser.common.function.Consumer;
+import com.siziksu.browser.common.utils.Print;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class UrlUtils {
+import javax.inject.Inject;
 
-    private UrlUtils() {}
+public final class UrlUtils {
 
-    public static String getUrlToShow(String url) {
-        return url;
+    @Inject
+    public UrlUtils() {}
+
+    public boolean isDataImage(String url) {
+        return url != null && url.startsWith("data:image");
     }
 
-    public static String getUrlToShowForBookmarks(String url) {
-        return url;
+    @SuppressLint("CheckResult")
+    public void filterUrl(String string, Consumer<String> result) {
+        result.accept(validateUrl(string));
     }
 
-    public static String validateUrl(String string) {
+    private String validateUrl(String string) {
         if (string == null) { return null; }
         if (string.startsWith("file:///") || string.startsWith("data:")) { return string; }
         if (string.contains(".")) {
@@ -40,11 +48,7 @@ public class UrlUtils {
         }
     }
 
-    public static boolean isDataImage(String url) {
-        return url != null && url.startsWith("data:image");
-    }
-
-    private static String googleSearch(String userSearch) {
-        return "https://" + Constants.URL_GOOGLE_SEARCH + "?q=" + userSearch + Constants.GOOGLE_SAFE_SEARCH;
+    private String googleSearch(String userSearch) {
+        return "https://" + Constants.URL_GOOGLE_SEARCH + "?q=" + userSearch;
     }
 }

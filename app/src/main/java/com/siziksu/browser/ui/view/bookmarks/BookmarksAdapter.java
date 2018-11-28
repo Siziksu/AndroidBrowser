@@ -10,12 +10,11 @@ import android.view.ViewGroup;
 
 import com.siziksu.browser.R;
 import com.siziksu.browser.common.function.Consumer;
-import com.siziksu.browser.common.utils.UrlUtils;
 import com.siziksu.browser.ui.common.model.Page;
 
 import java.util.List;
 
-class BookmarksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements BookmarksAdapterContract {
+final class BookmarksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements BookmarksAdapterContract {
 
     private Context context;
     private Consumer<Page> itemClick;
@@ -59,7 +58,7 @@ class BookmarksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> imp
             BookmarksViewHolder localHolder = (BookmarksViewHolder) holder;
             Page item = manager.getItems().get(position);
             localHolder.bookmarksTitle.setText(item.titleToShow);
-            localHolder.bookmarksUrl.setText(UrlUtils.getUrlToShowForBookmarks(item.url));
+            localHolder.bookmarksUrl.setText(item.url);
         }
     }
 

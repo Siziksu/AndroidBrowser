@@ -12,7 +12,7 @@ import com.siziksu.browser.ui.view.main.menu.dialog.OverflowMenuDialogFragment;
 
 import java.util.List;
 
-public class OverflowMenu {
+public final class OverflowMenu {
 
     private AppCompatActivity activity;
     private View view;

@@ -29,7 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class OverflowMenuDialogFragment extends DialogFragment {
+public final class OverflowMenuDialogFragment extends DialogFragment {
 
     @BindView(R.id.actionHome)
     ImageView actionHome;

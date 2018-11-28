@@ -1,25 +1,36 @@
 package com.siziksu.browser.presenter.main;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.view.ContextMenu;
+import android.view.View;
+
+import com.siziksu.browser.common.function.Action;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.presenter.BasePresenterContract;
 import com.siziksu.browser.presenter.BaseViewContract;
-import com.siziksu.browser.ui.common.model.Page;
+import com.siziksu.browser.ui.common.model.WebViewBack;
+import com.siziksu.browser.ui.view.main.webView.MainWebView;
 
 public interface BrowserPresenterContract<V extends BaseViewContract> extends BasePresenterContract<V> {
 
-    void setPageVisited(String url);
+    void init(MainWebView webView, View actionMoreView, Action onHomeClickListener, Action clearTextListener);
 
-    void getLastPageVisited(Consumer<String> lastVisited);
+    void setPageListeners(Consumer<String> onPageStarted, Consumer<String> onPageFinished);
 
-    void clearLastPageVisited();
+    void setProgressListener(Consumer<Integer> progress);
 
-    void download(String url);
+    void setIntentData(Uri data);
 
-    void manageBookmark(Page page);
+    void webViewCanGoBack(Consumer<WebViewBack> callback);
 
-    void isUrlBookmarked(String url, Consumer<Boolean> isBookmarked);
+    void onRefresh(Action stopRefreshing);
 
-    void copyToClipboard(String title, String text);
+    void onActivityResult(int requestCode, int resultCode, Intent data);
 
-    void onBookmarksButtonClick();
+    void onActionMoreClick(Action onMenuShown, Action onMenuDissmiss);
+
+    void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo);
+
+    void onKeyboardGoClick(String url);
 }

@@ -36,6 +36,7 @@ public final class MainActivity extends AppCompatActivity implements BaseViewCon
 
     private BrowserFragment fragment;
     private boolean isMenuShowing;
+    private boolean isKeyboardGoClicked;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,16 +70,13 @@ public final class MainActivity extends AppCompatActivity implements BaseViewCon
         if (fragment != null) {
             fragment.webViewCanGoBack(callback -> {
                 if (!callback.webViewCanGoBack && callback.isExternalLink) {
-                    presenter.clearLastPageVisited();
                     finish();
                 } else if (!callback.webViewCanGoBack) {
-                    goBack();
-                } else {
-                    presenter.clearLastPageVisited();
+                    super.onBackPressed();
                 }
             });
         } else {
-            goBack();
+            super.onBackPressed();
         }
     }
 
@@ -100,7 +98,13 @@ public final class MainActivity extends AppCompatActivity implements BaseViewCon
     }
 
     @Override
-    public EditText getEditTed() {
+    public void clearEditText() {
+        urlEditText.setText("");
+        urlEditText.requestFocus();
+    }
+
+    @Override
+    public EditText getEditText() {
         return urlEditText;
     }
 
@@ -120,6 +124,11 @@ public final class MainActivity extends AppCompatActivity implements BaseViewCon
     }
 
     @Override
+    public void keyboardGoClicked() {
+        isKeyboardGoClicked = true;
+    }
+
+    @Override
     public AppCompatActivity getAppCompatActivity() {
         return this;
     }
@@ -131,18 +140,17 @@ public final class MainActivity extends AppCompatActivity implements BaseViewCon
         }
     }
 
-    private void goBack() {
-        presenter.clearLastPageVisited();
-        super.onBackPressed();
-    }
-
     private void initializeViews() {
         ButterKnife.bind(this);
-        KeyboardVisibilityEvent.setEventListener(this, isOpen -> {
-            if (!isOpen) {
-                presenter.isLastPageVisitedStored(isLastPageVisitedStored -> {
-                    if (!isMenuShowing && !isLastPageVisitedStored) { super.onBackPressed(); }
-                });
+        KeyboardVisibilityEvent.setEventListener(this, keyboardIsVisible -> {
+            if (!isKeyboardGoClicked) {
+                if (!keyboardIsVisible) {
+                    presenter.isLastPageVisitedStored(isLastPageVisitedStored -> {
+                        if (!isMenuShowing && !isLastPageVisitedStored) {
+                            super.onBackPressed();
+                        }
+                    });
+                }
             }
         });
     }

@@ -2,11 +2,6 @@
 <resources>
     <string name="app_name">Browser</string>
     <string name="search_url">Search or type a url</string>
-    <string name="loading">Loading…</string>
-    <string name="action_bookmark">Bookmark</string>
-    <string name="action_reload">Reload</string>
-    <string name="action_html5">Html 5 Test</string>
-    <string name="action_forward">Go forward</string>
     <string name="download_image">Download image</string>
     <string name="copy_url">Copy url to clipboard</string>
     <string name="visit_url">Visit url</string>
@@ -16,6 +11,4 @@
     <string name="bookmarks">Bookmarks</string>
     <string name="desktop_site">Desktop site</string>
     <string name="google">Google</string>
-    <string name="html5_check">Html5 check</string>
-    <string name="simple_activity_transition">simple_activity_transition</string>
 </resources>

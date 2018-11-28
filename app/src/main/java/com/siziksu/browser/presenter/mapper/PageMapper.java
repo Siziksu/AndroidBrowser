@@ -1,4 +1,4 @@
-package com.siziksu.browser.ui.common.mapper;
+package com.siziksu.browser.presenter.mapper;
 
 import com.siziksu.browser.common.mapper.Mapper;
 import com.siziksu.browser.domain.model.PageDomain;

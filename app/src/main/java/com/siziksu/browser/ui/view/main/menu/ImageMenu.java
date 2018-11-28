@@ -6,7 +6,7 @@ import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.ui.view.main.menu.dialog.ImageMenuDialogFragment;
 
-public class ImageMenu {
+public final class ImageMenu {
 
     private AppCompatActivity activity;
     private Consumer<Integer> listener;

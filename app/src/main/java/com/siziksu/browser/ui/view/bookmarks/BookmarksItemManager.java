@@ -5,7 +5,7 @@ import com.siziksu.browser.ui.common.model.Page;
 import java.util.ArrayList;
 import java.util.List;
 
-class BookmarksItemManager implements BookmarksItemManagerContract {
+final class BookmarksItemManager implements BookmarksItemManagerContract {
 
     private List<Page> items = new ArrayList<>();
 

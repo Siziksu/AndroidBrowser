@@ -12,7 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-class OverflowMenuViewHolderWithCheckBox extends RecyclerView.ViewHolder {
+final class OverflowMenuViewHolderWithCheckBox extends RecyclerView.ViewHolder {
 
     @BindView(R.id.overflowMenuItem)
     View overflowMenuItem;

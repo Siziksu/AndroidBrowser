@@ -20,7 +20,7 @@ import com.siziksu.browser.common.function.Consumer;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LinkMenuDialogFragment extends DialogFragment {
+public final class LinkMenuDialogFragment extends DialogFragment {
 
     private int x;
     private int y;

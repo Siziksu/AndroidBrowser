@@ -7,16 +7,21 @@ import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import com.siziksu.browser.common.Constants;
+import com.siziksu.browser.App;
 import com.siziksu.browser.common.function.Consumer;
-import com.siziksu.browser.common.utils.UrlUtils;
+import com.siziksu.browser.presenter.main.WebViewPresenterContract;
 import com.siziksu.browser.ui.common.model.Page;
 import com.siziksu.browser.ui.view.main.webView.clients.MainWebChromeClient;
 import com.siziksu.browser.ui.view.main.webView.clients.MainWebViewClient;
 
-public class MainWebView extends WebView {
+import javax.inject.Inject;
+
+public final class MainWebView extends WebView {
 
     private static final String DESKTOP_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36";
+
+    @Inject
+    WebViewPresenterContract presenter;
 
     private MainWebChromeClient mainWebViewChromeClient;
     private MainWebViewClient mainWebViewClient;
@@ -34,6 +39,7 @@ public class MainWebView extends WebView {
 
     public MainWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        App.get().getApplicationComponent().inject(this);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -89,15 +95,11 @@ public class MainWebView extends WebView {
 
     @Override
     public void loadUrl(String userSearch) {
-        if (userSearch.length() == 0) {
-            userSearch = Constants.URL_GOOGLE_SEARCH;
-        }
-        String url = UrlUtils.validateUrl(userSearch);
-        if (url == null) {
-            url = Constants.URL_GOOGLE_SEARCH;
-        }
-        urlValidated = url;
-        super.loadUrl(url);
+        presenter.filterUrl(userSearch, urlFiltered -> {
+            urlValidated = urlFiltered;
+            super.stopLoading();
+            super.loadUrl(urlFiltered);
+        });
     }
 
     public String getUrlValidated() {

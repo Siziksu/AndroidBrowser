@@ -9,7 +9,6 @@ import com.siziksu.browser.R;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.domain.main.MainDomainContract;
 import com.siziksu.browser.presenter.BaseViewContract;
-import com.siziksu.browser.ui.common.manager.PermissionsManager;
 import com.siziksu.browser.ui.common.router.RouterContract;
 import com.siziksu.browser.ui.view.main.BrowserFragment;
 
@@ -31,7 +30,6 @@ public final class MainPresenter implements MainPresenterContract<BaseViewContra
     @Override
     public void onCreate(Activity activity) {
         if (activity == null) { return; }
-        PermissionsManager.checkPermissions(activity);
         router.loadFragment((AppCompatActivity) activity, R.id.webContent, new BrowserFragment());
     }
 
@@ -48,13 +46,6 @@ public final class MainPresenter implements MainPresenterContract<BaseViewContra
         view = null;
         if (domain != null) {
             domain.unregister();
-        }
-    }
-
-    @Override
-    public void clearLastPageVisited() {
-        if (domain != null) {
-            domain.clearLastPageVisited();
         }
     }
 

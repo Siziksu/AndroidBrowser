@@ -14,7 +14,7 @@ import com.siziksu.browser.ui.common.model.OverflowMenuItem;
 
 import java.util.List;
 
-class OverflowMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OverflowMenuAdapterContract {
+final class OverflowMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OverflowMenuAdapterContract {
 
     private Context context;
     private Consumer<Integer> listener;

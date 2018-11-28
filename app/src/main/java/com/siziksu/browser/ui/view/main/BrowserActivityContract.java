@@ -10,11 +10,17 @@ public interface BrowserActivityContract {
 
     void onAttach(BrowserFragment fragment);
 
-    EditText getEditTed();
+    void clearEditText();
+
+    EditText getEditText();
 
     View getActionMoreView();
 
     void onMenuShow();
 
     void onMenuDismiss();
+
+    void keyboardGoClicked();
+
+    void finish();
 }

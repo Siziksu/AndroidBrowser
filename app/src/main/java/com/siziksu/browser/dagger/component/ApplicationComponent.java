@@ -11,14 +11,18 @@ import com.siziksu.browser.domain.bookmarks.BookmarksDomain;
 import com.siziksu.browser.domain.launch.LaunchDomain;
 import com.siziksu.browser.domain.main.BrowserDomain;
 import com.siziksu.browser.domain.main.MainDomain;
+import com.siziksu.browser.domain.main.MainWebViewDomain;
+import com.siziksu.browser.domain.utils.UrlUtils;
 import com.siziksu.browser.presenter.bookmarks.BookmarksPresenter;
 import com.siziksu.browser.presenter.launch.LaunchPresenter;
 import com.siziksu.browser.presenter.main.BrowserPresenter;
 import com.siziksu.browser.presenter.main.MainPresenter;
+import com.siziksu.browser.presenter.main.MainWebViewPresenter;
 import com.siziksu.browser.ui.view.bookmarks.BookmarksActivity;
 import com.siziksu.browser.ui.view.launch.LaunchActivity;
 import com.siziksu.browser.ui.view.main.BrowserFragment;
 import com.siziksu.browser.ui.view.main.MainActivity;
+import com.siziksu.browser.ui.view.main.webView.MainWebView;
 
 import javax.inject.Singleton;
 
@@ -64,4 +68,12 @@ public interface ApplicationComponent {
     void inject(Repository target);
 
     void inject(PreferencesClient target);
+
+    void inject(UrlUtils target);
+
+    void inject(MainWebView target);
+
+    void inject(MainWebViewPresenter target);
+
+    void inject(MainWebViewDomain target);
 }

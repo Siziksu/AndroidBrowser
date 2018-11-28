@@ -9,7 +9,7 @@ import android.webkit.WebView;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.ui.common.model.Page;
 
-public class WebViewHelper {
+public final class WebViewHelper {
 
     private MainWebView webView;
     private int x;
@@ -51,7 +51,6 @@ public class WebViewHelper {
     }
 
     public void loadUrl(String userSearch) {
-        webView.stopLoading();
         webView.loadUrl(userSearch);
     }
 

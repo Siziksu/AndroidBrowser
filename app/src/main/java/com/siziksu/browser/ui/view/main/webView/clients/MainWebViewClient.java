@@ -17,16 +17,20 @@ import java.util.Map;
 
 public class MainWebViewClient extends WebViewClient {
 
+    private static final long HALF_SECOND = 500;
+
     private Consumer<String> onPageStarted;
     private Consumer<String> onPageFinished;
     private Consumer<String> pageVisited;
     private Page page = new Page();
+    private String currentUrl;
 
     public MainWebViewClient() {}
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        view.loadUrl(url);
+        if (url.toLowerCase().equals(currentUrl)) { return false; }
+        view.postDelayed(() -> view.loadUrl(url), HALF_SECOND);
         return true;
     }
 
@@ -38,6 +42,7 @@ public class MainWebViewClient extends WebViewClient {
 
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
+        currentUrl = url.toLowerCase();
         onPageStarted(view);
     }
 
@@ -49,14 +54,12 @@ public class MainWebViewClient extends WebViewClient {
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
         Print.error("Internet connection error, error code: " + error.getErrorCode() + ", description: " + error.getDescription());
-        super.onReceivedError(view, request, error);
     }
 
     @Override
     public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
         Print.error("Http error, status code: " + errorResponse.getStatusCode() + ", url: " + view.getUrl());
         printErrorHeaders(errorResponse);
-        super.onReceivedHttpError(view, request, errorResponse);
     }
 
     public void setPageListeners(Consumer<String> onPageStarted, Consumer<String> onPageFinished, Consumer<String> pageVisited) {

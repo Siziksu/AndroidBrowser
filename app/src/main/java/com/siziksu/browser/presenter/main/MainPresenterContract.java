@@ -6,7 +6,5 @@ import com.siziksu.browser.presenter.BaseViewContract;
 
 public interface MainPresenterContract<V extends BaseViewContract> extends BasePresenterContract<V> {
 
-    void clearLastPageVisited();
-
     void isLastPageVisitedStored(Consumer<Boolean> result);
 }

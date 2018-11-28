@@ -5,7 +5,7 @@ import com.siziksu.browser.ui.common.model.OverflowMenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
-class OverflowMenuItemManager implements OverflowMenuItemManagerContract {
+final class OverflowMenuItemManager implements OverflowMenuItemManagerContract {
 
     private List<OverflowMenuItem> items = new ArrayList<>();
 

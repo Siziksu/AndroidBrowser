@@ -10,9 +10,9 @@ import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.common.utils.CollectionsUtils;
 import com.siziksu.browser.domain.bookmarks.BookmarksDomainContract;
 import com.siziksu.browser.presenter.BaseViewContract;
+import com.siziksu.browser.presenter.mapper.PageMapper;
 import com.siziksu.browser.ui.common.dialog.DialogYesNo;
 import com.siziksu.browser.ui.common.manager.PermissionsManager;
-import com.siziksu.browser.ui.common.mapper.PageMapper;
 import com.siziksu.browser.ui.common.model.Page;
 
 import java.util.ArrayList;
@@ -66,14 +66,13 @@ public final class BookmarksPresenter implements BookmarksPresenterContract<Base
 
     @Override
     public void deleteBookmark(Page page, Action result) {
-        DialogYesNo fragment = new DialogYesNo();
-        fragment.setAcceptCallback(() -> {
+        new DialogYesNo().setAcceptCallback(() -> {
             if (domain == null) { return; }
             domain.deleteBookmark(new PageMapper().unMap(page), () -> {
                 if (view == null) { return; }
                 result.execute();
             });
-        }).setMessage(view.getAppCompatActivity().getString(R.string.are_you_sure));
-        fragment.show(view.getAppCompatActivity().getSupportFragmentManager(), Constants.YES_NO_DIALOG_FRAGMENT_TAG);
+        }).setMessage(view.getAppCompatActivity().getString(R.string.are_you_sure))
+                .show(view.getAppCompatActivity().getSupportFragmentManager(), Constants.YES_NO_DIALOG_FRAGMENT_TAG);
     }
 }

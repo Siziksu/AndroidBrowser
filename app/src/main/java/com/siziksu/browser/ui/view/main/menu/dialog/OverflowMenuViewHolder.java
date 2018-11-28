@@ -11,7 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-class OverflowMenuViewHolder extends RecyclerView.ViewHolder {
+final class OverflowMenuViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.overflowMenuItem)
     View overflowMenuItem;

@@ -8,6 +8,8 @@ import com.siziksu.browser.domain.main.BrowserDomain;
 import com.siziksu.browser.domain.main.BrowserDomainContract;
 import com.siziksu.browser.domain.main.MainDomain;
 import com.siziksu.browser.domain.main.MainDomainContract;
+import com.siziksu.browser.domain.main.MainWebViewDomain;
+import com.siziksu.browser.domain.main.MainWebViewDomainContract;
 
 import dagger.Module;
 import dagger.Provides;
@@ -28,6 +30,11 @@ public final class DomainModule {
     @Provides
     BrowserDomainContract providesBrowserDomain() {
         return new BrowserDomain();
+    }
+
+    @Provides
+    MainWebViewDomainContract providesWebViewDomain() {
+        return new MainWebViewDomain();
     }
 
     @Provides

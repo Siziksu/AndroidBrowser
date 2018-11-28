@@ -3,7 +3,7 @@ package com.siziksu.browser.ui.common.manager;
 import android.app.Activity;
 import android.support.v4.app.ActivityCompat;
 
-public class PermissionsManager {
+public final class PermissionsManager {
 
     private PermissionsManager() {}
 

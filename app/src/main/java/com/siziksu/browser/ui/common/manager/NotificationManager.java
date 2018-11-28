@@ -12,7 +12,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.siziksu.browser.R;
 
-public class NotificationManager {
+public final class NotificationManager {
 
     private static final String CHANNEL_1 = "10001";
     private static final int NOTIFICATION_ID = 1001;

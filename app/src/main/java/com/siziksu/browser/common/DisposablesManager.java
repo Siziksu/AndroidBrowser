@@ -2,7 +2,7 @@ package com.siziksu.browser.common;
 
 import io.reactivex.disposables.Disposable;
 
-public class DisposablesManager {
+public final class DisposablesManager {
 
     private Disposable[] disposables;
 

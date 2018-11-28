@@ -7,7 +7,7 @@ import com.siziksu.browser.presenter.BaseViewContract;
 
 public interface LaunchPresenterContract<V extends BaseViewContract> extends BasePresenterContract<V> {
 
-    void init();
-
     void onUrlEditTextClick(EditText urlEditText);
+
+    void clearLastPageVisited();
 }

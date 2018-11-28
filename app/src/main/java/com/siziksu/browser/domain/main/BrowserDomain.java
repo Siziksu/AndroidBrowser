@@ -8,6 +8,7 @@ import com.siziksu.browser.data.RepositoryContract;
 import com.siziksu.browser.data.model.PageData;
 import com.siziksu.browser.domain.mapper.PageMapper;
 import com.siziksu.browser.domain.model.PageDomain;
+import com.siziksu.browser.domain.utils.UrlUtils;
 
 import javax.inject.Inject;
 
@@ -18,6 +19,8 @@ public final class BrowserDomain implements BrowserDomainContract {
 
     @Inject
     RepositoryContract repository;
+    @Inject
+    UrlUtils urlUtils;
 
     private DisposablesManager disposablesManager;
 
@@ -59,12 +62,6 @@ public final class BrowserDomain implements BrowserDomainContract {
     }
 
     @Override
-    public void clearLastPageVisited() {
-        if (repository == null) { return; }
-        repository.clearLastPageVisited();
-    }
-
-    @Override
     public void manageBookmark(PageDomain bookmark) {
         if (repository == null) { return; }
         disposablesManager.add(2, repository.manageBookmark(new PageMapper().unMap(bookmark))
@@ -95,4 +92,8 @@ public final class BrowserDomain implements BrowserDomainContract {
         );
     }
 
+    @Override
+    public void isDataImage(String url, Consumer<Boolean> result) {
+        result.accept(urlUtils.isDataImage(url));
+    }
 }
