@@ -96,8 +96,9 @@ public final class OverflowMenuDialogFragment extends DialogFragment {
 
     @OnClick({R.id.actionHome, R.id.actionForward, R.id.actionBookmark, R.id.actionReload})
     public void onItemClick(View view) {
-        if (listener == null) { return; }
-        listener.accept(view.getId());
+        if (listener != null) {
+            listener.accept(view.getId());
+        }
         dismiss();
     }
 

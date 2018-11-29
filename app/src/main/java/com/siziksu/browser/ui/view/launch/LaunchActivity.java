@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public final class LaunchActivity extends AppCompatActivity implements LaunchViewContract {
@@ -67,6 +68,12 @@ public final class LaunchActivity extends AppCompatActivity implements LaunchVie
     @OnClick(R.id.urlEditText)
     public void onClick() {
         presenter.onUrlEditTextClick(urlEditText);
+    }
+
+    @OnLongClick(R.id.urlEditText)
+    public boolean onLongClick() {
+        presenter.onUrlEditTextClick(urlEditText);
+        return true;
     }
 
     @Override

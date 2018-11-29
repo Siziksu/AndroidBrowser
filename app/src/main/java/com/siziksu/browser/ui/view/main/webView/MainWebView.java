@@ -9,6 +9,7 @@ import android.webkit.WebView;
 
 import com.siziksu.browser.App;
 import com.siziksu.browser.common.function.Consumer;
+import com.siziksu.browser.presenter.main.FragmentManagerSupplier;
 import com.siziksu.browser.presenter.main.WebViewPresenterContract;
 import com.siziksu.browser.ui.common.model.Page;
 import com.siziksu.browser.ui.view.main.webView.clients.MainWebChromeClient;
@@ -76,6 +77,10 @@ public final class MainWebView extends WebView {
         getSettings().setUseWideViewPort(enabled);
         getSettings().setUserAgentString(enabled ? DESKTOP_AGENT : null);
         reload();
+    }
+
+    public void setFragmentManagerSupplier(FragmentManagerSupplier fragmentManagerSupplier) {
+        mainWebViewClient.setFragmentManagerSupplier(fragmentManagerSupplier);
     }
 
     public void setPageListeners(Consumer<String> onPageStarted, Consumer<String> onPageFinished, Consumer<String> pageVisited) {

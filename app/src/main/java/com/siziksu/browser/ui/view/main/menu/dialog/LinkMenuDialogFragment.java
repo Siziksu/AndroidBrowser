@@ -55,8 +55,9 @@ public final class LinkMenuDialogFragment extends DialogFragment {
 
     @OnClick({R.id.actionVisitUrl, R.id.actionCopyUrl})
     public void onItemClick(View view) {
-        if (listener == null) { return; }
-        listener.accept(view.getId());
+        if (listener != null) {
+            listener.accept(view.getId());
+        }
         dismiss();
     }
 

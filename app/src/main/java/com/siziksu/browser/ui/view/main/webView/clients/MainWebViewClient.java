@@ -2,6 +2,7 @@ package com.siziksu.browser.ui.view.main.webView.clients;
 
 import android.graphics.Bitmap;
 import android.net.http.SslError;
+import android.webkit.HttpAuthHandler;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -9,9 +10,12 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.common.utils.Print;
+import com.siziksu.browser.presenter.main.FragmentManagerSupplier;
 import com.siziksu.browser.ui.common.model.Page;
+import com.siziksu.browser.ui.view.main.menu.dialog.LoginDialogFragment;
 
 import java.util.Map;
 
@@ -24,6 +28,7 @@ public class MainWebViewClient extends WebViewClient {
     private Consumer<String> pageVisited;
     private Page page = new Page();
     private String currentUrl;
+    private FragmentManagerSupplier fragmentManagerSupplier;
 
     public MainWebViewClient() {}
 
@@ -60,6 +65,19 @@ public class MainWebViewClient extends WebViewClient {
     public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
         Print.error("Http error, status code: " + errorResponse.getStatusCode() + ", url: " + view.getUrl());
         printErrorHeaders(errorResponse);
+    }
+
+    @Override
+    public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
+        LoginDialogFragment fragment = new LoginDialogFragment();
+        fragment.setListener(credentials -> handler.proceed(credentials.user, credentials.password));
+        fragment.setDismissListener(() -> super.onReceivedHttpAuthRequest(view, handler, host, realm));
+        fragment.setCancelable(false);
+        fragment.show(fragmentManagerSupplier.supplySupportFragmentManager(), Constants.CREDENTIALS_POPUP);
+    }
+
+    public void setFragmentManagerSupplier(FragmentManagerSupplier fragmentManagerSupplier) {
+        this.fragmentManagerSupplier = fragmentManagerSupplier;
     }
 
     public void setPageListeners(Consumer<String> onPageStarted, Consumer<String> onPageFinished, Consumer<String> pageVisited) {

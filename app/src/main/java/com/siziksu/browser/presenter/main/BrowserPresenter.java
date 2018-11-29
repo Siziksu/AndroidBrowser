@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.View;
@@ -36,7 +37,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public final class BrowserPresenter implements BrowserPresenterContract<BaseViewContract> {
+public final class BrowserPresenter implements BrowserPresenterContract<BaseViewContract>, FragmentManagerSupplier {
 
     private static final String URL = "url";
 
@@ -76,13 +77,13 @@ public final class BrowserPresenter implements BrowserPresenterContract<BaseView
     @Override
     public void onDestroy() {
         view = null;
+        webViewHelper.onDestroy();
         domain.unregister();
     }
 
     @Override
     public void init(MainWebView webView, View actionMoreView, Action onHomeClickListener, Action clearTextListener) {
         webViewHelper = new WebViewHelper(webView);
-        webViewHelper.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> download(url));
         if (view != null) {
             webViewHelper.init(view.getAppCompatActivity());
             imageMenu = new ImageMenu.Builder()
@@ -106,6 +107,8 @@ public final class BrowserPresenter implements BrowserPresenterContract<BaseView
                     .setCancelable(true)
                     .setItems(items)
                     .create();
+            webViewHelper.setFragmentManagerSupplier(this);
+            webViewHelper.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> download(url));
         }
     }
 
@@ -197,6 +200,11 @@ public final class BrowserPresenter implements BrowserPresenterContract<BaseView
             default:
                 break;
         }
+    }
+
+    @Override
+    public FragmentManager supplySupportFragmentManager() {
+        return view.getAppCompatActivity().getSupportFragmentManager();
     }
 
     @Override

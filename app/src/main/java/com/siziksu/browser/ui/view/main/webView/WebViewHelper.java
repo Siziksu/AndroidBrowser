@@ -7,6 +7,7 @@ import android.webkit.DownloadListener;
 import android.webkit.WebView;
 
 import com.siziksu.browser.common.function.Consumer;
+import com.siziksu.browser.presenter.main.FragmentManagerSupplier;
 import com.siziksu.browser.ui.common.model.Page;
 
 public final class WebViewHelper {
@@ -29,9 +30,20 @@ public final class WebViewHelper {
         });
     }
 
+    public void onDestroy() {
+        if (webView != null) {
+            webView.destroy();
+            webView = null;
+        }
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     public void init(Context context) {
         webView.init(context);
+    }
+
+    public void setFragmentManagerSupplier(FragmentManagerSupplier fragmentManagerSupplier) {
+        webView.setFragmentManagerSupplier(fragmentManagerSupplier);
     }
 
     public void setPageListeners(Consumer<String> onPageStarted, Consumer<String> onPageFinished, Consumer<String> pageVisited) {

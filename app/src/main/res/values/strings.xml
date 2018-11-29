@@ -11,4 +11,7 @@
     <string name="bookmarks">Bookmarks</string>
     <string name="desktop_site">Desktop site</string>
     <string name="google">Google</string>
+    <string name="login">Login</string>
+    <string name="user">User</string>
+    <string name="password">Password</string>
 </resources>

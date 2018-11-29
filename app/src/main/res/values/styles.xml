@@ -15,6 +15,10 @@
     <style name="AppTheme" parent="AppTheme.Base" />
 
     <style name="AppTheme.AppCompatDialogStyle.NoTitle" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@null</item>
         <item name="windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
