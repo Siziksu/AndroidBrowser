@@ -38,16 +38,11 @@ public final class PreferencesClient implements PreferencesClientContract {
     }
 
     @Override
-    public Completable setPageVisited(String url) {
+    public Completable setLastPageVisited(String url) {
         return Completable.create(emitter -> {
             service.useDefaultSharedPreferences().applyValue(LAST_PAGE_VISITED_KEY, url);
             emitter.onComplete();
         });
-    }
-
-    @Override
-    public void clearLastPageVisited() {
-        service.useDefaultSharedPreferences().applyValue(LAST_PAGE_VISITED_KEY, "");
     }
 
     @Override

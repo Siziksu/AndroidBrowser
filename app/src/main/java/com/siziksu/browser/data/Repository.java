@@ -22,8 +22,8 @@ public final class Repository implements RepositoryContract {
     }
 
     @Override
-    public Completable setPageVisited(String url) {
-        return preferencesClient.setPageVisited(url);
+    public Completable setLastPageVisited(String url) {
+        return preferencesClient.setLastPageVisited(url);
     }
 
     @Override
@@ -32,8 +32,8 @@ public final class Repository implements RepositoryContract {
     }
 
     @Override
-    public void clearLastPageVisited() {
-        preferencesClient.clearLastPageVisited();
+    public Completable clearLastPageVisited() {
+        return preferencesClient.setLastPageVisited("");
     }
 
     @Override

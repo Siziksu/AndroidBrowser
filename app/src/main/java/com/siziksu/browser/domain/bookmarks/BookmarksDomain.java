@@ -19,8 +19,8 @@ public final class BookmarksDomain implements BookmarksDomainContract {
 
     @Inject
     RepositoryContract repository;
-
-    private DisposablesManager disposablesManager;
+    @Inject
+    DisposablesManager disposablesManager;
 
     public BookmarksDomain() {
         App.get().getApplicationComponent().inject(this);
@@ -28,7 +28,7 @@ public final class BookmarksDomain implements BookmarksDomainContract {
 
     @Override
     public void register() {
-        disposablesManager = new DisposablesManager(2);
+        disposablesManager.setSize(2);
     }
 
     @Override

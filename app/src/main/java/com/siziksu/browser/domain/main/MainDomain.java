@@ -15,8 +15,8 @@ public class MainDomain implements MainDomainContract {
 
     @Inject
     RepositoryContract repository;
-
-    private DisposablesManager disposablesManager;
+    @Inject
+    DisposablesManager disposablesManager;
 
     public MainDomain() {
         App.get().getApplicationComponent().inject(this);
@@ -24,7 +24,7 @@ public class MainDomain implements MainDomainContract {
 
     @Override
     public void register() {
-        disposablesManager = new DisposablesManager(1);
+        disposablesManager.setSize(1);
     }
 
     @Override

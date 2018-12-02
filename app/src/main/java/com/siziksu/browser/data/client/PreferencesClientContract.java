@@ -11,9 +11,7 @@ public interface PreferencesClientContract {
 
     Single<String> getLastPageVisited();
 
-    Completable setPageVisited(String url);
-
-    void clearLastPageVisited();
+    Completable setLastPageVisited(String url);
 
     Completable manageBookmark(PageClient bookmark);
 

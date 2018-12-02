@@ -1,12 +1,17 @@
 package com.siziksu.browser.common;
 
+import javax.inject.Inject;
+
 import io.reactivex.disposables.Disposable;
 
 public final class DisposablesManager {
 
     private Disposable[] disposables;
 
-    public DisposablesManager(int size) {
+    @Inject
+    public DisposablesManager() {}
+
+    public void setSize(int size) {
         disposables = new Disposable[size];
     }
 

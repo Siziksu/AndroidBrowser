@@ -6,7 +6,7 @@ import com.siziksu.browser.domain.model.PageDomain;
 
 public interface BrowserDomainContract extends BaseDomainContract {
 
-    void setPageVisited(String url);
+    void setLastPageVisited(String url);
 
     void getLastPageVisited(Consumer<String> result);
 

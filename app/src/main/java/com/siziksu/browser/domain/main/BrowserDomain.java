@@ -21,8 +21,8 @@ public final class BrowserDomain implements BrowserDomainContract {
     RepositoryContract repository;
     @Inject
     UrlUtils urlUtils;
-
-    private DisposablesManager disposablesManager;
+    @Inject
+    DisposablesManager disposablesManager;
 
     public BrowserDomain() {
         App.get().getApplicationComponent().inject(this);
@@ -30,7 +30,7 @@ public final class BrowserDomain implements BrowserDomainContract {
 
     @Override
     public void register() {
-        disposablesManager = new DisposablesManager(7);
+        disposablesManager.setSize(7);
     }
 
     @Override
@@ -39,9 +39,9 @@ public final class BrowserDomain implements BrowserDomainContract {
     }
 
     @Override
-    public void setPageVisited(String url) {
+    public void setLastPageVisited(String url) {
         if (repository == null) { return; }
-        disposablesManager.add(0, repository.setPageVisited(url)
+        disposablesManager.add(0, repository.setLastPageVisited(url)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {}, throwable -> Print.error("Error setting a visited page: " + throwable.getMessage(), throwable))

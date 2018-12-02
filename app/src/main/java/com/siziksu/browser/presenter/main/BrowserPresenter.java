@@ -308,7 +308,7 @@ public final class BrowserPresenter implements BrowserPresenterContract<BaseView
         if (domain == null) { return; }
         getLastPageVisited(last -> {
             if (last == null || !last.equals(url)) {
-                domain.setPageVisited(url);
+                domain.setLastPageVisited(url);
             }
         });
     }
