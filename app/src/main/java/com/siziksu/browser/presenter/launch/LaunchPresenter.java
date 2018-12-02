@@ -1,6 +1,7 @@
 package com.siziksu.browser.presenter.launch;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
 import android.widget.EditText;
@@ -46,6 +47,13 @@ public final class LaunchPresenter implements LaunchPresenterContract<LaunchView
         view = null;
         if (domain != null) {
             domain.unregister();
+        }
+    }
+
+    @Override
+    public void setIntentData(Uri data) {
+        if (data != null) {
+            router.goToMainActivity(view.getAppCompatActivity(), data.toString());
         }
     }
 

@@ -80,10 +80,10 @@ public final class BrowserFragment extends Fragment implements BaseViewContract,
         super.onResume();
         presenter.onResume(this);
         if (!alreadyStarted) {
-            initPresenter();
             alreadyStarted = true;
+            initPresenter();
             if (getActivity() != null) {
-                presenter.setIntentData(getActivity().getIntent().getData());
+                presenter.setIntentData(getActivity().getIntent().getExtras());
             }
         }
     }

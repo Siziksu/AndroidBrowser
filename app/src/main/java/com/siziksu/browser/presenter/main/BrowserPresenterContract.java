@@ -1,7 +1,7 @@
 package com.siziksu.browser.presenter.main;
 
 import android.content.Intent;
-import android.net.Uri;
+import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.View;
 
@@ -20,7 +20,7 @@ public interface BrowserPresenterContract<V extends BaseViewContract> extends Ba
 
     void setProgressListener(Consumer<Integer> progress);
 
-    void setIntentData(Uri data);
+    void setIntentData(Bundle bundle);
 
     void webViewCanGoBack(Consumer<WebViewBack> callback);
 

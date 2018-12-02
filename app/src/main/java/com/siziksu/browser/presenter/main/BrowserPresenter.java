@@ -5,7 +5,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.ContextMenu;
@@ -128,10 +128,10 @@ public final class BrowserPresenter implements BrowserPresenterContract<BaseView
     }
 
     @Override
-    public void setIntentData(Uri data) {
-        if (data != null) {
+    public void setIntentData(Bundle bundle) {
+        if (bundle != null && bundle.containsKey(Constants.EXTRA_KEY_EXTERNAL_LINK)) {
             isExternalLink = true;
-            loadUrl(data.toString());
+            loadUrl(bundle.getString(Constants.EXTRA_KEY_EXTERNAL_LINK));
         }
     }
 

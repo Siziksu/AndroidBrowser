@@ -26,8 +26,8 @@ public final class Router implements RouterContract {
     }
 
     @Override
-    public void goToMainActivity(AppCompatActivity activity) {
-        routerHelper.route(activity, MainActivity.class);
+    public void goToMainActivity(AppCompatActivity activity, String url) {
+        routerHelper.putString(Constants.EXTRA_KEY_EXTERNAL_LINK, url).route(activity, MainActivity.class);
     }
 
     @Override

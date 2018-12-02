@@ -31,6 +31,8 @@ public final class LaunchActivity extends AppCompatActivity implements LaunchVie
     @Inject
     LaunchPresenterContract<LaunchViewContract> presenter;
 
+    private boolean alreadyStarted;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +59,10 @@ public final class LaunchActivity extends AppCompatActivity implements LaunchVie
     protected void onResume() {
         super.onResume();
         presenter.onResume(this);
+        if (!alreadyStarted) {
+            alreadyStarted = true;
+            presenter.setIntentData(getIntent().getData());
+        }
     }
 
     @Override

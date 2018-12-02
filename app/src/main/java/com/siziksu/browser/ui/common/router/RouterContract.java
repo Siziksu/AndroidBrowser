@@ -8,7 +8,7 @@ public interface RouterContract {
 
     void loadFragment(AppCompatActivity activity, int container, Fragment fragment);
 
-    void goToMainActivity(AppCompatActivity activity);
+    void goToMainActivity(AppCompatActivity activity, String url);
 
     void goToMainActivity(AppCompatActivity activity, Bundle options);
 

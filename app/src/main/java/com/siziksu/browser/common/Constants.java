@@ -5,6 +5,7 @@ public final class Constants {
     public static final String TAG = "Browser";
 
     public static final String EXTRA_KEY_BOOKMARK = "bookmark";
+    public static final String EXTRA_KEY_EXTERNAL_LINK = "external_link";
 
     public static final int REQUEST_CODE_BOOKMARKS = 1001;
 
