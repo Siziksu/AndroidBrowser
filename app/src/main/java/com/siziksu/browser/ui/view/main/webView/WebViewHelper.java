@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import android.webkit.DownloadListener;
 import android.webkit.WebView;
 
+import com.siziksu.browser.common.function.Action;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.presenter.main.FragmentManagerSupplier;
 import com.siziksu.browser.ui.common.model.Page;
@@ -56,6 +57,10 @@ public final class WebViewHelper {
 
     public void setDownloadListener(DownloadListener listener) {
         webView.setDownloadListener(listener);
+    }
+
+    public void setFinishListener(Action finishListener) {
+        webView.setFinishListener(finishListener);
     }
 
     public void reload() {

@@ -136,7 +136,8 @@ public final class BrowserPresenter implements BrowserPresenterContract<BaseView
     }
 
     @Override
-    public void webViewCanGoBack(Consumer<WebViewBack> callback) {
+    public void webViewCanGoBack(Consumer<WebViewBack> callback, Action finishListener) {
+        webViewHelper.setFinishListener(finishListener);
         webViewBack.webViewCanGoBack = webViewHelper.webViewCanGoBack();
         webViewBack.isExternalLink = isExternalLink;
         callback.accept(webViewBack);

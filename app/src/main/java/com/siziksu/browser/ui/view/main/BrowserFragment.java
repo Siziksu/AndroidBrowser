@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 
 import com.siziksu.browser.App;
 import com.siziksu.browser.R;
+import com.siziksu.browser.common.function.Action;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.presenter.BaseViewContract;
 import com.siziksu.browser.presenter.main.BrowserPresenterContract;
@@ -95,8 +96,8 @@ public final class BrowserFragment extends Fragment implements BaseViewContract,
     }
 
     @Override
-    public void webViewCanGoBack(Consumer<WebViewBack> callback) {
-        presenter.webViewCanGoBack(callback);
+    public void webViewCanGoBack(Consumer<WebViewBack> callback, Action finishListener) {
+        presenter.webViewCanGoBack(callback, finishListener);
     }
 
     @Override

@@ -22,7 +22,7 @@ public interface BrowserPresenterContract<V extends BaseViewContract> extends Ba
 
     void setIntentData(Bundle bundle);
 
-    void webViewCanGoBack(Consumer<WebViewBack> callback);
+    void webViewCanGoBack(Consumer<WebViewBack> callback, Action finishListener);
 
     void onRefresh(Action stopRefreshing);
 

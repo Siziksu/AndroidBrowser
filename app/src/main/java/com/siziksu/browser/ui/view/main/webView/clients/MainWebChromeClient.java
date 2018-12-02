@@ -9,6 +9,15 @@ import com.siziksu.browser.common.function.Consumer;
 public class MainWebChromeClient extends WebChromeClient {
 
     private Consumer<Integer> progress;
+    private Consumer<String> blankListener;
+
+    @Override
+    public boolean onCreateWindow(WebView view, boolean dialog, boolean userGesture, android.os.Message resultMsg) {
+        WebView.HitTestResult result = view.getHitTestResult();
+        String data = result.getExtra();
+        blankListener.accept(data);
+        return false;
+    }
 
     @Override
     public void onProgressChanged(WebView view, int newProgress) {
@@ -24,7 +33,11 @@ public class MainWebChromeClient extends WebChromeClient {
         return true;
     }
 
-    public void setListeners(Consumer<Integer> progress) {
+    public void setProgressListener(Consumer<Integer> progress) {
         this.progress = progress;
+    }
+
+    public void setOnBlankLinkListener(Consumer<String> blankListener) {
+        this.blankListener = blankListener;
     }
 }
