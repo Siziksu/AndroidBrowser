@@ -1,4 +1,4 @@
-package com.siziksu.browser.common;
+package com.siziksu.browser.domain.manager;
 
 import javax.inject.Inject;
 

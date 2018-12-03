@@ -1,9 +1,9 @@
 package com.siziksu.browser.domain.launch;
 
 import com.siziksu.browser.App;
-import com.siziksu.browser.common.DisposablesManager;
 import com.siziksu.browser.common.utils.Print;
 import com.siziksu.browser.data.RepositoryContract;
+import com.siziksu.browser.domain.manager.DisposablesManager;
 
 import javax.inject.Inject;
 

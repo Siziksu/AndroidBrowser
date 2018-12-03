@@ -6,7 +6,6 @@ import com.siziksu.browser.App;
 import com.siziksu.browser.R;
 import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.common.function.Action;
-import com.siziksu.browser.common.utils.CollectionsUtils;
 import com.siziksu.browser.domain.bookmarks.BookmarksDomainContract;
 import com.siziksu.browser.presenter.mapper.PageMapper;
 import com.siziksu.browser.ui.common.dialog.DialogYesNo;
@@ -57,7 +56,7 @@ public final class BookmarksPresenter implements BookmarksPresenterContract<Book
         domain.getBookmarks(bookmarks -> {
             if (view == null) { return; }
             List<Page> list = new ArrayList<>(new PageMapper().map(bookmarks));
-            CollectionsUtils.sortUsersByName(list);
+            CollectionUtils.sortUsersByName(list);
             view.showBookmarks(list);
         });
     }

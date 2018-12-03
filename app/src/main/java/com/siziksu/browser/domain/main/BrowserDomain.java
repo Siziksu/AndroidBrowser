@@ -1,11 +1,11 @@
 package com.siziksu.browser.domain.main;
 
 import com.siziksu.browser.App;
-import com.siziksu.browser.common.DisposablesManager;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.common.utils.Print;
 import com.siziksu.browser.data.RepositoryContract;
 import com.siziksu.browser.data.model.PageData;
+import com.siziksu.browser.domain.manager.DisposablesManager;
 import com.siziksu.browser.domain.mapper.PageMapper;
 import com.siziksu.browser.domain.model.PageDomain;
 import com.siziksu.browser.domain.utils.UrlUtils;
