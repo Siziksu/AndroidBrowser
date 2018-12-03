@@ -8,7 +8,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.siziksu.browser.App;
-import com.siziksu.browser.common.function.Action;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.presenter.main.FragmentManagerSupplier;
 import com.siziksu.browser.presenter.main.WebViewPresenterContract;
@@ -30,7 +29,6 @@ public final class MainWebView extends WebView {
 
     private String urlValidated;
     private boolean enabled;
-    private Action finishListener;
 
     public MainWebView(Context context) {
         this(context, null);
@@ -95,22 +93,10 @@ public final class MainWebView extends WebView {
                 onPageFinished,
                 pageVisited
         );
-        mainWebViewClient.onRedirectionBackListener(() -> {
-            stopLoading();
-            if (canGoBack()) {
-                goBack();
-            } else {
-                finishListener.execute();
-            }
-        });
     }
 
     public void setProgressListener(Consumer<Integer> progress) {
         mainWebViewChromeClient.setProgressListener(progress);
-    }
-
-    public void setFinishListener(Action finishListener) {
-        this.finishListener = finishListener;
     }
 
     @Override

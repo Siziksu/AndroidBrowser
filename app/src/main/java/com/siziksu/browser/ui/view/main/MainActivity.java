@@ -68,13 +68,13 @@ public final class MainActivity extends AppCompatActivity implements BaseViewCon
     @Override
     public void onBackPressed() {
         if (fragment != null) {
-            fragment.webViewCanGoBack(
-                    callback -> {
-                        if (!callback.webViewCanGoBack) {
-                            super.onBackPressed();
-                        }
-                    },
-                    this::finish);
+            fragment.webViewCanGoBack(callback -> {
+                if (!callback.webViewCanGoBack && callback.isExternalLink) {
+                    finish();
+                } else if (!callback.webViewCanGoBack) {
+                    super.onBackPressed();
+                }
+            });
         } else {
             super.onBackPressed();
         }

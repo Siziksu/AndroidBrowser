@@ -96,8 +96,8 @@ public final class BrowserFragment extends Fragment implements BaseViewContract,
     }
 
     @Override
-    public void webViewCanGoBack(Consumer<WebViewBack> callback, Action finishListener) {
-        presenter.webViewCanGoBack(callback, finishListener);
+    public void webViewCanGoBack(Consumer<WebViewBack> callback) {
+        presenter.webViewCanGoBack(callback);
     }
 
     @Override

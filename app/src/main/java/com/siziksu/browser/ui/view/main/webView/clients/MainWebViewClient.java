@@ -11,7 +11,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.siziksu.browser.common.Constants;
-import com.siziksu.browser.common.function.Action;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.common.utils.Print;
 import com.siziksu.browser.presenter.main.FragmentManagerSupplier;
@@ -29,22 +28,12 @@ public class MainWebViewClient extends WebViewClient {
     private Consumer<String> pageVisited;
     private Page page = new Page();
     private String currentUrl;
-    private String redirectionUrl;
     private FragmentManagerSupplier fragmentManagerSupplier;
-    private Action redirectionBackListener;
 
     public MainWebViewClient() {}
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        if (redirectionUrl != null && redirectionUrl.equals(view.getUrl())) {
-            redirectionUrl = null;
-            redirectionBackListener.execute();
-            return false;
-        }
-        if (!view.getUrl().equals(url)) {
-            redirectionUrl = view.getUrl();
-        }
         if (url.toLowerCase().equals(currentUrl.toLowerCase())) { return false; }
         view.postDelayed(() -> view.loadUrl(url), HALF_SECOND);
         return true;
@@ -95,10 +84,6 @@ public class MainWebViewClient extends WebViewClient {
         this.onPageStarted = onPageStarted;
         this.onPageFinished = onPageFinished;
         this.pageVisited = pageVisited;
-    }
-
-    public void onRedirectionBackListener(Action redirectionBackListener) {
-        this.redirectionBackListener = redirectionBackListener;
     }
 
     public Page getCurrentPage() {
