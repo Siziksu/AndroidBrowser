@@ -36,7 +36,9 @@ public final class LaunchPresenter implements LaunchPresenterContract<LaunchView
     @Override
     public void onResume(LaunchViewContract view) {
         this.view = view;
-        view.setVersionText(SystemUtils.getVersionCode(view.getAppCompatActivity()));
+        if (this.view != null) {
+            this.view.setVersionText(SystemUtils.getVersionCode(this.view.getAppCompatActivity()));
+        }
         if (domain != null) {
             domain.register();
         }
@@ -52,7 +54,7 @@ public final class LaunchPresenter implements LaunchPresenterContract<LaunchView
 
     @Override
     public void setIntentData(Uri data) {
-        if (data != null) {
+        if (data != null && view != null) {
             router.goToMainActivity(view.getAppCompatActivity(), data.toString());
         }
     }

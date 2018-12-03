@@ -18,12 +18,10 @@ import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.common.function.Action;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.domain.main.BrowserDomainContract;
-import com.siziksu.browser.presenter.BaseViewContract;
 import com.siziksu.browser.presenter.mapper.PageMapper;
 import com.siziksu.browser.ui.common.manager.DownloaderManager;
 import com.siziksu.browser.ui.common.model.OverflowMenuItem;
 import com.siziksu.browser.ui.common.model.Page;
-import com.siziksu.browser.ui.common.model.WebViewBack;
 import com.siziksu.browser.ui.common.router.RouterContract;
 import com.siziksu.browser.ui.common.utils.ActivityUtils;
 import com.siziksu.browser.ui.view.main.menu.ImageMenu;
@@ -37,7 +35,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public final class BrowserPresenter implements BrowserPresenterContract<BaseViewContract>, FragmentManagerSupplier {
+public final class BrowserPresenter implements BrowserPresenterContract<BrowserViewContract>, FragmentManagerSupplier {
 
     private static final String URL = "url";
 
@@ -46,7 +44,7 @@ public final class BrowserPresenter implements BrowserPresenterContract<BaseView
     @Inject
     BrowserDomainContract domain;
 
-    private BaseViewContract view;
+    private BrowserViewContract view;
     private String itemUrl;
     private ClipboardManager clipboard;
     private WebViewHelper webViewHelper;
@@ -54,11 +52,9 @@ public final class BrowserPresenter implements BrowserPresenterContract<BaseView
     private ImageMenu imageMenu;
     private LinkMenu linkMenu;
     private boolean isExternalLink;
-    private WebViewBack webViewBack;
 
     public BrowserPresenter() {
         App.get().getApplicationComponent().inject(this);
-        webViewBack = new WebViewBack();
     }
 
     @Override
@@ -67,7 +63,7 @@ public final class BrowserPresenter implements BrowserPresenterContract<BaseView
     }
 
     @Override
-    public void onResume(BaseViewContract view) {
+    public void onResume(BrowserViewContract view) {
         this.view = view;
         if (domain != null) {
             domain.register();
@@ -136,10 +132,15 @@ public final class BrowserPresenter implements BrowserPresenterContract<BaseView
     }
 
     @Override
-    public void webViewCanGoBack(Consumer<WebViewBack> callback) {
-        webViewBack.webViewCanGoBack = webViewHelper.webViewCanGoBack();
-        webViewBack.isExternalLink = isExternalLink;
-        callback.accept(webViewBack);
+    public void onBackPressed() {
+        if (!webViewHelper.canGoBack() && isExternalLink) {
+            isExternalLink = false;
+            view.finish();
+        } else if (!webViewHelper.canGoBack()) {
+            view.superOnBackPressed();
+        } else {
+            webViewHelper.goBack();
+        }
     }
 
     @Override

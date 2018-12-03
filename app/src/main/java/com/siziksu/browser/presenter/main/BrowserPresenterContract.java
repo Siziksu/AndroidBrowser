@@ -9,7 +9,6 @@ import com.siziksu.browser.common.function.Action;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.presenter.BasePresenterContract;
 import com.siziksu.browser.presenter.BaseViewContract;
-import com.siziksu.browser.ui.common.model.WebViewBack;
 import com.siziksu.browser.ui.view.main.webView.MainWebView;
 
 public interface BrowserPresenterContract<V extends BaseViewContract> extends BasePresenterContract<V> {
@@ -22,7 +21,7 @@ public interface BrowserPresenterContract<V extends BaseViewContract> extends Ba
 
     void setIntentData(Bundle bundle);
 
-    void webViewCanGoBack(Consumer<WebViewBack> callback);
+    void onBackPressed();
 
     void onRefresh(Action stopRefreshing);
 

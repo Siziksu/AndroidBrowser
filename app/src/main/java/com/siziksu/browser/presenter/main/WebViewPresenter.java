@@ -7,12 +7,12 @@ import com.siziksu.browser.domain.main.MainWebViewDomainContract;
 
 import javax.inject.Inject;
 
-public final class MainWebViewPresenter implements WebViewPresenterContract {
+public final class WebViewPresenter implements WebViewPresenterContract {
 
     @Inject
     MainWebViewDomainContract domain;
 
-    public MainWebViewPresenter() {
+    public WebViewPresenter() {
         App.get().getApplicationComponent().inject(this);
     }
 

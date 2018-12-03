@@ -17,7 +17,7 @@ import com.siziksu.browser.presenter.bookmarks.BookmarksPresenter;
 import com.siziksu.browser.presenter.launch.LaunchPresenter;
 import com.siziksu.browser.presenter.main.BrowserPresenter;
 import com.siziksu.browser.presenter.main.MainPresenter;
-import com.siziksu.browser.presenter.main.MainWebViewPresenter;
+import com.siziksu.browser.presenter.main.WebViewPresenter;
 import com.siziksu.browser.ui.view.bookmarks.BookmarksActivity;
 import com.siziksu.browser.ui.view.launch.LaunchActivity;
 import com.siziksu.browser.ui.view.main.BrowserFragment;
@@ -73,7 +73,7 @@ public interface ApplicationComponent {
 
     void inject(MainWebView target);
 
-    void inject(MainWebViewPresenter target);
+    void inject(WebViewPresenter target);
 
     void inject(MainWebViewDomain target);
 }

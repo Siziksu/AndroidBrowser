@@ -88,13 +88,12 @@ public final class WebViewHelper {
         }
     }
 
-    public boolean webViewCanGoBack() {
-        webView.stopLoading();
-        if (webView.canGoBack()) {
-            webView.goBack();
-            return true;
-        }
-        return false;
+    public boolean canGoBack() {
+        return webView.canGoBack();
+    }
+
+    public void goBack() {
+        webView.goBack();
     }
 
     public void toggleDesktopSite() {

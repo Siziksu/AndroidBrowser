@@ -17,11 +17,8 @@ import android.widget.ProgressBar;
 
 import com.siziksu.browser.App;
 import com.siziksu.browser.R;
-import com.siziksu.browser.common.function.Action;
-import com.siziksu.browser.common.function.Consumer;
-import com.siziksu.browser.presenter.BaseViewContract;
 import com.siziksu.browser.presenter.main.BrowserPresenterContract;
-import com.siziksu.browser.ui.common.model.WebViewBack;
+import com.siziksu.browser.presenter.main.BrowserViewContract;
 import com.siziksu.browser.ui.view.main.webView.MainWebView;
 
 import javax.inject.Inject;
@@ -29,7 +26,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public final class BrowserFragment extends Fragment implements BaseViewContract, BrowserFragmentContract {
+public final class BrowserFragment extends Fragment implements BrowserViewContract, BrowserFragmentContract {
 
     private static final Integer MAX_SWIPE_REFRESH_PROGRESS_VALUE = 60;
 
@@ -41,7 +38,7 @@ public final class BrowserFragment extends Fragment implements BaseViewContract,
     MainWebView webView;
 
     @Inject
-    BrowserPresenterContract<BaseViewContract> presenter;
+    BrowserPresenterContract<BrowserViewContract> presenter;
 
     private boolean alreadyStarted;
     private BrowserActivityContract browserActivity;
@@ -96,15 +93,37 @@ public final class BrowserFragment extends Fragment implements BaseViewContract,
     }
 
     @Override
-    public void webViewCanGoBack(Consumer<WebViewBack> callback) {
-        presenter.webViewCanGoBack(callback);
+    public void finish() {
+        if (browserActivity != null) {
+            browserActivity.finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        presenter.onBackPressed();
+    }
+
+    @Override
+    public void superOnBackPressed() {
+        if (browserActivity != null) {
+            browserActivity.superOnBackPressed();
+        }
     }
 
     @Override
     public void onActionMoreClick() {
         presenter.onActionMoreClick(
-                () -> browserActivity.onMenuShow(),
-                () -> browserActivity.onMenuDismiss()
+                () -> {
+                    if (browserActivity != null) {
+                        browserActivity.onMenuShow();
+                    }
+                },
+                () -> {
+                    if (browserActivity != null) {
+                        browserActivity.onMenuDismiss();
+                    }
+                }
         );
     }
 
@@ -115,6 +134,7 @@ public final class BrowserFragment extends Fragment implements BaseViewContract,
 
     @Override
     public AppCompatActivity getAppCompatActivity() {
+        if (browserActivity == null) { return null; }
         return browserActivity.getActivity();
     }
 
@@ -128,36 +148,40 @@ public final class BrowserFragment extends Fragment implements BaseViewContract,
         registerForContextMenu(webView);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         swipeRefreshLayout.setOnRefreshListener(() -> presenter.onRefresh(() -> swipeRefreshLayout.setRefreshing(false)));
-        browserActivity.getEditText().setOnEditorActionListener(
-                (v, actionId, event) -> {
-                    if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO || actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        browserActivity.keyboardGoClicked();
-                        presenter.onKeyboardGoClick(browserActivity.getEditText().getText().toString());
+        if (browserActivity != null) {
+            browserActivity.getEditText().setOnEditorActionListener(
+                    (v, actionId, event) -> {
+                        if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO || actionId == EditorInfo.IME_ACTION_SEARCH) {
+                            browserActivity.keyboardGoClicked();
+                            presenter.onKeyboardGoClick(browserActivity.getEditText().getText().toString());
+                        }
+                        return false;
                     }
-                    return false;
-                }
-        );
+            );
+        }
     }
 
     private void initPresenter() {
-        presenter.init(
-                webView,
-                browserActivity.getActionMoreView(),
-                () -> browserActivity.finish(),
-                () -> browserActivity.clearEditText()
-        );
-        presenter.setPageListeners(
-                url -> {
-                    browserActivity.getEditText().setText(url);
-                    swipeRefreshLayout.setRefreshing(true);
-                    webViewProgressBar.setVisibility(View.VISIBLE);
-                },
-                url -> {
-                    browserActivity.getEditText().setText(url);
-                    swipeRefreshLayout.setRefreshing(false);
-                    webViewProgressBar.setVisibility(View.GONE);
-                }
-        );
+        if (browserActivity != null) {
+            presenter.init(
+                    webView,
+                    browserActivity.getActionMoreView(),
+                    () -> browserActivity.finish(),
+                    () -> browserActivity.clearEditText()
+            );
+            presenter.setPageListeners(
+                    url -> {
+                        browserActivity.getEditText().setText(url);
+                        swipeRefreshLayout.setRefreshing(true);
+                        webViewProgressBar.setVisibility(View.VISIBLE);
+                    },
+                    url -> {
+                        browserActivity.getEditText().setText(url);
+                        swipeRefreshLayout.setRefreshing(false);
+                        webViewProgressBar.setVisibility(View.GONE);
+                    }
+            );
+        }
         presenter.setProgressListener(
                 progress -> {
                     webViewProgressBar.setProgress(progress);

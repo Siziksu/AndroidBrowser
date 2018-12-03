@@ -8,9 +8,10 @@ import com.siziksu.browser.presenter.launch.LaunchPresenterContract;
 import com.siziksu.browser.presenter.launch.LaunchViewContract;
 import com.siziksu.browser.presenter.main.BrowserPresenter;
 import com.siziksu.browser.presenter.main.BrowserPresenterContract;
+import com.siziksu.browser.presenter.main.BrowserViewContract;
 import com.siziksu.browser.presenter.main.MainPresenter;
 import com.siziksu.browser.presenter.main.MainPresenterContract;
-import com.siziksu.browser.presenter.main.MainWebViewPresenter;
+import com.siziksu.browser.presenter.main.WebViewPresenter;
 import com.siziksu.browser.presenter.main.WebViewPresenterContract;
 
 import javax.inject.Singleton;
@@ -35,7 +36,7 @@ public final class PresenterModule {
 
     @Singleton
     @Provides
-    BrowserPresenterContract<BaseViewContract> providesBrowserPresenter() {
+    BrowserPresenterContract<BrowserViewContract> providesBrowserPresenter() {
         return new BrowserPresenter();
     }
 
@@ -48,6 +49,6 @@ public final class PresenterModule {
     @Singleton
     @Provides
     WebViewPresenterContract providesWebViewPresenter() {
-        return new MainWebViewPresenter();
+        return new WebViewPresenter();
     }
 }

@@ -23,4 +23,6 @@ public interface BrowserActivityContract {
     void keyboardGoClicked();
 
     void finish();
+
+    void superOnBackPressed();
 }

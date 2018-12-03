@@ -68,13 +68,7 @@ public final class MainActivity extends AppCompatActivity implements BaseViewCon
     @Override
     public void onBackPressed() {
         if (fragment != null) {
-            fragment.webViewCanGoBack(callback -> {
-                if (!callback.webViewCanGoBack && callback.isExternalLink) {
-                    finish();
-                } else if (!callback.webViewCanGoBack) {
-                    super.onBackPressed();
-                }
-            });
+            fragment.onBackPressed();
         } else {
             super.onBackPressed();
         }
@@ -126,6 +120,11 @@ public final class MainActivity extends AppCompatActivity implements BaseViewCon
     @Override
     public void keyboardGoClicked() {
         isKeyboardGoClicked = true;
+    }
+
+    @Override
+    public void superOnBackPressed() {
+        super.onBackPressed();
     }
 
     @Override
