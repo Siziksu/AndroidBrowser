@@ -6,10 +6,8 @@ import com.siziksu.browser.App;
 import com.siziksu.browser.R;
 import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.common.function.Action;
-import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.common.utils.CollectionsUtils;
 import com.siziksu.browser.domain.bookmarks.BookmarksDomainContract;
-import com.siziksu.browser.presenter.BaseViewContract;
 import com.siziksu.browser.presenter.mapper.PageMapper;
 import com.siziksu.browser.ui.common.dialog.DialogYesNo;
 import com.siziksu.browser.ui.common.manager.PermissionsManager;
@@ -20,12 +18,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public final class BookmarksPresenter implements BookmarksPresenterContract<BaseViewContract> {
+public final class BookmarksPresenter implements BookmarksPresenterContract<BookmarksViewContract> {
 
     @Inject
     BookmarksDomainContract domain;
 
-    private BaseViewContract view;
+    private BookmarksViewContract view;
 
     public BookmarksPresenter() {
         App.get().getApplicationComponent().inject(this);
@@ -38,7 +36,7 @@ public final class BookmarksPresenter implements BookmarksPresenterContract<Base
     }
 
     @Override
-    public void onResume(BaseViewContract view) {
+    public void onResume(BookmarksViewContract view) {
         this.view = view;
         if (domain != null) {
             domain.register();
@@ -54,13 +52,13 @@ public final class BookmarksPresenter implements BookmarksPresenterContract<Base
     }
 
     @Override
-    public void getBookmarks(Consumer<List<Page>> result) {
+    public void getBookmarks() {
         if (domain == null) { return; }
         domain.getBookmarks(bookmarks -> {
             if (view == null) { return; }
             List<Page> list = new ArrayList<>(new PageMapper().map(bookmarks));
             CollectionsUtils.sortUsersByName(list);
-            result.accept(list);
+            view.showBookmarks(list);
         });
     }
 

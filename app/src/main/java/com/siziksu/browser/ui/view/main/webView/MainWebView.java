@@ -11,13 +11,14 @@ import com.siziksu.browser.App;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.presenter.main.FragmentManagerSupplier;
 import com.siziksu.browser.presenter.main.WebViewPresenterContract;
+import com.siziksu.browser.presenter.main.WebViewViewContract;
 import com.siziksu.browser.ui.common.model.Page;
 import com.siziksu.browser.ui.view.main.webView.clients.MainWebChromeClient;
 import com.siziksu.browser.ui.view.main.webView.clients.MainWebViewClient;
 
 import javax.inject.Inject;
 
-public final class MainWebView extends WebView {
+public final class MainWebView extends WebView implements WebViewViewContract {
 
     private static final String DESKTOP_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36";
 
@@ -45,6 +46,8 @@ public final class MainWebView extends WebView {
 
     @SuppressLint("SetJavaScriptEnabled")
     public void init(Context context) {
+        presenter.register(this);
+
         mainWebViewChromeClient = new MainWebChromeClient();
         mainWebViewChromeClient.setOnBlankLinkListener(this::loadUrl);
         mainWebViewClient = new MainWebViewClient();
@@ -101,11 +104,13 @@ public final class MainWebView extends WebView {
 
     @Override
     public void loadUrl(String userSearch) {
-        presenter.filterUrl(userSearch, urlFiltered -> {
-            urlValidated = urlFiltered;
-            super.stopLoading();
-            super.loadUrl(urlFiltered);
-        });
+        presenter.filterUrl(userSearch);
+    }
+
+    public void onUrlFiltered(String url) {
+        urlValidated = url;
+        super.stopLoading();
+        super.loadUrl(url);
     }
 
     public String getUrlValidated() {

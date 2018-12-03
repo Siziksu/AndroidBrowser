@@ -14,9 +14,12 @@ import android.support.v7.widget.Toolbar;
 import com.siziksu.browser.App;
 import com.siziksu.browser.R;
 import com.siziksu.browser.common.Constants;
-import com.siziksu.browser.presenter.BaseViewContract;
 import com.siziksu.browser.presenter.bookmarks.BookmarksPresenterContract;
+import com.siziksu.browser.presenter.bookmarks.BookmarksViewContract;
+import com.siziksu.browser.ui.common.model.Page;
 import com.siziksu.browser.ui.common.utils.ActivityUtils;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -24,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public final class BookmarksActivity extends AppCompatActivity implements BaseViewContract {
+public final class BookmarksActivity extends AppCompatActivity implements BookmarksViewContract {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -32,7 +35,7 @@ public final class BookmarksActivity extends AppCompatActivity implements BaseVi
     RecyclerView recyclerView;
 
     @Inject
-    BookmarksPresenterContract<BaseViewContract> presenter;
+    BookmarksPresenterContract<BookmarksViewContract> presenter;
 
     private boolean alreadyStarted;
     private BookmarksAdapterContract adapter;
@@ -58,7 +61,7 @@ public final class BookmarksActivity extends AppCompatActivity implements BaseVi
         presenter.onResume(this);
         if (!alreadyStarted) {
             alreadyStarted = true;
-            presenter.getBookmarks(bookmarks -> adapter.addItems(bookmarks));
+            presenter.getBookmarks();
         }
     }
 
@@ -72,6 +75,13 @@ public final class BookmarksActivity extends AppCompatActivity implements BaseVi
     public void onBackPressed() {
         super.onBackPressed();
         finishAnimation();
+    }
+
+    @Override
+    public void showBookmarks(List<Page> bookmarks) {
+        if (adapter != null) {
+            adapter.showBookmarks(bookmarks);
+        }
     }
 
     @Override

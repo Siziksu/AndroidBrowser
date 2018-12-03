@@ -78,10 +78,29 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
     }
 
     @Override
-    public void init(MainWebView webView, View actionMoreView, Action onHomeClickListener, Action clearTextListener) {
+    public void init(MainWebView webView, View actionMoreView) {
         webViewHelper = new WebViewHelper(webView);
         if (view != null) {
             webViewHelper.init(view.getAppCompatActivity());
+            webViewHelper.setFragmentManagerSupplier(this);
+            webViewHelper.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> download(url));
+            webViewHelper.setPageListeners(
+                    url -> {
+                        if (view != null) {
+                            view.onPageStarted(url);
+                        }
+                    },
+                    url -> {
+                        if (view != null) {
+                            ActivityUtils.hideKeyboard(view.getAppCompatActivity());
+                            view.onPageFinished(url);
+                        }
+                    }, this::setPageVisited);
+            webViewHelper.setProgressListener(progress -> {
+                if (view != null) {
+                    view.onProgress(progress);
+                }
+            });
             imageMenu = new ImageMenu.Builder()
                     .setActivity(view.getAppCompatActivity())
                     .setListener(this::onImageMenuClick)
@@ -99,28 +118,15 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
             overflowMenu = new OverflowMenu.Builder()
                     .setActivity(view.getAppCompatActivity())
                     .setSourceView(actionMoreView)
-                    .setListener(id -> onOverflowMenuClick(id, onHomeClickListener))
+                    .setListener(id -> onOverflowMenuClick(id, () -> {
+                        if (view != null) {
+                            view.finish();
+                        }
+                    }))
                     .setCancelable(true)
                     .setItems(items)
                     .create();
-            webViewHelper.setFragmentManagerSupplier(this);
-            webViewHelper.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> download(url));
         }
-    }
-
-    @Override
-    public void setPageListeners(Consumer<String> onPageStarted, Consumer<String> onPageFinished) {
-        webViewHelper.setPageListeners(onPageStarted, url -> {
-            if (view != null) {
-                ActivityUtils.hideKeyboard(view.getAppCompatActivity());
-            }
-            onPageFinished.accept(url);
-        }, this::setPageVisited);
-    }
-
-    @Override
-    public void setProgressListener(Consumer<Integer> progress) {
-        webViewHelper.setProgressListener(progress);
     }
 
     @Override

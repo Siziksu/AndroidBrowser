@@ -17,7 +17,7 @@ interface BookmarksAdapterContract {
 
     void notifyDataSetChanged();
 
-    void addItems(List<Page> list);
+    void showBookmarks(List<Page> list);
 
     void deleteItem(Page page);
 }

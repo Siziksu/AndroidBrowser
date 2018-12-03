@@ -1,8 +1,8 @@
 package com.siziksu.browser.dagger.module;
 
-import com.siziksu.browser.presenter.BaseViewContract;
 import com.siziksu.browser.presenter.bookmarks.BookmarksPresenter;
 import com.siziksu.browser.presenter.bookmarks.BookmarksPresenterContract;
+import com.siziksu.browser.presenter.bookmarks.BookmarksViewContract;
 import com.siziksu.browser.presenter.launch.LaunchPresenter;
 import com.siziksu.browser.presenter.launch.LaunchPresenterContract;
 import com.siziksu.browser.presenter.launch.LaunchViewContract;
@@ -11,6 +11,7 @@ import com.siziksu.browser.presenter.main.BrowserPresenterContract;
 import com.siziksu.browser.presenter.main.BrowserViewContract;
 import com.siziksu.browser.presenter.main.MainPresenter;
 import com.siziksu.browser.presenter.main.MainPresenterContract;
+import com.siziksu.browser.presenter.main.MainViewContract;
 import com.siziksu.browser.presenter.main.WebViewPresenter;
 import com.siziksu.browser.presenter.main.WebViewPresenterContract;
 
@@ -30,7 +31,7 @@ public final class PresenterModule {
 
     @Singleton
     @Provides
-    MainPresenterContract<BaseViewContract> providesMainPresenter() {
+    MainPresenterContract<MainViewContract> providesMainPresenter() {
         return new MainPresenter();
     }
 
@@ -42,7 +43,7 @@ public final class PresenterModule {
 
     @Singleton
     @Provides
-    BookmarksPresenterContract<BaseViewContract> providesBookmarksPresenter() {
+    BookmarksPresenterContract<BookmarksViewContract> providesBookmarksPresenter() {
         return new BookmarksPresenter();
     }
 

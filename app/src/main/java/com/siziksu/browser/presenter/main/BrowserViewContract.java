@@ -7,4 +7,12 @@ public interface BrowserViewContract extends BaseViewContract {
     void finish();
 
     void superOnBackPressed();
+
+    void clearText();
+
+    void onPageStarted(String url);
+
+    void onPageFinished(String url);
+
+    void onProgress(int progress);
 }

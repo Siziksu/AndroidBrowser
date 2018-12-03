@@ -11,8 +11,8 @@ import android.widget.ImageView;
 
 import com.siziksu.browser.App;
 import com.siziksu.browser.R;
-import com.siziksu.browser.presenter.BaseViewContract;
 import com.siziksu.browser.presenter.main.MainPresenterContract;
+import com.siziksu.browser.presenter.main.MainViewContract;
 import com.siziksu.browser.ui.common.utils.ActivityUtils;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public final class MainActivity extends AppCompatActivity implements BaseViewContract, BrowserActivityContract {
+public final class MainActivity extends AppCompatActivity implements MainViewContract, BrowserActivityContract {
 
     @BindView(R.id.urlEditText)
     EditText urlEditText;
@@ -32,7 +32,7 @@ public final class MainActivity extends AppCompatActivity implements BaseViewCon
     ImageView actionMore;
 
     @Inject
-    MainPresenterContract<BaseViewContract> presenter;
+    MainPresenterContract<MainViewContract> presenter;
 
     private BrowserFragment fragment;
     private boolean isMenuShowing;
@@ -123,6 +123,13 @@ public final class MainActivity extends AppCompatActivity implements BaseViewCon
     }
 
     @Override
+    public void inLastPageVisitedStored(boolean isLastPageVisitedStored) {
+        if (!isMenuShowing && !isLastPageVisitedStored) {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public void superOnBackPressed() {
         super.onBackPressed();
     }
@@ -144,11 +151,7 @@ public final class MainActivity extends AppCompatActivity implements BaseViewCon
         KeyboardVisibilityEvent.setEventListener(this, keyboardIsVisible -> {
             if (!isKeyboardGoClicked) {
                 if (!keyboardIsVisible) {
-                    presenter.isLastPageVisitedStored(isLastPageVisitedStored -> {
-                        if (!isMenuShowing && !isLastPageVisitedStored) {
-                            super.onBackPressed();
-                        }
-                    });
+                    presenter.isLastPageVisitedStored();
                 }
             }
         });

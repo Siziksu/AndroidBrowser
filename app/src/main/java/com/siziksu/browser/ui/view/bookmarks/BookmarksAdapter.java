@@ -78,7 +78,7 @@ final class BookmarksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void addItems(List<Page> list) {
+    public void showBookmarks(List<Page> list) {
         manager.showItems(this, list);
     }
 

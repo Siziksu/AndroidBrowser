@@ -6,22 +6,20 @@ import android.text.TextUtils;
 
 import com.siziksu.browser.App;
 import com.siziksu.browser.R;
-import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.domain.main.MainDomainContract;
-import com.siziksu.browser.presenter.BaseViewContract;
 import com.siziksu.browser.ui.common.router.RouterContract;
 import com.siziksu.browser.ui.view.main.BrowserFragment;
 
 import javax.inject.Inject;
 
-public final class MainPresenter implements MainPresenterContract<BaseViewContract> {
+public final class MainPresenter implements MainPresenterContract<MainViewContract> {
 
     @Inject
     RouterContract router;
     @Inject
     MainDomainContract domain;
 
-    private BaseViewContract view;
+    private MainViewContract view;
 
     public MainPresenter() {
         App.get().getApplicationComponent().inject(this);
@@ -34,7 +32,7 @@ public final class MainPresenter implements MainPresenterContract<BaseViewContra
     }
 
     @Override
-    public void onResume(BaseViewContract view) {
+    public void onResume(MainViewContract view) {
         this.view = view;
         if (domain != null) {
             domain.register();
@@ -50,11 +48,12 @@ public final class MainPresenter implements MainPresenterContract<BaseViewContra
     }
 
     @Override
-    public void isLastPageVisitedStored(Consumer<Boolean> result) {
+    public void isLastPageVisitedStored() {
         if (domain == null) { return; }
         domain.getLastPageVisited(lastVisited -> {
-            if (view == null) { return; }
-            result.accept(!TextUtils.isEmpty(lastVisited));
+            if (view != null) {
+                view.inLastPageVisitedStored(!TextUtils.isEmpty(lastVisited));
+            }
         });
     }
 }

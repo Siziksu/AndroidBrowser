@@ -112,6 +112,35 @@ public final class BrowserFragment extends Fragment implements BrowserViewContra
     }
 
     @Override
+    public void clearText() {
+        if (browserActivity != null) {
+            browserActivity.clearEditText();
+        }
+    }
+
+    @Override
+    public void onPageStarted(String url) {
+        browserActivity.getEditText().setText(url);
+        swipeRefreshLayout.setRefreshing(true);
+        webViewProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onPageFinished(String url) {
+        browserActivity.getEditText().setText(url);
+        swipeRefreshLayout.setRefreshing(false);
+        webViewProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onProgress(int progress) {
+        webViewProgressBar.setProgress(progress);
+        if (progress >= MAX_SWIPE_REFRESH_PROGRESS_VALUE && swipeRefreshLayout.isRefreshing()) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
     public void onActionMoreClick() {
         presenter.onActionMoreClick(
                 () -> {
@@ -163,32 +192,7 @@ public final class BrowserFragment extends Fragment implements BrowserViewContra
 
     private void initPresenter() {
         if (browserActivity != null) {
-            presenter.init(
-                    webView,
-                    browserActivity.getActionMoreView(),
-                    () -> browserActivity.finish(),
-                    () -> browserActivity.clearEditText()
-            );
-            presenter.setPageListeners(
-                    url -> {
-                        browserActivity.getEditText().setText(url);
-                        swipeRefreshLayout.setRefreshing(true);
-                        webViewProgressBar.setVisibility(View.VISIBLE);
-                    },
-                    url -> {
-                        browserActivity.getEditText().setText(url);
-                        swipeRefreshLayout.setRefreshing(false);
-                        webViewProgressBar.setVisibility(View.GONE);
-                    }
-            );
+            presenter.init(webView, browserActivity.getActionMoreView());
         }
-        presenter.setProgressListener(
-                progress -> {
-                    webViewProgressBar.setProgress(progress);
-                    if (progress >= MAX_SWIPE_REFRESH_PROGRESS_VALUE && swipeRefreshLayout.isRefreshing()) {
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                }
-        );
     }
 }
