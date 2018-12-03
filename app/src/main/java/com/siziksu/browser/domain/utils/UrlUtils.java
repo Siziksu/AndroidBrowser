@@ -29,12 +29,8 @@ public final class UrlUtils {
 
     private String validateUrl(String string) {
         if (string == null) { return null; }
-        if (string.startsWith("file:///") || string.startsWith("data:")) { return string; }
-        if (string.contains(".")) {
-            if (!string.toLowerCase().contains("http://") && !string.toLowerCase().contains("https://")) {
-                string = "http://" + string;
-            }
-        }
+        if (checkIfLocalUrlOrData(string)) { return string; }
+        string = format(string);
         try {
             URL url = new URL(string);
             return url.toString();
@@ -43,9 +39,22 @@ public final class UrlUtils {
                 return googleSearch(URLEncoder.encode(string, "UTF-8"));
             } catch (UnsupportedEncodingException unsupported) {
                 Print.error(unsupported.getMessage(), unsupported);
-                return null;
+                return Constants.URL_GOOGLE;
             }
         }
+    }
+
+    private boolean checkIfLocalUrlOrData(String string) {
+        return string.startsWith("file:///") || string.startsWith("data:");
+    }
+
+    private String format(String string) {
+        if (string.contains(".")) {
+            if (!string.toLowerCase().contains("http://") && !string.toLowerCase().contains("https://")) {
+                return "http://" + string;
+            }
+        }
+        return string;
     }
 
     private String googleSearch(String userSearch) {
