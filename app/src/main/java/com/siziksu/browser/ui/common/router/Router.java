@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.siziksu.browser.R;
 import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.ui.view.bookmarks.BookmarksActivity;
+import com.siziksu.browser.ui.view.launch.LaunchActivity;
 import com.siziksu.browser.ui.view.main.MainActivity;
 
 import javax.inject.Inject;
@@ -26,8 +27,13 @@ public final class Router implements RouterContract {
     }
 
     @Override
+    public void goToLaunchActivity(AppCompatActivity activity) {
+        routerHelper.clearBackStack().route(activity, LaunchActivity.class);
+    }
+
+    @Override
     public void goToMainActivity(AppCompatActivity activity, String url) {
-        routerHelper.putString(Constants.EXTRA_KEY_EXTERNAL_LINK, url).route(activity, MainActivity.class);
+        routerHelper.clearBackStack().putString(Constants.EXTRA_KEY_EXTERNAL_LINK, url).route(activity, MainActivity.class);
     }
 
     @Override

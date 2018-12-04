@@ -70,7 +70,7 @@ public final class MainActivity extends AppCompatActivity implements MainViewCon
         if (fragment != null) {
             fragment.onBackPressed();
         } else {
-            super.onBackPressed();
+            superOnBackPressed();
         }
     }
 
@@ -125,7 +125,7 @@ public final class MainActivity extends AppCompatActivity implements MainViewCon
     @Override
     public void inLastPageVisitedStored(boolean isLastPageVisitedStored) {
         if (!isMenuShowing && !isLastPageVisitedStored) {
-            super.onBackPressed();
+            superOnBackPressed();
         }
     }
 

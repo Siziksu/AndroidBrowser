@@ -10,14 +10,19 @@ import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.presenter.main.FragmentManagerSupplier;
 import com.siziksu.browser.ui.common.model.Page;
 
+import javax.inject.Inject;
+
 public final class WebViewHelper {
 
     private MainWebView webView;
     private int x;
     private int y;
 
-    @SuppressLint("ClickableViewAccessibility")
-    public WebViewHelper(MainWebView mainWebView) {
+    @Inject
+    public WebViewHelper() {}
+
+    @SuppressLint("SetJavaScriptEnabled,ClickableViewAccessibility")
+    public void init(Context context, MainWebView mainWebView) {
         this.webView = mainWebView;
         webView.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
@@ -28,6 +33,7 @@ public final class WebViewHelper {
             }
             return false;
         });
+        webView.init(context);
     }
 
     public void onDestroy() {
@@ -35,11 +41,6 @@ public final class WebViewHelper {
             webView.destroy();
             webView = null;
         }
-    }
-
-    @SuppressLint("SetJavaScriptEnabled")
-    public void init(Context context) {
-        webView.init(context);
     }
 
     public void setFragmentManagerSupplier(FragmentManagerSupplier fragmentManagerSupplier) {
@@ -88,8 +89,9 @@ public final class WebViewHelper {
         }
     }
 
-    public boolean canGoBack() {
-        return webView.canGoBack();
+    public boolean canNotGoBack() {
+        if (webView == null) return true;
+        return !webView.canGoBack();
     }
 
     public void goBack() {

@@ -43,11 +43,12 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
     RouterContract router;
     @Inject
     BrowserDomainContract domain;
+    @Inject
+    WebViewHelper webViewHelper;
 
     private BrowserViewContract view;
     private String itemUrl;
     private ClipboardManager clipboard;
-    private WebViewHelper webViewHelper;
     private OverflowMenu overflowMenu;
     private ImageMenu imageMenu;
     private LinkMenu linkMenu;
@@ -79,9 +80,9 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
 
     @Override
     public void init(MainWebView webView, View actionMoreView) {
-        webViewHelper = new WebViewHelper(webView);
+        webViewHelper = new WebViewHelper();
         if (view != null) {
-            webViewHelper.init(view.getAppCompatActivity());
+            webViewHelper.init(view.getAppCompatActivity(), webView);
             webViewHelper.setFragmentManagerSupplier(this);
             webViewHelper.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> download(url));
             webViewHelper.setPageListeners(
@@ -118,11 +119,7 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
             overflowMenu = new OverflowMenu.Builder()
                     .setActivity(view.getAppCompatActivity())
                     .setSourceView(actionMoreView)
-                    .setListener(id -> onOverflowMenuClick(id, () -> {
-                        if (view != null) {
-                            view.finish();
-                        }
-                    }))
+                    .setListener(this::onOverflowMenuClick)
                     .setCancelable(true)
                     .setItems(items)
                     .create();
@@ -139,10 +136,10 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
 
     @Override
     public void onBackPressed() {
-        if (!webViewHelper.canGoBack() && isExternalLink) {
+        if (webViewHelper.canNotGoBack() && isExternalLink) {
             isExternalLink = false;
             view.finish();
-        } else if (!webViewHelper.canGoBack()) {
+        } else if (webViewHelper.canNotGoBack()) {
             view.superOnBackPressed();
         } else {
             webViewHelper.goBack();
@@ -242,10 +239,12 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
         });
     }
 
-    private void onOverflowMenuClick(int id, Action onHomeClickListener) {
+    private void onOverflowMenuClick(int id) {
         switch (id) {
             case R.id.actionHome:
-                onHomeClickListener.execute();
+                if (view != null) {
+                    router.goToLaunchActivity(view.getAppCompatActivity());
+                }
                 break;
             case R.id.actionBookmark:
                 manageBookmark(webViewHelper.getCurrentPage());
