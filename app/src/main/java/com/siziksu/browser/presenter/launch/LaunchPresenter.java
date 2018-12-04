@@ -56,6 +56,7 @@ public final class LaunchPresenter implements LaunchPresenterContract<LaunchView
     public void setIntentData(Uri data) {
         if (data != null && view != null) {
             router.goToMainActivity(view.getAppCompatActivity(), data.toString());
+            view.clearIntent();
         }
     }
 

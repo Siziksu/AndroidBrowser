@@ -92,6 +92,11 @@ public final class LaunchActivity extends AppCompatActivity implements LaunchVie
         versionTextView.setText(version);
     }
 
+    @Override
+    public void clearIntent() {
+        setIntent(null);
+    }
+
     private void initializeViews() {
         ButterKnife.bind(this);
     }

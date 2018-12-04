@@ -5,4 +5,6 @@ import com.siziksu.browser.presenter.BaseViewContract;
 public interface LaunchViewContract extends BaseViewContract {
 
     void setVersionText(String version);
+
+    void clearIntent();
 }
