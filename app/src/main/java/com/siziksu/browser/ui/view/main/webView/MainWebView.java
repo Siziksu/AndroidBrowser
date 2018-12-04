@@ -109,6 +109,7 @@ public final class MainWebView extends WebView implements WebViewViewContract {
 
     public void onUrlFiltered(String url) {
         urlValidated = url;
+        mainWebViewClient.isLoadingAnUrl();
         super.stopLoading();
         super.loadUrl(url);
     }
@@ -119,5 +120,11 @@ public final class MainWebView extends WebView implements WebViewViewContract {
 
     public Page getCurrentPage() {
         return mainWebViewClient.getCurrentPage();
+    }
+
+    @Override
+    public void goBack() {
+        mainWebViewClient.isGoingBack();
+        super.goBack();
     }
 }

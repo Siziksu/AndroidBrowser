@@ -29,11 +29,13 @@ public class MainWebViewClient extends WebViewClient {
     private Page page = new Page();
     private String currentUrl;
     private FragmentManagerSupplier fragmentManagerSupplier;
+    private boolean isGoingBack;
 
     public MainWebViewClient() {}
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        if (isGoingBack) { return false; }
         if (url.toLowerCase().equals(currentUrl.toLowerCase())) { return false; }
         view.postDelayed(() -> view.loadUrl(url), HALF_SECOND);
         return true;
@@ -88,6 +90,14 @@ public class MainWebViewClient extends WebViewClient {
 
     public Page getCurrentPage() {
         return page;
+    }
+
+    public void isLoadingAnUrl() {
+        isGoingBack = false;
+    }
+
+    public void isGoingBack() {
+        isGoingBack = true;
     }
 
     private void onPageStarted(WebView view) {
