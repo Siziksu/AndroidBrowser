@@ -80,7 +80,6 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
 
     @Override
     public void init(MainWebView webView, View actionMoreView) {
-        webViewHelper = new WebViewHelper();
         if (view != null) {
             webViewHelper.init(view.getAppCompatActivity(), webView);
             webViewHelper.setFragmentManagerSupplier(this);

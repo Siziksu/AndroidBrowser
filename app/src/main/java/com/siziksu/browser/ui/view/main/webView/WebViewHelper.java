@@ -90,7 +90,7 @@ public final class WebViewHelper {
     }
 
     public boolean canNotGoBack() {
-        if (webView == null) return true;
+        if (webView == null) { return true; }
         return !webView.canGoBack();
     }
 
