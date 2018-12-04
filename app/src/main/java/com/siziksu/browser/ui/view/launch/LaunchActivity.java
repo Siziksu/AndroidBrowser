@@ -61,7 +61,7 @@ public final class LaunchActivity extends AppCompatActivity implements LaunchVie
         presenter.onResume(this);
         if (!alreadyStarted) {
             alreadyStarted = true;
-            presenter.setIntentData(getIntent().getData());
+            presenter.setIntentData(this);
         }
     }
 
@@ -90,11 +90,6 @@ public final class LaunchActivity extends AppCompatActivity implements LaunchVie
     @Override
     public void setVersionText(String version) {
         versionTextView.setText(version);
-    }
-
-    @Override
-    public void clearIntent() {
-        setIntent(null);
     }
 
     private void initializeViews() {

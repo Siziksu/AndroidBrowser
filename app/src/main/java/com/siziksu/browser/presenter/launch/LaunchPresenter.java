@@ -1,7 +1,7 @@
 package com.siziksu.browser.presenter.launch;
 
 import android.app.Activity;
-import android.net.Uri;
+import android.content.Intent;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
 import android.widget.EditText;
@@ -53,10 +53,9 @@ public final class LaunchPresenter implements LaunchPresenterContract<LaunchView
     }
 
     @Override
-    public void setIntentData(Uri data) {
-        if (data != null && view != null) {
-            router.goToMainActivity(view.getAppCompatActivity(), data.toString());
-            view.clearIntent();
+    public void setIntentData(Activity activity) {
+        if (view != null && (activity.getIntent().getData() != null) && (activity.getIntent().getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
+            router.goToMainActivity(view.getAppCompatActivity(), activity.getIntent().getData().toString());
         }
     }
 
