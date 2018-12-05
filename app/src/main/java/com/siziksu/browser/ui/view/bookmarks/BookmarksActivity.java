@@ -19,6 +19,7 @@ import com.siziksu.browser.presenter.bookmarks.BookmarksViewContract;
 import com.siziksu.browser.ui.common.model.Page;
 import com.siziksu.browser.ui.common.utils.ActivityUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -104,7 +105,7 @@ public final class BookmarksActivity extends AppCompatActivity implements Bookma
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowHomeEnabled(true);
         }
-        adapter = new BookmarksAdapter(this, new BookmarksItemManager());
+        adapter = new BookmarksAdapter(new WeakReference<>(this), new BookmarksItemManager());
         adapter.init(
                 item -> {
                     Intent returnIntent = new Intent();

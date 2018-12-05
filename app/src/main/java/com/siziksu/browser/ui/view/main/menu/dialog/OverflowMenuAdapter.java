@@ -2,6 +2,7 @@ package com.siziksu.browser.ui.view.main.menu.dialog;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,23 +13,24 @@ import com.siziksu.browser.R;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.ui.common.model.OverflowMenuItem;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 final class OverflowMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OverflowMenuAdapterContract {
 
-    private Context context;
+    private WeakReference<Context> context;
     private Consumer<Integer> listener;
     private LinearLayoutManager layoutManager;
     private OverflowMenuItemManagerContract manager;
 
-    OverflowMenuAdapter(Context context, OverflowMenuItemManagerContract manager) {
+    OverflowMenuAdapter(WeakReference<Context> context, OverflowMenuItemManagerContract manager) {
         this.context = context;
         this.manager = manager;
     }
 
     public void init(Consumer<Integer> listener) {
         this.listener = listener;
-        layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        layoutManager = new LinearLayoutManager(context.get(), LinearLayoutManager.VERTICAL, false);
     }
 
     @NonNull
@@ -37,7 +39,7 @@ final class OverflowMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         View view;
         switch (viewType) {
             case OverflowMenuItem.CHECKBOX:
-                view = LayoutInflater.from(context).inflate(R.layout.dialog_fragment_menu_item_checkbox, parent, false);
+                view = LayoutInflater.from(context.get()).inflate(R.layout.dialog_fragment_menu_item_checkbox, parent, false);
                 return new OverflowMenuViewHolderWithCheckBox(view, position -> {
                     if (listener != null) {
                         listener.accept(manager.getItem(position).id);
@@ -45,7 +47,7 @@ final class OverflowMenuAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 });
             case OverflowMenuItem.DEFAULT:
             default:
-                view = LayoutInflater.from(context).inflate(R.layout.dialog_fragment_menu_item, parent, false);
+                view = LayoutInflater.from(context.get()).inflate(R.layout.dialog_fragment_menu_item, parent, false);
                 return new OverflowMenuViewHolder(view, position -> {
                     if (listener != null) {
                         listener.accept(manager.getItem(position).id);

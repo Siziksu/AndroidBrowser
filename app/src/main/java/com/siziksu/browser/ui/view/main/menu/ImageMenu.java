@@ -6,9 +6,11 @@ import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.ui.view.main.menu.dialog.ImageMenuDialogFragment;
 
+import java.lang.ref.WeakReference;
+
 public final class ImageMenu {
 
-    private AppCompatActivity activity;
+    private WeakReference<AppCompatActivity> activity;
     private Consumer<Integer> listener;
     private boolean isCancelable;
     private int x;
@@ -33,16 +35,16 @@ public final class ImageMenu {
         }
         fragment.setCancelable(isCancelable);
         fragment.setTouchPosition(x, y);
-        fragment.show(activity.getSupportFragmentManager(), Constants.OVERFLOW_MENU_DIALOG_FRAGMENT_TAG);
+        fragment.show(activity.get().getSupportFragmentManager(), Constants.OVERFLOW_MENU_DIALOG_FRAGMENT_TAG);
     }
 
     public static class Builder {
 
-        private AppCompatActivity activity;
+        private WeakReference<AppCompatActivity> activity;
         private Consumer<Integer> listener;
         private boolean isCancelable;
 
-        public Builder setActivity(AppCompatActivity activity) {
+        public Builder setActivity(WeakReference<AppCompatActivity> activity) {
             this.activity = activity;
             return this;
         }

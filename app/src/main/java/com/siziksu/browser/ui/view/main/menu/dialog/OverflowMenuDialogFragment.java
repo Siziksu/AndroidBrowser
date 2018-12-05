@@ -23,6 +23,7 @@ import com.siziksu.browser.common.function.Action;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.ui.common.model.OverflowMenuItem;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import butterknife.BindView;
@@ -139,7 +140,7 @@ public final class OverflowMenuDialogFragment extends DialogFragment {
         if (canBeBookmarked) {
             actionBookmark.setImageResource(isBookmarked ? R.drawable.ic_action_bookmarked : R.drawable.ic_action_bookmark);
         }
-        OverflowMenuAdapterContract adapter = new OverflowMenuAdapter(getActivity(), new OverflowMenuItemManager());
+        OverflowMenuAdapterContract adapter = new OverflowMenuAdapter(new WeakReference<>(getActivity()), new OverflowMenuItemManager());
         adapter.init(
                 resource -> {
                     if (listener != null) {

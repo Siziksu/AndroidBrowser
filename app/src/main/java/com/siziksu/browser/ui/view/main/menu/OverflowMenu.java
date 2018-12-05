@@ -10,11 +10,12 @@ import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.ui.common.model.OverflowMenuItem;
 import com.siziksu.browser.ui.view.main.menu.dialog.OverflowMenuDialogFragment;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 public final class OverflowMenu {
 
-    private AppCompatActivity activity;
+    private WeakReference<AppCompatActivity> activity;
     private View view;
     private List<OverflowMenuItem> items;
     private Consumer<Integer> listener;
@@ -68,18 +69,18 @@ public final class OverflowMenu {
         fragment.setCanGoForward(canGoForward);
         fragment.setIsBookmarked(isBookmarked);
         fragment.setCanBeBookmarked(canBeBookmarked);
-        fragment.show(activity.getSupportFragmentManager(), Constants.OVERFLOW_MENU_DIALOG_FRAGMENT_TAG);
+        fragment.show(activity.get().getSupportFragmentManager(), Constants.OVERFLOW_MENU_DIALOG_FRAGMENT_TAG);
     }
 
     public static class Builder {
 
-        private AppCompatActivity activity;
+        private WeakReference<AppCompatActivity> activity;
         private View view;
         private List<OverflowMenuItem> items;
         private Consumer<Integer> listener;
         private boolean isCancelable;
 
-        public Builder setActivity(AppCompatActivity activity) {
+        public Builder setActivity(WeakReference<AppCompatActivity> activity) {
             this.activity = activity;
             return this;
         }

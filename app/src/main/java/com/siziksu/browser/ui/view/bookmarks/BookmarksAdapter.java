@@ -12,17 +12,18 @@ import com.siziksu.browser.R;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.ui.common.model.Page;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 final class BookmarksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements BookmarksAdapterContract {
 
-    private Context context;
+    private WeakReference<Context> context;
     private Consumer<Page> itemClick;
     private Consumer<Page> deleteClick;
     private LinearLayoutManager layoutManager;
     private BookmarksItemManagerContract manager;
 
-    BookmarksAdapter(Context context, BookmarksItemManagerContract manager) {
+    BookmarksAdapter(WeakReference<Context> context, BookmarksItemManagerContract manager) {
         this.context = context;
         this.manager = manager;
     }
@@ -30,13 +31,13 @@ final class BookmarksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void init(Consumer<Page> itemClick, Consumer<Page> deleteClick) {
         this.itemClick = itemClick;
         this.deleteClick = deleteClick;
-        layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        layoutManager = new LinearLayoutManager(context.get(), LinearLayoutManager.VERTICAL, false);
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.bookmarks_item, parent, false);
+        View view = LayoutInflater.from(context.get()).inflate(R.layout.bookmarks_item, parent, false);
         return new BookmarksViewHolder(
                 view,
                 item -> {

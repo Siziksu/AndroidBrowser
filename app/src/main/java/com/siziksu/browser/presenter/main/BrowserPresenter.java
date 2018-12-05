@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.siziksu.browser.ui.view.main.menu.OverflowMenu;
 import com.siziksu.browser.ui.view.main.webView.MainWebView;
 import com.siziksu.browser.ui.view.main.webView.WebViewHelper;
 
+import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.List;
 
@@ -101,13 +103,14 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
                     view.onProgress(progress);
                 }
             });
+            WeakReference<AppCompatActivity> activity = new WeakReference<>(view.getAppCompatActivity());
             imageMenu = new ImageMenu.Builder()
-                    .setActivity(view.getAppCompatActivity())
+                    .setActivity(activity)
                     .setListener(this::onImageMenuClick)
                     .setCancelable(true)
                     .create();
             linkMenu = new LinkMenu.Builder()
-                    .setActivity(view.getAppCompatActivity())
+                    .setActivity(activity)
                     .setListener(this::onLinkMenuClick)
                     .setCancelable(true)
                     .create();
@@ -116,7 +119,7 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
                     new OverflowMenuItem(R.id.actionDesktopSite, view.getAppCompatActivity().getString(R.string.desktop_site), OverflowMenuItem.CHECKBOX),
                     new OverflowMenuItem(R.id.actionGoogle, view.getAppCompatActivity().getString(R.string.google), OverflowMenuItem.DEFAULT));
             overflowMenu = new OverflowMenu.Builder()
-                    .setActivity(view.getAppCompatActivity())
+                    .setActivity(activity)
                     .setSourceView(actionMoreView)
                     .setListener(this::onOverflowMenuClick)
                     .setCancelable(true)
