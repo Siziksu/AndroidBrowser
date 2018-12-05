@@ -3,6 +3,7 @@ package com.siziksu.browser.ui.view.main.webView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.MotionEvent;
+import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.WebView;
 
@@ -53,6 +54,14 @@ public final class WebViewHelper {
 
     public void setProgressListener(Consumer<Integer> progress) {
         webView.setProgressListener(progress);
+    }
+
+    public void setVideoViewShowingListener(Consumer<View> videoViewListener) {
+        webView.setVideoViewShowingListener(videoViewListener);
+    }
+
+    public void setVideoViewHidingListener(Consumer<View> videoViewHidingListener) {
+        webView.setVideoViewHidingListener(videoViewHidingListener);
     }
 
     public void setDownloadListener(DownloadListener listener) {

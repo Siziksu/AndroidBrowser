@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.siziksu.browser.App;
@@ -36,6 +37,8 @@ public final class BrowserFragment extends Fragment implements BrowserViewContra
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.webView)
     MainWebView webView;
+    @BindView(R.id.videoContainer)
+    FrameLayout videoContainer;
 
     @Inject
     BrowserPresenterContract<BrowserViewContract> presenter;
@@ -57,8 +60,7 @@ public final class BrowserFragment extends Fragment implements BrowserViewContra
         super.onCreate(savedInstanceState);
         App.get().getApplicationComponent().inject(this);
     }
-
-    @Nullable
+    
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View inflatedView = inflater.inflate(R.layout.fragment_browser, container, false);
@@ -138,6 +140,18 @@ public final class BrowserFragment extends Fragment implements BrowserViewContra
         if (progress >= MAX_SWIPE_REFRESH_PROGRESS_VALUE && swipeRefreshLayout.isRefreshing()) {
             swipeRefreshLayout.setRefreshing(false);
         }
+    }
+
+    @Override
+    public void showVideoContainer(View view) {
+        videoContainer.setVisibility(View.VISIBLE);
+        videoContainer.addView(view);
+    }
+
+    @Override
+    public void hideVideoContainer(View view) {
+        videoContainer.setVisibility(View.GONE);
+        videoContainer.removeView(view);
     }
 
     @Override

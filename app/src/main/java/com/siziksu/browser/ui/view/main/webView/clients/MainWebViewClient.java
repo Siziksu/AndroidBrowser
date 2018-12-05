@@ -19,6 +19,8 @@ import com.siziksu.browser.ui.view.main.menu.dialog.LoginDialogFragment;
 
 import java.util.Map;
 
+import javax.inject.Inject;
+
 public class MainWebViewClient extends WebViewClient {
 
     private static final long HALF_SECOND = 500;
@@ -31,6 +33,7 @@ public class MainWebViewClient extends WebViewClient {
     private FragmentManagerSupplier fragmentManagerSupplier;
     private boolean isGoingBack;
 
+    @Inject
     public MainWebViewClient() {}
 
     @Override

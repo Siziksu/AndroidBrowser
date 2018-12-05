@@ -3,6 +3,7 @@ package com.siziksu.browser.ui.view.main.webView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -24,9 +25,10 @@ public final class MainWebView extends WebView implements WebViewViewContract {
 
     @Inject
     WebViewPresenterContract presenter;
-
-    private MainWebChromeClient mainWebViewChromeClient;
-    private MainWebViewClient mainWebViewClient;
+    @Inject
+    MainWebChromeClient mainWebViewChromeClient;
+    @Inject
+    MainWebViewClient mainWebViewClient;
 
     private String urlValidated;
     private boolean enabled;
@@ -47,13 +49,10 @@ public final class MainWebView extends WebView implements WebViewViewContract {
     @SuppressLint("SetJavaScriptEnabled")
     public void init(Context context) {
         presenter.register(this);
-
-        mainWebViewChromeClient = new MainWebChromeClient();
         mainWebViewChromeClient.setOnBlankLinkListener(this::loadUrl);
-        mainWebViewClient = new MainWebViewClient();
-
         setWebChromeClient(mainWebViewChromeClient);
         setWebViewClient(mainWebViewClient);
+
         setSaveEnabled(true);
 
         getSettings().setJavaScriptEnabled(true);
@@ -102,6 +101,20 @@ public final class MainWebView extends WebView implements WebViewViewContract {
         mainWebViewChromeClient.setProgressListener(progress);
     }
 
+    public void setVideoViewShowingListener(Consumer<View> videoViewShowingListener) {
+        mainWebViewChromeClient.setVideoViewShowingListener(view -> {
+            setVisibility(View.GONE);
+            videoViewShowingListener.accept(view);
+        });
+    }
+
+    public void setVideoViewHidingListener(Consumer<View> videoViewHidingListener) {
+        mainWebViewChromeClient.setVideoViewHidingListener(view -> {
+            setVisibility(View.VISIBLE);
+            videoViewHidingListener.accept(view);
+        });
+    }
+
     @Override
     public void loadUrl(String userSearch) {
         presenter.filterUrl(userSearch);
@@ -124,6 +137,10 @@ public final class MainWebView extends WebView implements WebViewViewContract {
 
     @Override
     public void goBack() {
+        if (mainWebViewChromeClient.isShowingVideoView()) {
+            mainWebViewChromeClient.hideVideoView();
+            return;
+        }
         mainWebViewClient.isGoingBack();
         super.goBack();
     }

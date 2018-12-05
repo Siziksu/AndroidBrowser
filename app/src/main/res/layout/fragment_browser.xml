@@ -27,4 +27,10 @@
         android:progressDrawable="@drawable/custom_progress_bar"
         android:max="100"
         android:progress="0" />
+
+    <FrameLayout
+        android:id="@+id/videoContainer"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </RelativeLayout>

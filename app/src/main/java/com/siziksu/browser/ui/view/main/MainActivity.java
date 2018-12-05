@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,6 +31,8 @@ public final class MainActivity extends AppCompatActivity implements MainViewCon
     EditText urlEditText;
     @BindView(R.id.actionMore)
     ImageView actionMore;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Inject
     MainPresenterContract<MainViewContract> presenter;
@@ -148,6 +151,7 @@ public final class MainActivity extends AppCompatActivity implements MainViewCon
 
     private void initializeViews() {
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
         KeyboardVisibilityEvent.setEventListener(this, keyboardIsVisible -> {
             if (!isKeyboardGoClicked) {
                 if (!keyboardIsVisible) {

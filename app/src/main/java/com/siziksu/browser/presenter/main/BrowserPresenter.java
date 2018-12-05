@@ -103,6 +103,24 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
                     view.onProgress(progress);
                 }
             });
+            webViewHelper.setVideoViewShowingListener(
+                    v -> {
+                        if (view != null) {
+                            ActivityUtils.setOrientationLandscape(view.getAppCompatActivity());
+                            ActivityUtils.hideToolbar(view.getAppCompatActivity());
+                            view.showVideoContainer(v);
+                        }
+                    }
+            );
+            webViewHelper.setVideoViewHidingListener(
+                    v -> {
+                        if (view != null) {
+                            ActivityUtils.setOrientationUnespecified(view.getAppCompatActivity());
+                            ActivityUtils.showToolbar(view.getAppCompatActivity());
+                            view.hideVideoContainer(v);
+                        }
+                    }
+            );
             WeakReference<AppCompatActivity> activity = new WeakReference<>(view.getAppCompatActivity());
             imageMenu = new ImageMenu.Builder()
                     .setActivity(activity)

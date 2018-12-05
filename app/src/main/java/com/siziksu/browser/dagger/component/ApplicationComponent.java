@@ -23,6 +23,7 @@ import com.siziksu.browser.ui.view.launch.LaunchActivity;
 import com.siziksu.browser.ui.view.main.BrowserFragment;
 import com.siziksu.browser.ui.view.main.MainActivity;
 import com.siziksu.browser.ui.view.main.webView.MainWebView;
+import com.siziksu.browser.ui.view.main.webView.clients.MainWebChromeClient;
 
 import javax.inject.Singleton;
 
@@ -76,4 +77,6 @@ public interface ApplicationComponent {
     void inject(WebViewPresenter target);
 
     void inject(MainWebViewDomain target);
+
+    void inject(MainWebChromeClient target);
 }
