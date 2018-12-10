@@ -19,7 +19,7 @@ public final class ActivityUtils {
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
-    public static void setOrientationUnespecified(AppCompatActivity activity) {
+    public static void setOrientationUnspecified(AppCompatActivity activity) {
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 

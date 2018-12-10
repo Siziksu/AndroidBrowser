@@ -115,7 +115,7 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
             webViewHelper.setVideoViewHidingListener(
                     v -> {
                         if (view != null) {
-                            ActivityUtils.setOrientationUnespecified(view.getAppCompatActivity());
+                            ActivityUtils.setOrientationUnspecified(view.getAppCompatActivity());
                             ActivityUtils.showToolbar(view.getAppCompatActivity());
                             view.hideVideoContainer(v);
                         }
