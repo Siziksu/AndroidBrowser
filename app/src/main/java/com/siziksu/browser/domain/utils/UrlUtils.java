@@ -1,6 +1,7 @@
 package com.siziksu.browser.domain.utils;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 
 import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.common.function.Consumer;
@@ -28,19 +29,28 @@ public final class UrlUtils {
     }
 
     private String validateUrl(String string) {
-        if (string == null) { return null; }
-        if (checkIfLocalUrlOrData(string)) { return string; }
-        string = format(string);
         try {
-            URL url = new URL(string);
-            return url.toString();
-        } catch (MalformedURLException e) {
-            try {
-                return googleSearch(URLEncoder.encode(string, "UTF-8"));
-            } catch (UnsupportedEncodingException unsupported) {
-                Print.error(unsupported.getMessage(), unsupported);
-                return Constants.URL_GOOGLE;
+            if (string == null) { return null; }
+            if (checkIfLocalUrlOrData(string)) { return string; }
+            if (!string.contains(" ")) {
+                string = format(string);
+                URL url = new URL(string);
+                return url.toString();
+            } else {
+                return onMalformedString(string);
             }
+        } catch (MalformedURLException e) {
+            return onMalformedString(string);
+        }
+    }
+
+    @NonNull
+    private String onMalformedString(String string) {
+        try {
+            return googleSearch(URLEncoder.encode(string, "UTF-8"));
+        } catch (UnsupportedEncodingException unsupported) {
+            Print.error(unsupported.getMessage(), unsupported);
+            return Constants.URL_GOOGLE;
         }
     }
 

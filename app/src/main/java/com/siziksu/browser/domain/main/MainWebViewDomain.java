@@ -17,6 +17,6 @@ public final class MainWebViewDomain implements MainWebViewDomainContract {
 
     @Override
     public void filterUrl(String url, Consumer<String> filteredUrl) {
-        urlUtils.filterUrl(url, filteredUrl);
+        urlUtils.filterUrl(url.trim(), filteredUrl);
     }
 }
