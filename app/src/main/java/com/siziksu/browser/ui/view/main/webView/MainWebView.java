@@ -72,6 +72,7 @@ public final class MainWebView extends WebView implements WebViewViewContract {
         getSettings().setAllowUniversalAccessFromFileURLs(true);
 
         CookieManager.getInstance().setAcceptThirdPartyCookies(this, true);
+        CookieManager.getInstance().setAcceptCookie(true);
     }
 
     public void toggleDesktopSite() {
