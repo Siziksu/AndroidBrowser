@@ -33,12 +33,6 @@ public class MainDomain implements MainDomainContract {
     }
 
     @Override
-    public void clearLastPageVisited() {
-        if (repository == null) { return; }
-        repository.clearLastPageVisited();
-    }
-
-    @Override
     public void getLastPageVisited(Consumer<String> result) {
         if (repository == null) { return; }
         disposablesManager.add(0, repository.getLastPageVisited()

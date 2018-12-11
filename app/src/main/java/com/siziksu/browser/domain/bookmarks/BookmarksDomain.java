@@ -37,22 +37,22 @@ public final class BookmarksDomain implements BookmarksDomainContract {
     }
 
     @Override
-    public void getBookmarks(Consumer<List<PageDomain>> result) {
+    public void getBookmarks(Consumer<List<PageDomain>> onBookmarks) {
         if (repository == null) { return; }
         disposablesManager.add(0, repository.getBookmarks()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(bookmarks -> result.accept(new PageMapper().map(bookmarks)))
+                .subscribe(bookmarks -> onBookmarks.accept(new PageMapper().map(bookmarks)))
         );
     }
 
     @Override
-    public void deleteBookmark(PageDomain bookmark, Action action) {
+    public void deleteBookmark(PageDomain page, Action onDone) {
         if (repository == null) { return; }
-        disposablesManager.add(1, repository.deleteBookmark(new PageMapper().unMap(bookmark))
+        disposablesManager.add(1, repository.deleteBookmark(new PageMapper().unMap(page))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(action::execute)
+                .subscribe(onDone::execute)
         );
     }
 }

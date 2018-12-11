@@ -25,3 +25,4 @@ captures/
 *.jks
 .externalNativeBuild
 import-summary.txt
+schemas

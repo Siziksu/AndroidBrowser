@@ -1,5 +1,6 @@
 package com.siziksu.browser.data;
 
+import com.siziksu.browser.data.model.BrowserActivityData;
 import com.siziksu.browser.data.model.PageData;
 
 import java.util.List;
@@ -15,9 +16,15 @@ public interface RepositoryContract {
 
     Completable clearLastPageVisited();
 
-    Completable manageBookmark(PageData bookmark);
+    Completable insertBookmark(PageData page);
 
-    Completable deleteBookmark(PageData bookmark);
+    Completable deleteBookmark(PageData page);
 
     Single<List<PageData>> getBookmarks();
+
+    Completable insertHistoryItem(BrowserActivityData activity);
+
+    Completable deleteHistoryItem(BrowserActivityData activity);
+
+    Single<List<BrowserActivityData>> getHistory();
 }

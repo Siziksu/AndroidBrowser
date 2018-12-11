@@ -9,6 +9,7 @@ import android.webkit.WebView;
 
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.presenter.main.FragmentManagerSupplier;
+import com.siziksu.browser.ui.common.model.BrowserActivity;
 import com.siziksu.browser.ui.common.model.Page;
 
 import javax.inject.Inject;
@@ -50,6 +51,10 @@ public final class WebViewHelper {
 
     public void setPageListeners(Consumer<String> onPageStarted, Consumer<String> onPageFinished, Consumer<String> pageVisited) {
         webView.setPageListeners(onPageStarted, onPageFinished, pageVisited);
+    }
+
+    public void setActivityListener(Consumer<BrowserActivity> onActivity) {
+        webView.setActivityListener(onActivity);
     }
 
     public void setProgressListener(Consumer<Integer> progress) {

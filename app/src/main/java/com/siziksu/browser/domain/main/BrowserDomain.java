@@ -6,7 +6,9 @@ import com.siziksu.browser.common.utils.Print;
 import com.siziksu.browser.data.RepositoryContract;
 import com.siziksu.browser.data.model.PageData;
 import com.siziksu.browser.domain.manager.DisposablesManager;
+import com.siziksu.browser.domain.mapper.BrowserActivityMapper;
 import com.siziksu.browser.domain.mapper.PageMapper;
+import com.siziksu.browser.domain.model.BrowserActivityDomain;
 import com.siziksu.browser.domain.model.PageDomain;
 import com.siziksu.browser.domain.utils.UrlUtils;
 
@@ -30,7 +32,7 @@ public final class BrowserDomain implements BrowserDomainContract {
 
     @Override
     public void register() {
-        disposablesManager.setSize(7);
+        disposablesManager.setSize(4);
     }
 
     @Override
@@ -39,32 +41,19 @@ public final class BrowserDomain implements BrowserDomainContract {
     }
 
     @Override
-    public void setLastPageVisited(String url) {
+    public void onPageVisited(String url) {
         if (repository == null) { return; }
         disposablesManager.add(0, repository.setLastPageVisited(url)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {}, throwable -> Print.error("Error setting a visited page: " + throwable.getMessage(), throwable))
+                .subscribe(() -> {}, throwable -> Print.error("Error setting the visited page: " + throwable.getMessage(), throwable))
         );
     }
 
     @Override
-    public void getLastPageVisited(Consumer<String> result) {
+    public void onBookmarkButtonClicked(PageDomain page) {
         if (repository == null) { return; }
-        disposablesManager.add(1, repository.getLastPageVisited()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        result::accept,
-                        throwable -> Print.error("Error getting the last visited page: " + throwable.getMessage(), throwable)
-                )
-        );
-    }
-
-    @Override
-    public void manageBookmark(PageDomain bookmark) {
-        if (repository == null) { return; }
-        disposablesManager.add(2, repository.manageBookmark(new PageMapper().unMap(bookmark))
+        disposablesManager.add(1, repository.insertBookmark(new PageMapper().unMap(page))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {}, throwable -> Print.error("Error managing a bookmark: " + throwable.getMessage(), throwable))
@@ -74,7 +63,7 @@ public final class BrowserDomain implements BrowserDomainContract {
     @Override
     public void isUrlBookmarked(String url, Consumer<Boolean> result) {
         if (repository == null) { return; }
-        disposablesManager.add(3, repository.getBookmarks()
+        disposablesManager.add(2, repository.getBookmarks()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bookmarks -> {
@@ -89,6 +78,16 @@ public final class BrowserDomain implements BrowserDomainContract {
                     }
                     result.accept(isBookmarked);
                 }, throwable -> Print.error("Error checking if a url is bookmarked: " + throwable.getMessage(), throwable))
+        );
+    }
+
+    @Override
+    public void onBrowserActivity(BrowserActivityDomain activity) {
+        if (repository == null) { return; }
+        disposablesManager.add(3, repository.insertHistoryItem(new BrowserActivityMapper().unMap(activity))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {}, throwable -> Print.error("Error managing the browser activity: " + throwable.getMessage(), throwable))
         );
     }
 

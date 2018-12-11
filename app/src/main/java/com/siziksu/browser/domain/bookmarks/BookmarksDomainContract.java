@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface BookmarksDomainContract extends BaseDomainContract {
 
-    void getBookmarks(Consumer<List<PageDomain>> result);
+    void getBookmarks(Consumer<List<PageDomain>> onBookmarks);
 
-    void deleteBookmark(PageDomain bookmark, Action action);
+    void deleteBookmark(PageDomain page, Action onDone);
 }

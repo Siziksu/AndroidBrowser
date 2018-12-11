@@ -5,20 +5,25 @@ import com.siziksu.browser.dagger.module.ApplicationModule;
 import com.siziksu.browser.dagger.module.DataModule;
 import com.siziksu.browser.dagger.module.DomainModule;
 import com.siziksu.browser.dagger.module.PresenterModule;
+import com.siziksu.browser.dagger.module.RoomModule;
 import com.siziksu.browser.data.Repository;
 import com.siziksu.browser.data.client.PreferencesClient;
+import com.siziksu.browser.data.persistence.BrowserDatabase;
 import com.siziksu.browser.domain.bookmarks.BookmarksDomain;
+import com.siziksu.browser.domain.history.HistoryDomain;
 import com.siziksu.browser.domain.launch.LaunchDomain;
 import com.siziksu.browser.domain.main.BrowserDomain;
 import com.siziksu.browser.domain.main.MainDomain;
 import com.siziksu.browser.domain.main.MainWebViewDomain;
 import com.siziksu.browser.domain.utils.UrlUtils;
 import com.siziksu.browser.presenter.bookmarks.BookmarksPresenter;
+import com.siziksu.browser.presenter.history.HistoryPresenter;
 import com.siziksu.browser.presenter.launch.LaunchPresenter;
 import com.siziksu.browser.presenter.main.BrowserPresenter;
 import com.siziksu.browser.presenter.main.MainPresenter;
 import com.siziksu.browser.presenter.main.WebViewPresenter;
 import com.siziksu.browser.ui.view.bookmarks.BookmarksActivity;
+import com.siziksu.browser.ui.view.history.HistoryActivity;
 import com.siziksu.browser.ui.view.launch.LaunchActivity;
 import com.siziksu.browser.ui.view.main.BrowserFragment;
 import com.siziksu.browser.ui.view.main.MainActivity;
@@ -35,7 +40,8 @@ import dagger.Component;
                 ApplicationModule.class,
                 DataModule.class,
                 DomainModule.class,
-                PresenterModule.class
+                PresenterModule.class,
+                RoomModule.class
         }
 )
 public interface ApplicationComponent {
@@ -60,6 +66,8 @@ public interface ApplicationComponent {
 
     void inject(BrowserDomain target);
 
+    void inject(BrowserDatabase target);
+
     void inject(BookmarksActivity target);
 
     void inject(BookmarksPresenter target);
@@ -79,4 +87,10 @@ public interface ApplicationComponent {
     void inject(MainWebViewDomain target);
 
     void inject(MainWebChromeClient target);
+
+    void inject(HistoryActivity target);
+
+    void inject(HistoryPresenter target);
+
+    void inject(HistoryDomain target);
 }

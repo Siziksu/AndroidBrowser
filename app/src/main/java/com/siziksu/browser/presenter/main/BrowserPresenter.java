@@ -19,8 +19,10 @@ import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.common.function.Action;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.domain.main.BrowserDomainContract;
+import com.siziksu.browser.presenter.mapper.BrowserActivityMapper;
 import com.siziksu.browser.presenter.mapper.PageMapper;
 import com.siziksu.browser.ui.common.manager.DownloaderManager;
+import com.siziksu.browser.ui.common.model.BrowserActivity;
 import com.siziksu.browser.ui.common.model.OverflowMenuItem;
 import com.siziksu.browser.ui.common.model.Page;
 import com.siziksu.browser.ui.common.router.RouterContract;
@@ -97,7 +99,7 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
                             ActivityUtils.hideKeyboard(view.getAppCompatActivity());
                             view.onPageFinished(url);
                         }
-                    }, this::setPageVisited);
+                    }, this::onPageVisited);
             webViewHelper.setProgressListener(progress -> {
                 if (view != null) {
                     view.onProgress(progress);
@@ -121,6 +123,7 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
                         }
                     }
             );
+            webViewHelper.setActivityListener(this::onBrowserActivity);
             WeakReference<AppCompatActivity> activity = new WeakReference<>(view.getAppCompatActivity());
             imageMenu = new ImageMenu.Builder()
                     .setActivity(activity)
@@ -134,6 +137,7 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
                     .create();
             List<OverflowMenuItem> items = Arrays.asList(
                     new OverflowMenuItem(R.id.actionBookmarks, view.getAppCompatActivity().getString(R.string.bookmarks), OverflowMenuItem.DEFAULT),
+                    new OverflowMenuItem(R.id.actionHistory, view.getAppCompatActivity().getString(R.string.history), OverflowMenuItem.DEFAULT),
                     new OverflowMenuItem(R.id.actionDesktopSite, view.getAppCompatActivity().getString(R.string.desktop_site), OverflowMenuItem.CHECKBOX),
                     new OverflowMenuItem(R.id.actionGoogle, view.getAppCompatActivity().getString(R.string.google), OverflowMenuItem.DEFAULT));
             overflowMenu = new OverflowMenu.Builder()
@@ -177,11 +181,15 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.REQUEST_CODE_BOOKMARKS) {
-            switch (resultCode) {
-                case Activity.RESULT_OK:
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case Constants.REQUEST_CODE_BOOKMARKS:
                     Page page = data.getParcelableExtra(Constants.EXTRA_KEY_BOOKMARK);
                     loadUrl(page.url);
+                    break;
+                case Constants.REQUEST_CODE_HISTORY:
+                    BrowserActivity activity = data.getParcelableExtra(Constants.EXTRA_KEY_HISTORY);
+                    loadUrl(activity.url);
                     break;
                 default:
                     break;
@@ -259,6 +267,11 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
         });
     }
 
+    private void onBrowserActivity(BrowserActivity activity) {
+        if (domain == null) { return; }
+        domain.onBrowserActivity(new BrowserActivityMapper().unMap(activity));
+    }
+
     private void onOverflowMenuClick(int id) {
         switch (id) {
             case R.id.actionHome:
@@ -267,7 +280,7 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
                 }
                 break;
             case R.id.actionBookmark:
-                manageBookmark(webViewHelper.getCurrentPage());
+                onBookmarkButtonClicked(webViewHelper.getCurrentPage());
                 break;
             case R.id.actionForward:
                 webViewHelper.goForward();
@@ -283,6 +296,9 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
                 break;
             case R.id.actionBookmarks:
                 onBookmarksButtonClick();
+                break;
+            case R.id.actionHistory:
+                onHistoryButtonClick();
                 break;
             default:
                 break;
@@ -330,31 +346,24 @@ public final class BrowserPresenter implements BrowserPresenterContract<BrowserV
         DownloaderManager.download(view.getAppCompatActivity(), url, null);
     }
 
-    private void setPageVisited(String url) {
+    private void onPageVisited(String url) {
         if (domain == null) { return; }
-        getLastPageVisited(last -> {
-            if (last == null || !last.equals(url)) {
-                domain.setLastPageVisited(url);
-            }
-        });
+        domain.onPageVisited(url);
     }
 
-    private void getLastPageVisited(Consumer<String> result) {
+    private void onBookmarkButtonClicked(Page page) {
         if (domain == null) { return; }
-        domain.getLastPageVisited(lastVisited -> {
-            if (view == null) { return; }
-            result.accept(lastVisited);
-        });
-    }
-
-    private void manageBookmark(Page page) {
-        if (domain == null) { return; }
-        domain.manageBookmark(new PageMapper().unMap(page));
+        domain.onBookmarkButtonClicked(new PageMapper().unMap(page));
     }
 
     private void onBookmarksButtonClick() {
         if (view == null) { return; }
         router.goToBookmarks(view.getAppCompatActivity());
+    }
+
+    private void onHistoryButtonClick() {
+        if (view == null) { return; }
+        router.goToHistory(view.getAppCompatActivity());
     }
 
     private void loadUrl(String url) {

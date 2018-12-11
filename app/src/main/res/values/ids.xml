@@ -3,4 +3,5 @@
     <item name="actionBookmarks" type="id" />
     <item name="actionDesktopSite" type="id" />
     <item name="actionGoogle" type="id" />
+    <item name="actionHistory" type="id" />
 </resources>

@@ -2,8 +2,11 @@ package com.siziksu.browser.data;
 
 import com.siziksu.browser.App;
 import com.siziksu.browser.data.client.PreferencesClientContract;
+import com.siziksu.browser.data.mapper.BrowserActivityMapper;
 import com.siziksu.browser.data.mapper.PageMapper;
+import com.siziksu.browser.data.model.BrowserActivityData;
 import com.siziksu.browser.data.model.PageData;
+import com.siziksu.browser.data.persistence.BrowserDatabaseClient;
 
 import java.util.List;
 
@@ -16,6 +19,8 @@ public final class Repository implements RepositoryContract {
 
     @Inject
     PreferencesClientContract preferencesClient;
+    @Inject
+    BrowserDatabaseClient browserDatabaseClient;
 
     public Repository() {
         App.get().getApplicationComponent().inject(this);
@@ -37,17 +42,32 @@ public final class Repository implements RepositoryContract {
     }
 
     @Override
-    public Completable manageBookmark(PageData bookmark) {
-        return preferencesClient.manageBookmark(new PageMapper().unMap(bookmark));
+    public Completable insertBookmark(PageData page) {
+        return browserDatabaseClient.insertBookmark(new PageMapper().unMap(page));
     }
 
     @Override
-    public Completable deleteBookmark(PageData bookmark) {
-        return preferencesClient.deleteBookmark(new PageMapper().unMap(bookmark));
+    public Completable deleteBookmark(PageData page) {
+        return browserDatabaseClient.deleteBookmark(new PageMapper().unMap(page));
     }
 
     @Override
     public Single<List<PageData>> getBookmarks() {
-        return preferencesClient.getBookmarks().map(bookmarks -> new PageMapper().map(bookmarks));
+        return browserDatabaseClient.getBookmarks().map(bookmarks -> new PageMapper().map(bookmarks));
+    }
+
+    @Override
+    public Completable insertHistoryItem(BrowserActivityData activity) {
+        return browserDatabaseClient.insertHistoryItem(new BrowserActivityMapper().unMap(activity));
+    }
+
+    @Override
+    public Completable deleteHistoryItem(BrowserActivityData activity) {
+        return browserDatabaseClient.deleteHistoryItem(new BrowserActivityMapper().unMap(activity));
+    }
+
+    @Override
+    public Single<List<BrowserActivityData>> getHistory() {
+        return browserDatabaseClient.getHistory().map(history -> new BrowserActivityMapper().map(history));
     }
 }

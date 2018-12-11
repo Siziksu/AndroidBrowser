@@ -44,5 +44,9 @@
             android:name=".ui.view.bookmarks.BookmarksActivity"
             android:windowSoftInputMode="stateHidden"
             android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ui.view.history.HistoryActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="orientation|screenSize" />
     </application>
 </manifest>

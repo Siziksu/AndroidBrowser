@@ -2,6 +2,8 @@ package com.siziksu.browser.dagger.module;
 
 import com.siziksu.browser.domain.bookmarks.BookmarksDomain;
 import com.siziksu.browser.domain.bookmarks.BookmarksDomainContract;
+import com.siziksu.browser.domain.history.HistoryDomain;
+import com.siziksu.browser.domain.history.HistoryDomainContract;
 import com.siziksu.browser.domain.launch.LaunchDomain;
 import com.siziksu.browser.domain.launch.LaunchDomainContract;
 import com.siziksu.browser.domain.main.BrowserDomain;
@@ -40,5 +42,10 @@ public final class DomainModule {
     @Provides
     BookmarksDomainContract providesBookmarksDomain() {
         return new BookmarksDomain();
+    }
+
+    @Provides
+    HistoryDomainContract providesHistoryDomain() {
+        return new HistoryDomain();
     }
 }

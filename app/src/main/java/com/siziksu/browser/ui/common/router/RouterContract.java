@@ -15,4 +15,6 @@ public interface RouterContract {
     void goToMainActivity(AppCompatActivity activity, Bundle options);
 
     void goToBookmarks(AppCompatActivity activity);
+
+    void goToHistory(AppCompatActivity activity);
 }

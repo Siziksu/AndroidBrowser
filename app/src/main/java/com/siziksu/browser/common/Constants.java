@@ -6,8 +6,10 @@ public final class Constants {
 
     public static final String EXTRA_KEY_BOOKMARK = "bookmark";
     public static final String EXTRA_KEY_EXTERNAL_LINK = "external_link";
+    public static final String EXTRA_KEY_HISTORY = "history";
 
     public static final int REQUEST_CODE_BOOKMARKS = 1001;
+    public static final int REQUEST_CODE_HISTORY = 1002;
 
     public static final String URL_GOOGLE = "https://www.google.com";
     public static final String URL_GOOGLE_SEARCH = "www.google.com/search";
@@ -17,6 +19,7 @@ public final class Constants {
     public static final String CREDENTIALS_POPUP = "dialog_credentials_popup";
 
     public static final String TITLE_ACTIVITY_BOOKMARKS = "Bookmarks";
+    public static final String TITLE_ACTIVITY_HISTORY = "History";
 
     private Constants() {}
 }

@@ -5,7 +5,5 @@ import com.siziksu.browser.domain.BaseDomainContract;
 
 public interface MainDomainContract extends BaseDomainContract {
 
-    void clearLastPageVisited();
-
     void getLastPageVisited(Consumer<String> result);
 }

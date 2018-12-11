@@ -9,7 +9,7 @@ final class CollectionUtils {
 
     private CollectionUtils() {}
 
-    static void sortUsersByName(List<Page> pages) {
+    static void sortPagesByName(List<Page> pages) {
         Collections.sort(pages, (page1, page2) -> page1.titleToShow.compareToIgnoreCase(page2.titleToShow));
     }
 }

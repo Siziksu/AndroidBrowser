@@ -9,5 +9,5 @@ public interface BookmarksPresenterContract<V extends BaseViewContract> extends 
 
     void getBookmarks();
 
-    void deleteBookmark(Page page, Action action);
+    void deleteBookmark(Page page, Action onDeleted);
 }

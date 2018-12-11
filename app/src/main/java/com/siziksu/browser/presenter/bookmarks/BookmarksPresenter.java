@@ -56,20 +56,20 @@ public final class BookmarksPresenter implements BookmarksPresenterContract<Book
         domain.getBookmarks(bookmarks -> {
             if (view == null) { return; }
             List<Page> list = new ArrayList<>(new PageMapper().map(bookmarks));
-            CollectionUtils.sortUsersByName(list);
+            CollectionUtils.sortPagesByName(list);
             view.showBookmarks(list);
         });
     }
 
     @Override
-    public void deleteBookmark(Page page, Action result) {
+    public void deleteBookmark(Page page, Action onDeleted) {
         new DialogYesNo().setAcceptCallback(() -> {
             if (domain == null) { return; }
             domain.deleteBookmark(new PageMapper().unMap(page), () -> {
                 if (view == null) { return; }
-                result.execute();
+                onDeleted.execute();
             });
-        }).setMessage(view.getAppCompatActivity().getString(R.string.are_you_sure))
+        }).setMessage(view.getAppCompatActivity().getString(R.string.are_you_sure_to_delete_this_item))
                 .show(view.getAppCompatActivity().getSupportFragmentManager(), Constants.YES_NO_DIALOG_FRAGMENT_TAG);
     }
 }

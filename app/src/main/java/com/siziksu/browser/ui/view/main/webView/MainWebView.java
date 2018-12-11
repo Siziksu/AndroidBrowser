@@ -13,6 +13,7 @@ import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.presenter.main.FragmentManagerSupplier;
 import com.siziksu.browser.presenter.main.WebViewPresenterContract;
 import com.siziksu.browser.presenter.main.WebViewViewContract;
+import com.siziksu.browser.ui.common.model.BrowserActivity;
 import com.siziksu.browser.ui.common.model.Page;
 import com.siziksu.browser.ui.view.main.webView.clients.MainWebChromeClient;
 import com.siziksu.browser.ui.view.main.webView.clients.MainWebViewClient;
@@ -96,6 +97,10 @@ public final class MainWebView extends WebView implements WebViewViewContract {
                 onPageFinished,
                 pageVisited
         );
+    }
+
+    public void setActivityListener(Consumer<BrowserActivity> onActivity) {
+        mainWebViewClient.setActivityListener(onActivity);
     }
 
     public void setProgressListener(Consumer<Integer> progress) {

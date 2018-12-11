@@ -8,6 +8,7 @@ import com.siziksu.browser.dagger.module.ApplicationModule;
 import com.siziksu.browser.dagger.module.DataModule;
 import com.siziksu.browser.dagger.module.DomainModule;
 import com.siziksu.browser.dagger.module.PresenterModule;
+import com.siziksu.browser.dagger.module.RoomModule;
 
 public class App extends Application {
 
@@ -36,6 +37,7 @@ public class App extends Application {
                 .dataModule(new DataModule())
                 .domainModule(new DomainModule())
                 .presenterModule(new PresenterModule())
+                .roomModule(new RoomModule())
                 .build();
         applicationComponent.inject(this);
     }

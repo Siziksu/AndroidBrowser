@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bookmarksItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/padding10"
+    android:paddingBottom="@dimen/padding10"
+    android:paddingStart="@dimen/padding15"
+    android:paddingEnd="@dimen/padding10"
+    tools:ignore="MissingPrefix">
+
+    <TextView
+        fontPath="fonts/Montserrat-Light.ttf"
+        android:id="@+id/bookmarksTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/bookmarksDelete"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="@string/app_name"
+        android:textColor="@color/darkerGrey"
+        android:textSize="@dimen/textSize14" />
+
+    <TextView
+        fontPath="fonts/Montserrat-Light.ttf"
+        android:id="@+id/bookmarksUrl"
+        android:layout_below="@+id/bookmarksTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/bookmarksDelete"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="@string/app_name"
+        android:textColor="@color/grey"
+        android:textSize="@dimen/textSize13" />
+
+    <ImageView
+        android:id="@+id/bookmarksDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/padding10"
+        android:padding="@dimen/padding6"
+        android:src="@drawable/ic_action_delete"
+        android:contentDescription="@string/app_name" />
+</RelativeLayout>

@@ -3,6 +3,9 @@ package com.siziksu.browser.dagger.module;
 import com.siziksu.browser.presenter.bookmarks.BookmarksPresenter;
 import com.siziksu.browser.presenter.bookmarks.BookmarksPresenterContract;
 import com.siziksu.browser.presenter.bookmarks.BookmarksViewContract;
+import com.siziksu.browser.presenter.history.HistoryPresenter;
+import com.siziksu.browser.presenter.history.HistoryPresenterContract;
+import com.siziksu.browser.presenter.history.HistoryViewContract;
 import com.siziksu.browser.presenter.launch.LaunchPresenter;
 import com.siziksu.browser.presenter.launch.LaunchPresenterContract;
 import com.siziksu.browser.presenter.launch.LaunchViewContract;
@@ -37,6 +40,12 @@ public final class PresenterModule {
 
     @Singleton
     @Provides
+    WebViewPresenterContract providesWebViewPresenter() {
+        return new WebViewPresenter();
+    }
+
+    @Singleton
+    @Provides
     BrowserPresenterContract<BrowserViewContract> providesBrowserPresenter() {
         return new BrowserPresenter();
     }
@@ -49,7 +58,7 @@ public final class PresenterModule {
 
     @Singleton
     @Provides
-    WebViewPresenterContract providesWebViewPresenter() {
-        return new WebViewPresenter();
+    HistoryPresenterContract<HistoryViewContract> providesHistoryPresenter() {
+        return new HistoryPresenter();
     }
 }

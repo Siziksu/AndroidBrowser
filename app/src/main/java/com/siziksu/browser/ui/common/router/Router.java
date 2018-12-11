@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.siziksu.browser.R;
 import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.ui.view.bookmarks.BookmarksActivity;
+import com.siziksu.browser.ui.view.history.HistoryActivity;
 import com.siziksu.browser.ui.view.launch.LaunchActivity;
 import com.siziksu.browser.ui.view.main.MainActivity;
 
@@ -47,5 +48,13 @@ public final class Router implements RouterContract {
                 .forResult(Constants.REQUEST_CODE_BOOKMARKS)
                 .animateTransition(R.anim.slide_enter_from_right, R.anim.slide_exit_to_left)
                 .route(activity, BookmarksActivity.class);
+    }
+
+    @Override
+    public void goToHistory(AppCompatActivity activity) {
+        routerHelper
+                .forResult(Constants.REQUEST_CODE_HISTORY)
+                .animateTransition(R.anim.slide_enter_from_right, R.anim.slide_exit_to_left)
+                .route(activity, HistoryActivity.class);
     }
 }

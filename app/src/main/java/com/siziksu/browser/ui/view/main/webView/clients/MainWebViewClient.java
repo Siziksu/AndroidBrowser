@@ -14,6 +14,7 @@ import com.siziksu.browser.common.Constants;
 import com.siziksu.browser.common.function.Consumer;
 import com.siziksu.browser.common.utils.Print;
 import com.siziksu.browser.presenter.main.FragmentManagerSupplier;
+import com.siziksu.browser.ui.common.model.BrowserActivity;
 import com.siziksu.browser.ui.common.model.Page;
 import com.siziksu.browser.ui.view.main.menu.dialog.LoginDialogFragment;
 
@@ -28,7 +29,9 @@ public class MainWebViewClient extends WebViewClient {
     private Consumer<String> onPageStarted;
     private Consumer<String> onPageFinished;
     private Consumer<String> pageVisited;
+    private Consumer<BrowserActivity> onActivity;
     private Page page = new Page();
+    private BrowserActivity activity = new BrowserActivity();
     private String currentUrl;
     private FragmentManagerSupplier fragmentManagerSupplier;
     private boolean isGoingBack;
@@ -91,6 +94,10 @@ public class MainWebViewClient extends WebViewClient {
         this.pageVisited = pageVisited;
     }
 
+    public void setActivityListener(Consumer<BrowserActivity> onActivity) {
+        this.onActivity = onActivity;
+    }
+
     public Page getCurrentPage() {
         return page;
     }
@@ -104,26 +111,40 @@ public class MainWebViewClient extends WebViewClient {
     }
 
     private void onPageStarted(WebView view) {
+        activity.date = System.currentTimeMillis();
+        activity.title = view.getUrl();
+        activity.url = view.getUrl();
         page.title = view.getUrl();
         page.url = view.getUrl();
         if (onPageStarted != null) {
             onPageStarted.accept(page.url);
         }
+        onActivity();
         pageVisited();
     }
 
     private void onPageFinished(WebView view) {
+        activity.date = System.currentTimeMillis();
+        activity.title = view.getTitle();
+        activity.url = view.getUrl();
         page.title = view.getTitle();
         page.url = view.getUrl();
         if (onPageFinished != null) {
             onPageFinished.accept(page.url);
         }
+        onActivity();
         pageVisited();
     }
 
     private void pageVisited() {
         if (pageVisited != null) {
             pageVisited.accept(page.url);
+        }
+    }
+
+    private void onActivity() {
+        if (onActivity != null) {
+            onActivity.accept(activity);
         }
     }
 
