@@ -57,9 +57,9 @@ public final class HistoryPresenter implements HistoryPresenterContract<HistoryV
             if (view == null) { return; }
             List<BrowserActivity> list = new ArrayList<>(new BrowserActivityMapper().map(history));
             CollectionUtils.sortActivityByDate(list);
-            view.showHistory(list);
+            List<BrowserActivity> result = CollectionUtils.groupItemsByDate(list);
+            view.showHistory(result);
         });
-
     }
 
     @Override

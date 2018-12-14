@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bookmarksItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/padding10"
+    android:paddingBottom="@dimen/padding10"
+    android:paddingStart="@dimen/padding15"
+    android:paddingEnd="@dimen/padding15"
+    tools:ignore="MissingPrefix">
+
+    <TextView
+        fontPath="fonts/Montserrat-SemiBold.ttf"
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="@string/app_name"
+        android:textColor="@color/darkGrey"
+        android:textSize="@dimen/textSize13" />
+</RelativeLayout>

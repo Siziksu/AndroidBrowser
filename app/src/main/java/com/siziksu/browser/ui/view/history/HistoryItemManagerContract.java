@@ -11,4 +11,6 @@ interface HistoryItemManagerContract {
     List<BrowserActivity> getItems();
 
     void deleteItem(HistoryAdapter adapter, BrowserActivity activity);
+
+    int getItemType(int position);
 }

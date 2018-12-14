@@ -29,4 +29,9 @@ final class HistoryItemManager implements HistoryItemManagerContract {
         items.remove(index);
         adapter.notifyItemRemoved(index);
     }
+
+    @Override
+    public int getItemType(int position) {
+        return items.get(position).getType();
+    }
 }

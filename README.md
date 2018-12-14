@@ -1,5 +1,13 @@
 # Browser
 
+- Bookmarks
+- History by date
+- Desktop site
+- JavaScript
+- Html5
+- Html5 full screen video
+- Auth login credentials request dialog 
+
 ## Screenshots
 
 ![Screenshot](art/device-2018-11-11-221852.png)
@@ -9,6 +17,7 @@
 ![Screenshot](art/device-2018-11-11-222208.png)
 ![Screenshot](art/device-2018-11-11-222245.png)
 ![Screenshot](art/device-2018-11-11-222302.png)
+![Screenshot](art/device-2018-11-11-222345.png)
 
 ## License
     Copyright 2018 Esteban Latre

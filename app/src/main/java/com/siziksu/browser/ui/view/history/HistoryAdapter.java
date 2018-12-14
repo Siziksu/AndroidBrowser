@@ -37,30 +37,44 @@ final class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context.get()).inflate(R.layout.history_item, parent, false);
-        return new HistoryViewHolder(
-                view,
-                item -> {
-                    if (itemClick != null) {
-                        itemClick.accept(manager.getItems().get(item));
+        View view;
+        if (viewType == BrowserActivity.TYPE_DATE) {
+            view = LayoutInflater.from(context.get()).inflate(R.layout.history_date_item, parent, false);
+            return new HistoryDateViewHolder(view);
+        } else {
+            view = LayoutInflater.from(context.get()).inflate(R.layout.history_item, parent, false);
+            return new HistoryViewHolder(
+                    view,
+                    item -> {
+                        if (itemClick != null) {
+                            itemClick.accept(manager.getItems().get(item));
+                        }
+                    },
+                    delete -> {
+                        if (deleteClick != null) {
+                            deleteClick.accept(manager.getItems().get(delete));
+                        }
                     }
-                },
-                delete -> {
-                    if (deleteClick != null) {
-                        deleteClick.accept(manager.getItems().get(delete));
-                    }
-                }
-        );
+            );
+        }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof HistoryViewHolder) {
+        BrowserActivity item = manager.getItems().get(position);
+        if (holder.getItemViewType() == BrowserActivity.TYPE_DATE) {
+            HistoryDateViewHolder localHolder = (HistoryDateViewHolder) holder;
+            localHolder.date.setText(item.getDateFormatted());
+        } else {
             HistoryViewHolder localHolder = (HistoryViewHolder) holder;
-            BrowserActivity item = manager.getItems().get(position);
             localHolder.bookmarksTitle.setText(item.title);
             localHolder.bookmarksUrl.setText(item.url);
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return manager.getItemType(position);
     }
 
     @Override
