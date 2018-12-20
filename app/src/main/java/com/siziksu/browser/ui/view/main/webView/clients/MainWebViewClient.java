@@ -41,7 +41,10 @@ public class MainWebViewClient extends WebViewClient {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        if (isGoingBack) { return false; }
+        if (isGoingBack) {
+            isGoingBack = false;
+            return false;
+        }
         if (url.toLowerCase().equals(currentUrl.toLowerCase())) { return false; }
         view.postDelayed(() -> view.loadUrl(url), HALF_SECOND);
         return true;
@@ -111,6 +114,7 @@ public class MainWebViewClient extends WebViewClient {
     }
 
     private void onPageStarted(WebView view) {
+        if (isGoingBack) { return; }
         activity.date = System.currentTimeMillis();
         activity.title = view.getUrl();
         activity.url = view.getUrl();
@@ -124,6 +128,7 @@ public class MainWebViewClient extends WebViewClient {
     }
 
     private void onPageFinished(WebView view) {
+        if (isGoingBack) { return; }
         activity.date = System.currentTimeMillis();
         activity.title = view.getTitle();
         activity.url = view.getUrl();
